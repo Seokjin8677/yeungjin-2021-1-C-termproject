@@ -21,5 +21,8 @@
     <ClCompile Include="poker.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="dgdgd.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
