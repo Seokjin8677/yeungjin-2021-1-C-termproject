@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dgdgd.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="poker.c" />
   </ItemGroup>
