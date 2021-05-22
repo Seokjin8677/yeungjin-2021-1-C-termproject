@@ -10,20 +10,19 @@
 #define KEY_LEFT  0x4B
 #define KEY_RIGHT 0x4D
 #define KEY_RETURN 0x0D
-#define MAX_MENU_CHAR 20
 
 extern void textcolor(int);
 extern int poker(int);
 void gotoxy(int, int);
-int pullDownMenu(int,char[][MAX_MENU_CHAR]);
+int pullDownMenu();
 int sel = 0;
 int main(void) {
 	int menu;
 	int money = 10000;
 	int insertmoney;
-	char mainmenulist[MAIN_MENU][MAX_MENU_CHAR] = { "싱글플레이","멀티플레이","종료" };
-	char singlemenulist[SINGLE_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
-	char multimenulist[MULTI_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","잔액조회","이전" };
+	char mainmenulist[MAIN_MENU][20] = { "싱글플레이","멀티플레이","종료" };
+	char singlemenulist[SINGLE_MENU][20] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
+	char multimenulist[MULTI_MENU][20] = { "포커","블랙잭","잔액조회","이전" };
 	do {
 		menu = pullDownMenu(MAIN_MENU, mainmenulist);
 		switch (menu)
@@ -77,10 +76,9 @@ int main(void) {
 					break;
 				}
 			} while (menu != 7);
-			sel = 0; // 메인 메뉴로 갈시 싱글플레이 메뉴 선택되게
+			sel = 0;
 			break;
 		case 1:
-			sel = 0; // 멀티플레이 메뉴 접속 시 1번 메뉴부터 선택되게
 			do
 			{
 				menu = pullDownMenu(MULTI_MENU, multimenulist);
@@ -105,7 +103,7 @@ int main(void) {
 					break;
 				}
 			} while (menu != 3);
-			sel = 1; // 메인 메뉴로 갈시 멀티플레이 메뉴 선택되게
+			sel = 1;
 			break;
 		case 2:
 			break;
@@ -114,7 +112,7 @@ int main(void) {
 	return 0;
 }
 
-int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
+int pullDownMenu(int max_menu, char menulist[][20])
 {
 	char ch;
 	while (1) {
@@ -144,9 +142,9 @@ int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
 			sel = ((sel - 1) + max_menu) % max_menu;
 		else if (ch == KEY_RIGHT)
 			sel = (sel + 1) % max_menu;
-		else if (ch == KEY_UP && max_menu % 2 == 0)
+		else if (ch == KEY_UP && max_menu % 2 == 0 && max_menu > 4)
 			sel = ((sel + max_menu / 2) + max_menu) % max_menu;
-		else if (ch == KEY_DOWN && max_menu % 2 == 0)
+		else if (ch == KEY_DOWN && max_menu % 2 == 0 && max_menu > 4)
 			sel = ((sel - max_menu / 2) + max_menu) % max_menu;
 		else if (ch == KEY_RETURN)
 			break;
