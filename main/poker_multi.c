@@ -110,7 +110,7 @@ int poker_server(int money) {
 	joinMessage[strLen] = '\0';
 
 	if (strcmp(joinMessage, "exit") == 0) {
-		printf("상대방이 판돈을 보고 참가를 거부했습니다. 아무키나 누르면 이전 메뉴로 돌아갑니다.\n");
+		printf("상대방이 판돈을 보고 참가를 거부했습니다.\n아무키나 누르면 이전 메뉴로 돌아갑니다.\n");
 		closesocket(hClntSock);
 		WSACleanup();
 		_getch();
@@ -226,7 +226,7 @@ void poker_client(int *money) {
 	insertmoney = atoi(moneys);
 
 	system("cls");
-	printf("게임의 판돈은 %d원 입니다. 진행하려면 아무키나 누르거나\n 게임을 나가려면 q를 입력하세요.\n", insertmoney); // 판돈을 보고 게임에 참가할지 결정
+	printf("게임의 판돈은 %d원 입니다.\n 진행하려면 아무키나 누르거나, 게임을 나가려면 q를 입력하세요.\n", insertmoney); // 판돈을 보고 게임에 참가할지 결정
 
 	ch = _getch();
 	
