@@ -5,6 +5,7 @@
 #define MAIN_MENU 3
 #define SINGLE_MENU 8
 #define MULTI_MENU 4
+#define MULTI_SEL_MENU 3
 #define KEY_UP  0x48
 #define KEY_DOWN 0x50
 #define KEY_LEFT  0x4B
@@ -13,7 +14,10 @@
 #define MAX_MENU_CHAR 20
 
 extern void textcolor(int);
-extern int poker(int);
+extern int poker();
+extern int pokersingle(int, int);
+extern int poker_server(int);
+extern void poker_client(int*);
 void gotoxy(int, int);
 int pullDownMenu(int,char[][MAX_MENU_CHAR]);
 int sel = 0;
@@ -24,6 +28,7 @@ int main(void) {
 	char mainmenulist[MAIN_MENU][MAX_MENU_CHAR] = { "싱글플레이","멀티플레이","종료" };
 	char singlemenulist[SINGLE_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
 	char multimenulist[MULTI_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","잔액조회","이전" };
+	char multimenu_pokerlist[MULTI_SEL_MENU][MAX_MENU_CHAR] = { "게임 생성","게임 참가","이전" };
 	do {
 		menu = pullDownMenu(MAIN_MENU, mainmenulist);
 		switch (menu)
@@ -38,7 +43,7 @@ int main(void) {
 					scanf_s("%d", &insertmoney);
 					system("cls");
 					money -= insertmoney;
-					money += poker(insertmoney);
+					money += pokersingle(insertmoney,poker());
 					_getch();
 					system("cls");
 					break;
@@ -87,9 +92,28 @@ int main(void) {
 				switch (menu)
 				{
 				case 0:
-					printf("준비중입니다.\n");
-					_getch();
-					system("cls");
+					sel = 0;
+					do
+					{
+						menu = pullDownMenu(MULTI_SEL_MENU, multimenu_pokerlist);
+						switch (menu)
+						{
+						case 0:
+							printf("판돈을 입력하세요: ");
+							scanf_s("%d", &insertmoney);
+							system("cls");
+							money -= insertmoney;
+							printf("사용자의 접속을 기다리는 중...\n이전으로 가려면 q를 입력하세요.\n");
+							money += poker_server(insertmoney);
+							break;
+						case 1:
+							poker_client(&money);
+							break;
+						case 2:
+							break;
+						}
+					} while (menu != 2);
+					sel = 0;
 					break;
 				case 1:
 					printf("준비중입니다.\n");

@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <time.h>
 
+
 void textcolor(int color_number)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color_number);
@@ -16,9 +17,11 @@ void cardPrint(struct pokerStruct* card);
 void bubbleSort(struct pokerStruct* card);
 int checkCard(struct pokerStruct* card);
 int card_select(int cardlist[]);
+int pokersingle(int, int);
 
-int poker(int money) {
+int poker() {
 	srand(time(NULL));
+	int handtype;
 	int cardlist[52] = {
 	0,1,2,3,4,5,6,7,8,9,10,11,12,	// CLOVER
 	13,14,15,16,17,18,19,20,21,22,23,24,25,	// DIAMOND
@@ -80,7 +83,45 @@ int poker(int money) {
 	printf("YOUR SCORE: %d\n", score); */
 	bubbleSort(card); // 내림차순 정렬
 
-	int handtype = checkCard(card);
+	handtype = checkCard(card);
+	return handtype;
+}
+void pokermulti(int handtype) {
+	switch (handtype)
+	{
+	case 2:
+		printf("One Pair\n");
+		return;
+	case 3:
+		printf("Two Pair\n");
+		return;
+	case 4:
+		printf("Three Of A Kind\n");
+		return;
+	case 5:
+		printf("Straight\n");
+		return;
+	case 6:
+		printf("Flush\n");
+		return;
+	case 7:
+		printf("Full House\n");
+		return;
+	case 8:
+		printf("Four Of A kind\n");
+		return;
+	case 9:
+		printf("Straight Flush\n");
+		return;
+	case 10:
+		printf("Royal Straight Flush\n");
+		return;
+	default:
+		printf("High Card\n");
+		return;
+	}
+}
+int pokersingle(int money,int handtype) {
 	switch (handtype)
 	{
 	case 2:
@@ -114,7 +155,6 @@ int poker(int money) {
 		printf("High Card\n돈을 잃었다...\n");
 		return 0;
 	}
-
 }
 
 void cardPrint(struct pokerStruct* card) { // 포커 패 출력
