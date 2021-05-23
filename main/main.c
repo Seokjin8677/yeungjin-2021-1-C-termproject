@@ -13,6 +13,8 @@
 
 extern void textcolor(int);
 extern int poker(int);
+extern int blackjack(int);
+
 void gotoxy(int, int);
 int pullDownMenu();
 int sel = 0;
@@ -43,6 +45,7 @@ int main(void) {
 					break;
 				case 1:
 					printf("준비중입니다.\n");
+					money += blackjack(100);
 					_getch();
 					system("cls");
 					break;

@@ -21,7 +21,7 @@
     <ClCompile Include="poker.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="test.c">
+    <ClCompile Include="blackjack.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
