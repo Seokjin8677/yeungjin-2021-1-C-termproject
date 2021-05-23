@@ -38,10 +38,10 @@ int poker_server(int money) {
 
 	int szClntAddr;
 	int strLen;
-	char joinMessage[2];
 	char serverScoreMessage[20];
 	char clientScoreMessage[20];
 	char resultMessage[20];
+	char joinMessage[5];
 	char moneys[20];
 	int winlose;
 	int serverScore, clientScore;
@@ -100,7 +100,7 @@ int poker_server(int money) {
 	sprintf(moneys, "%d", money);
 	send(hClntSock, moneys, (int)strlen(moneys), 0); // 클라이언트에게 돈 회수
 
-	/*strLen = recv(hClntSock, joinMessage, sizeof(joinMessage) - 1, 0); // 클라이언트가 참가할건지 대기
+	strLen = recv(hClntSock, joinMessage, sizeof(joinMessage) - 1, 0); // 클라이언트가 참가할건지 대기
 	if (strLen == -1) {
 		printf("read() error!");
 		_getch();
@@ -109,15 +109,15 @@ int poker_server(int money) {
 	}
 	joinMessage[strLen] = '\0';
 
-	if (joinMessage[0] == 'q' || joinMessage[0] == 'Q') {
+	if (strcmp(joinMessage, "exit") == 0) {
 		printf("상대방이 판돈을 보고 참가를 거부했습니다. 아무키나 누르면 이전 메뉴로 돌아갑니다.\n");
 		closesocket(hClntSock);
 		WSACleanup();
 		_getch();
 		system("cls");
 		return money;
-	} */
-
+	} 
+	system("cls");
 	serverScore = poker(); // 서버 먼저 게임 진행
 	printf("사용자: ");
 	pokermulti(serverScore);
@@ -170,8 +170,6 @@ void poker_client(int *money) {
 	WSADATA wsaData;
 	SOCKET hSocket;
 	SOCKADDR_IN servAddr;
-
-	char joinMessage[2];
 	char serverScoreMessage[20];
 	char clientScoreMessage[20];
 	char resultMessage[20];
@@ -180,13 +178,9 @@ void poker_client(int *money) {
 	int insertmoney = 0;
 	int result;
 	char ipadd[15];
-	char ch2;
+	char ch;
 	int serverScore, clientScore;
-	/*if (argc != 3)
-	{
-		printf("Usage : %s <IP> <port>\n", argv[0]);
-		exit(1);
-	}*/
+	
 	printf("접속할 서버에 아이피를 입력하세요(취소하려면 -1 입력): ");
 	scanf("%s", ipadd);
 	rewind(stdin);
@@ -230,20 +224,27 @@ void poker_client(int *money) {
 	}
 	moneys[strLen] = '\0';
 	insertmoney = atoi(moneys);
-	/*system("cls");
-	printf("게임의 판돈은 %d원 입니다. 게임을 나가려면 q를 입력하세요.\n", insertmoney); // 판돈을 보고 게임에 참가할지 결정
 
-	joinMessage[0] = _getch();
-	send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
+	system("cls");
+	printf("게임의 판돈은 %d원 입니다. 진행하려면 아무키나 누르거나\n 게임을 나가려면 q를 입력하세요.\n", insertmoney); // 판돈을 보고 게임에 참가할지 결정
 
-	if (joinMessage[0] == 'Q' || joinMessage[0] == 'q') {
+	ch = _getch();
+	
+
+	if (ch == 'Q' || ch == 'q') {
+		char joinMessage[] = "exit";
 		printf("게임을 취소했습니다. 계속하려면 아무키나 누르세요.\n");
+		send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
 		closesocket(hSocket);
 		WSACleanup();
 		_getch();
 		system("cls");
 		return;
-	}*/
+	}
+	else {
+		char joinMessage[] = "go";
+		send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
+	}
 	
 	*money -= insertmoney; // 서버가 설정한 판돈 내기
 	system("cls");
