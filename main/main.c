@@ -44,8 +44,7 @@ int main(void) {
 					system("cls");
 					break;
 				case 1:
-					printf("준비중입니다.\n");
-					money += blackjack(100);
+					money += blackjack(80000);
 					_getch();
 					system("cls");
 					break;
