@@ -19,6 +19,13 @@ extern int pokersingle(int, int);
 extern int poker_server(int);
 extern void poker_client(int*);
 void gotoxy(int, int);
+void CursorView() // 커서 숨기는 함수
+{
+	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
+	cursorInfo.dwSize = 1; //커서 굵기 (1 ~ 100)
+	cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+}
 int pullDownMenu(int,char[][MAX_MENU_CHAR]);
 int sel = 0;
 int main(void) {
@@ -29,6 +36,7 @@ int main(void) {
 	char singlemenulist[SINGLE_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
 	char multimenulist[MULTI_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","잔액조회","이전" };
 	char multimenu_pokerlist[MULTI_SEL_MENU][MAX_MENU_CHAR] = { "게임 생성","게임 참가","이전" };
+	CursorView(); // 커서 숨기기
 	do {
 		menu = pullDownMenu(MAIN_MENU, mainmenulist);
 		switch (menu)
