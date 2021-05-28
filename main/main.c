@@ -174,6 +174,7 @@ int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
 			sel = ((sel - max_menu / 2) + max_menu) % max_menu;
 		else if (ch == KEY_RETURN)
 			break;
+		Sleep(1);
 	}
 	system("cls");
 	return sel;

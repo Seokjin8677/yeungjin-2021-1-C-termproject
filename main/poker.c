@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <Windows.h>
 #include <time.h>
+#define KEY_LEFT  0x4B
+#define KEY_RIGHT 0x4D
+#define KEY_RETURN 0x0D
 
-
+extern gotoxy(int, int);
 void textcolor(int color_number)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color_number);
@@ -18,10 +21,12 @@ void bubbleSort(struct pokerStruct* card);
 int checkCard(struct pokerStruct* card);
 int card_select(int cardlist[]);
 int pokersingle(int, int);
-
+void card_print2(int , int);
+void pullDownMenu_poker(int*);
 int poker() {
 	srand(time(NULL));
 	int handtype;
+	int selcard2[5] = { 0 };
 	int cardlist[52] = {
 	0,1,2,3,4,5,6,7,8,9,10,11,12,	// CLOVER
 	13,14,15,16,17,18,19,20,21,22,23,24,25,	// DIAMOND
@@ -32,7 +37,7 @@ int poker() {
 	struct pokerStruct card[5]; // 5장 카드 구조체 생성
 
 	int tempcard;
-	int selects, selects_temp;
+	int selects=0, selects_temp;
 
 	for (int i = 0; i < 5; i++) // 카드 5장 고르기
 	{
@@ -40,10 +45,12 @@ int poker() {
 		card[i].rank = tempcard % 13;
 		card[i].suit = tempcard / 13;
 	}
-
+	gotoxy(80, 3); printf("<-,->: 화살표 이동");
+	gotoxy(80, 4); printf("Space: 카드선택");
+	gotoxy(80, 5); printf("Enter: 선택확정");
 	cardPrint(card);
 
-	do // 바꿀 카드 선택
+	/*do // 바꿀 카드 선택
 	{
 		printf("바꿀 카드를 선택: ");
 		scanf_s("%d", &selects);
@@ -57,8 +64,14 @@ int poker() {
 			}
 			selects_temp /= 10;
 		}
-	} while (selects_temp != 0);
+	} while (selects_temp != 0);*/
 
+	pullDownMenu_poker(selcard2);
+
+	for (int i = 0; i < 5; i++)
+	{
+		selects += *(selcard2 + i);
+	}
 	while (selects != 0) // 원하는 카드 바꾸기
 	{
 		selects_temp = selects;
@@ -70,7 +83,7 @@ int poker() {
 		card[selects_temp % 10 - 1].suit = tempcard / 13;
 
 	}
-
+	system("cls");
 	cardPrint(card);
 	/* int score = 0; 1:1 경기 시 같은 패가 나왔을때 승부를 위한 점수
 	for (int i = 0; i < 5; i++)
@@ -160,48 +173,61 @@ int pokersingle(int money,int handtype) {
 void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 	for (int i = 0; i < 5; i++)
 	{
+		int temp = card[i].suit;
+		gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ ");
+		for (int j = 2; j < 9; j++)
+		{
+			gotoxy(3 + i * 15, j); printf("┃       ┃ ");
+		}
+		gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ ");
+		if(temp == 2 || temp == 3)
+			textcolor(12);
+		else
+			textcolor(15);
 		switch (card[i].suit)
 		{
 		case 0:
-			textcolor(15);
-			printf("♣");
+			gotoxy(7 + i * 15, 5); printf("♣");
 			break;
 		case 1:
-			textcolor(12);
-			printf("♥");
+			gotoxy(7 + i * 15, 5); printf("♥");
 			break;
 		case 2:
-			textcolor(12);
-			printf("◆");
+			gotoxy(7 + i * 15, 5); printf("◆");
 			break;
 		case 3:
-			textcolor(15);
-			printf("♠");
+			gotoxy(7 + i * 15, 5); printf("♠");
 			break;
 		default:
 			break;
 		}
-		textcolor(15);
 		switch (card[i].rank)
 		{
 		case 9:
-			printf("Jack ");
+			gotoxy(5 + i * 15, 2); printf("J");
+			gotoxy(10 + i * 15, 8); printf("J");
 			break;
 		case 10:
-			printf("Queen ");
+			gotoxy(5 + i * 15, 2); printf("Q");
+			gotoxy(10 + i * 15, 8); printf("Q");
 			break;
 		case 11:
-			printf("King ");
+			gotoxy(5 + i * 15, 2); printf("K");
+			gotoxy(10 + i * 15, 8); printf("K");
 			break;
 		case 12:
-			printf("ACE ");
+			gotoxy(5 + i * 15, 2); printf("A");
+			gotoxy(10 + i * 15, 8); printf("A");
 			break;
 		default:
-			printf("%d ", card[i].rank % 13 + 2);
+			gotoxy(5 + i * 15, 2); printf("%d", card[i].rank % 13 + 2);
+			gotoxy(9 + i * 15, 8); printf("%2d", card[i].rank % 13 + 2);
 			break;
 		}
+		textcolor(15);
 	}
-	printf("\n");
+	
+	printf("\n\n");
 }
 
 int checkCard(struct pokerStruct* card) { // 포커의 패 확인
@@ -298,4 +324,84 @@ void bubbleSort(struct pokerStruct* card) { // 내림차순 정렬
 			}
 		}
 	}
+}
+void card_print2(int i, int sel) {
+	if (sel != 0)
+		textcolor(12);
+	else
+		textcolor(15);
+	gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ ");
+	for (int j = 2; j < 9; j++)
+	{
+		gotoxy(3 + i * 15, j); printf("┃");
+		gotoxy(11 + i * 15, j); printf("┃");
+	}
+	gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ ");
+
+	textcolor(15);
+}
+void pullDownMenu_poker(int* selcard2)
+{
+	char ch;
+	int sel = 0;
+	int temp = 0;
+
+	gotoxy(7 + sel * 15, 11); printf("♠");
+	while (1) {
+		ch = _getch();
+		if (ch == KEY_LEFT)
+			sel = ((sel - 1) + 5) % 5;
+		else if (ch == KEY_RIGHT)
+			sel = (sel + 1) % 5;
+		else if (ch == 32) {
+			switch (sel)
+			{
+			case 0:
+				if (selcard2[sel] == 0)
+					selcard2[sel] = 10000;
+				else
+					selcard2[sel] = 0;
+				card_print2(sel, selcard2[sel]);
+				break;
+			case 1:
+				if (selcard2[sel] == 0)
+					selcard2[sel] = 2000;
+				else
+					selcard2[sel] = 0;
+				card_print2(sel, selcard2[sel]);
+				break;
+			case 2:
+				if (selcard2[sel] == 0)
+					selcard2[sel] = 300;
+				else
+					selcard2[sel] = 0;
+				card_print2(sel, selcard2[sel]);
+				break;
+			case 3:
+				if (selcard2[sel] == 0)
+					selcard2[sel] = 40;
+				else
+					selcard2[sel] = 0;
+				card_print2(sel, selcard2[sel]);
+				break;
+			case 4:
+				if (selcard2[sel] == 0)
+					selcard2[sel] = 5;
+				else
+					selcard2[sel] = 0;
+				card_print2(sel, selcard2[sel]);
+				break;
+			default:
+				break;
+			}
+		}
+		else if (ch == KEY_RETURN)
+			break;
+		gotoxy(7 + temp * 15, 11); printf("  ");
+		gotoxy(7 + sel * 15, 11); printf("♠");
+		temp = sel;
+		Sleep(1);
+	}
+	system("cls");
+	return 0;
 }
