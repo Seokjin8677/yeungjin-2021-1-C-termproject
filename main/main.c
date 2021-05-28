@@ -55,7 +55,7 @@ int main(void) {
 					system("cls");
 					money -= insertmoney;
 					money += pokersingle(insertmoney,poker());
-					_getch();
+					system("pause");
 					system("cls");
 					break;
 				case 1:
@@ -143,8 +143,7 @@ int main(void) {
 			sel = 1; // 메인 메뉴로 갈시 멀티플레이 메뉴 선택되게
 			break;
 		case 2:
-			PlaySound(TEXT("poweroff.wav"), NULL, SND_ASYNC);
-			Sleep(1000);
+			PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_SYNC);
 			break;
 		}
 	} while (menu != 2);
@@ -178,23 +177,23 @@ int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
 		textcolor(15);
 		ch = _getch();
 		if (ch == KEY_LEFT) {
-			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - 1) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_RIGHT) {
-			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = (sel + 1) % max_menu;
 		}
 		else if (ch == KEY_UP && max_menu % 2 == 0) {
-			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel + max_menu / 2) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_DOWN && max_menu % 2 == 0) {
-			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - max_menu / 2) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_RETURN) {
-			PlaySound(TEXT("button.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 			break;
 		}
 		Sleep(1);
