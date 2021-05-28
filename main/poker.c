@@ -26,7 +26,7 @@ void pullDownMenu_poker(int*);
 int poker() {
 	srand(time(NULL));
 	int handtype;
-	int selcard2[5] = { 0 };
+	int selcard2[5] = { 0 }; // 카드를 바꾸기 위한 배열
 	int cardlist[52] = {
 	0,1,2,3,4,5,6,7,8,9,10,11,12,	// CLOVER
 	13,14,15,16,17,18,19,20,21,22,23,24,25,	// DIAMOND
@@ -45,7 +45,7 @@ int poker() {
 		card[i].rank = tempcard % 13;
 		card[i].suit = tempcard / 13;
 	}
-	gotoxy(80, 3); printf("<-,->: 화살표 이동");
+	gotoxy(80, 3); printf("<-,->: 화살표 이동"); // 오른쪽 상단에 설명 출력
 	gotoxy(80, 4); printf("Space: 카드선택");
 	gotoxy(80, 5); printf("Enter: 선택확정");
 	cardPrint(card);
@@ -66,7 +66,7 @@ int poker() {
 		}
 	} while (selects_temp != 0);*/
 
-	pullDownMenu_poker(selcard2);
+	pullDownMenu_poker(selcard2); // 포커 카드를 키보드로 선택하게 하는 메뉴 출력
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -94,7 +94,7 @@ int poker() {
 			score += 2 + card[i].rank * (card[i].suit + 1);
 	}
 	printf("YOUR SCORE: %d\n", score); */
-	bubbleSort(card); // 내림차순 정렬
+	bubbleSort(card); // 포커패 확인을 위한 내림차순 정렬
 
 	handtype = checkCard(card);
 	return handtype;
@@ -174,17 +174,17 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 	for (int i = 0; i < 5; i++)
 	{
 		int temp = card[i].suit;
-		gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ ");
+		gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ "); // 카드 모양 출력
 		for (int j = 2; j < 9; j++)
 		{
-			gotoxy(3 + i * 15, j); printf("┃       ┃ ");
+			gotoxy(3 + i * 15, j); printf("┃       ┃ "); // 카드 모양 출력
 		}
-		gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ ");
+		gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ "); // 카드 모양 출력
 		if(temp == 2 || temp == 3)
 			textcolor(12);
 		else
 			textcolor(15);
-		switch (card[i].suit)
+		switch (card[i].suit) // 카드 문양 출력
 		{
 		case 0:
 			gotoxy(7 + i * 15, 5); printf("♣");
@@ -201,7 +201,7 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 		default:
 			break;
 		}
-		switch (card[i].rank)
+		switch (card[i].rank) // 카드 숫자 출력
 		{
 		case 9:
 			gotoxy(5 + i * 15, 2); printf("J");
@@ -325,7 +325,7 @@ void bubbleSort(struct pokerStruct* card) { // 내림차순 정렬
 		}
 	}
 }
-void card_print2(int i, int sel) {
+void card_print2(int i, int sel) { // 카드를 선택하면 빨간색, 이미 선택된 카드는 다시 흰색으로
 	if (sel != 0)
 		textcolor(12);
 	else
@@ -340,20 +340,20 @@ void card_print2(int i, int sel) {
 
 	textcolor(15);
 }
-void pullDownMenu_poker(int* selcard2)
+void pullDownMenu_poker(int* selcard2) // 카드를 키보드로 선택하게 하는 함수
 {
 	char ch;
 	int sel = 0;
 	int temp = 0;
 
-	gotoxy(7 + sel * 15, 11); printf("♠");
+	gotoxy(7 + sel * 15, 11); printf("♠"); // 선택 메뉴 출력 및 초기화
 	while (1) {
 		ch = _getch();
 		if (ch == KEY_LEFT)
 			sel = ((sel - 1) + 5) % 5;
 		else if (ch == KEY_RIGHT)
 			sel = (sel + 1) % 5;
-		else if (ch == 32) {
+		else if (ch == 32) { // 스페이스바 입력
 			switch (sel)
 			{
 			case 0:
@@ -395,12 +395,12 @@ void pullDownMenu_poker(int* selcard2)
 				break;
 			}
 		}
-		else if (ch == KEY_RETURN)
+		else if (ch == KEY_RETURN) // 엔터 누르면 끝
 			break;
-		gotoxy(7 + temp * 15, 11); printf("  ");
+		gotoxy(7 + temp * 15, 11); printf("  "); // 이전 화살표 지우기
 		gotoxy(7 + sel * 15, 11); printf("♠");
-		temp = sel;
-		Sleep(1);
+		temp = sel; // 이전 화살표를 위한 temp 설정
+		Sleep(1); // 최적화를 위한 Sleep(1)
 	}
 	system("cls");
 	return 0;
