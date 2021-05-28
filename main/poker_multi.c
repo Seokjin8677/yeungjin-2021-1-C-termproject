@@ -226,7 +226,7 @@ void poker_client(int *money) {
 	insertmoney = atoi(moneys);
 
 	system("cls");
-	printf("게임의 판돈은 %d원 입니다.\n 진행하려면 아무키나 누르거나, 게임을 나가려면 q를 입력하세요.\n", insertmoney); // 판돈을 보고 게임에 참가할지 결정
+	printf("게임의 판돈은 %d원 입니다.\n진행하려면 아무키나 누르거나, 게임을 나가려면 q를 입력하세요.\n", insertmoney); // 판돈을 보고 게임에 참가할지 결정
 
 	ch = _getch();
 	
@@ -258,7 +258,7 @@ void poker_client(int *money) {
 		return;
 	}
 	serverScoreMessage[strLen] = '\0';
-
+	system("cls");
 	serverScore = atoi(serverScoreMessage); // 서버 스코어 저장
 	clientScore = poker(); // 클라이언트 포커 진행
 	printf("사용자: ");
