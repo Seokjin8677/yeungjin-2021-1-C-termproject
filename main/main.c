@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <Windows.h>
 #include <conio.h>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 
 #define MAIN_MENU 3
 #define SINGLE_MENU 8
@@ -37,6 +39,7 @@ int main(void) {
 	char multimenulist[MULTI_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","잔액조회","이전" };
 	char multimenu_pokerlist[MULTI_SEL_MENU][MAX_MENU_CHAR] = { "게임 생성","게임 참가","이전" };
 	CursorView(); // 커서 숨기기
+	
 	do {
 		menu = pullDownMenu(MAIN_MENU, mainmenulist);
 		switch (menu)
@@ -140,6 +143,8 @@ int main(void) {
 			sel = 1; // 메인 메뉴로 갈시 멀티플레이 메뉴 선택되게
 			break;
 		case 2:
+			PlaySound(TEXT("poweroff.wav"), NULL, SND_ASYNC);
+			Sleep(1000);
 			break;
 		}
 	} while (menu != 2);
@@ -172,16 +177,26 @@ int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
 		}
 		textcolor(15);
 		ch = _getch();
-		if (ch == KEY_LEFT)
+		if (ch == KEY_LEFT) {
+			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - 1) + max_menu) % max_menu;
-		else if (ch == KEY_RIGHT)
+		}
+		else if (ch == KEY_RIGHT) {
+			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
 			sel = (sel + 1) % max_menu;
-		else if (ch == KEY_UP && max_menu % 2 == 0)
+		}
+		else if (ch == KEY_UP && max_menu % 2 == 0) {
+			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel + max_menu / 2) + max_menu) % max_menu;
-		else if (ch == KEY_DOWN && max_menu % 2 == 0)
+		}
+		else if (ch == KEY_DOWN && max_menu % 2 == 0) {
+			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - max_menu / 2) + max_menu) % max_menu;
-		else if (ch == KEY_RETURN)
+		}
+		else if (ch == KEY_RETURN) {
+			PlaySound(TEXT("button.wav"), NULL, SND_ASYNC);
 			break;
+		}
 		Sleep(1);
 	}
 	system("cls");

@@ -45,7 +45,7 @@ int poker_server(int money) {
 	char moneys[20];
 	int winlose;
 	int serverScore, clientScore;
-
+	PlaySound(TEXT("button.wav"), NULL, SND_ASYNC);
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 		printf("WSAStartup() error!");
 		_getch();
@@ -95,6 +95,7 @@ int poker_server(int money) {
 	}
 	
 	system("cls");
+	PlaySound(TEXT("scanning.wav"), NULL, SND_ASYNC);
 	printf("상대방이 접속했습니다. 상대방이 판돈을 보고 입장할지 결정 중 입니다.\n");
 
 	sprintf(moneys, "%d", money);
@@ -139,14 +140,17 @@ int poker_server(int money) {
 	pokermulti(clientScore);
 
 	if (serverScore > clientScore) {
+		PlaySound(TEXT("win.wav"), NULL, SND_ASYNC);
 		printf("당신의 승리!!\n%d원을 벌었다!\n", money * 2);
 		winlose = 0;
 	}
 	else if (serverScore == clientScore) {
+		PlaySound(TEXT("draw.wav"), NULL, SND_ASYNC);
 		printf("무승부!\n아무 소득도 없었다...");
 		winlose = 1;
 	}
 	else {
+		PlaySound(TEXT("lose.wav"), NULL, SND_ASYNC);
 		printf("당신의 패배 ㅠㅠ\n");
 		winlose = 2;
 	}
@@ -248,7 +252,7 @@ void poker_client(int *money) {
 	
 	*money -= insertmoney; // 서버가 설정한 판돈 내기
 	system("cls");
-	printf("서버가 포커를 끝낼때까지 기다리는 중 입니다.\n");
+	printf("상대방이 포커를 끝낼때까지 기다리는 중 입니다.\n");
 
 	strLen = recv(hSocket, serverScoreMessage, sizeof(serverScoreMessage) - 1, 0); // 서버가 포커 끝날때까지 대기
 	if (strLen == -1) {
@@ -285,13 +289,16 @@ void poker_client(int *money) {
 	switch (result)
 	{
 	case 0:
+		PlaySound(TEXT("lose.wav"), NULL, SND_ASYNC);
 		printf("당신의 패배 ㅠㅠ\n");
 		break;
 	case 1:
+		PlaySound(TEXT("draw.wav"), NULL, SND_ASYNC);
 		printf("무승부!\n아무 소득도 없었다...");
 		*money += insertmoney;
 		break;
 	case 2:
+		PlaySound(TEXT("win.wav"), NULL, SND_ASYNC);
 		printf("당신의 승리!!\n%d원을 벌었다!\n", insertmoney*2);
 		*money += insertmoney * 2;
 		break;

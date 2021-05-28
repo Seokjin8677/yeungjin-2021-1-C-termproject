@@ -135,6 +135,7 @@ void pokermulti(int handtype) {
 	}
 }
 int pokersingle(int money,int handtype) {
+	PlaySound(TEXT("coin.wav"), NULL, SND_ASYNC);
 	switch (handtype)
 	{
 	case 2:
@@ -173,6 +174,7 @@ int pokersingle(int money,int handtype) {
 void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 	for (int i = 0; i < 5; i++)
 	{
+		PlaySound(TEXT("paper.wav"), NULL, SND_ASYNC);
 		int temp = card[i].suit;
 		gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ "); // 카드 모양 출력
 		for (int j = 2; j < 9; j++)
@@ -224,6 +226,7 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 			gotoxy(9 + i * 15, 8); printf("%2d", card[i].rank % 13 + 2);
 			break;
 		}
+		Sleep(500);
 		textcolor(15);
 	}
 	
@@ -326,6 +329,7 @@ void bubbleSort(struct pokerStruct* card) { // 내림차순 정렬
 	}
 }
 void card_print2(int i, int sel) { // 카드를 선택하면 빨간색, 이미 선택된 카드는 다시 흰색으로
+	PlaySound(TEXT("button.wav"), NULL, SND_ASYNC);
 	if (sel != 0)
 		textcolor(12);
 	else
@@ -349,10 +353,14 @@ void pullDownMenu_poker(int* selcard2) // 카드를 키보드로 선택하게 하는 함수
 	gotoxy(7 + sel * 15, 11); printf("♠"); // 선택 메뉴 출력 및 초기화
 	while (1) {
 		ch = _getch();
-		if (ch == KEY_LEFT)
+		if (ch == KEY_LEFT) {
+			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - 1) + 5) % 5;
-		else if (ch == KEY_RIGHT)
+		}
+		else if (ch == KEY_RIGHT) {
+			PlaySound(TEXT("button2.wav"), NULL, SND_ASYNC);
 			sel = (sel + 1) % 5;
+		}
 		else if (ch == 32) { // 스페이스바 입력
 			switch (sel)
 			{
