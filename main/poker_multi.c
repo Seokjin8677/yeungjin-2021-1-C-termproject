@@ -88,8 +88,8 @@ int poker_server(int money) {
 	server_flag = 1;
 
 	if (hClntSock == INVALID_SOCKET) {
-		printf("accept() error");
-		_getch();
+		//printf("accept() error");
+		//_getch();
 		system("cls");
 		return money;
 	}
@@ -214,8 +214,9 @@ void poker_client(int *money) {
 	servAddr.sin_port = htons(8678);
 
 	if (connect(hSocket, (SOCKADDR*)&servAddr, sizeof(servAddr)) == SOCKET_ERROR) {
-		printf("connect() error!");
-		_getch();
+		PlaySound(TEXT("sound\\scanning.wav"), NULL, SND_ASYNC);
+		printf("접속 실패!\n");
+		system("pause");
 		system("cls");
 		return;
 	}
