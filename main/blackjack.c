@@ -49,7 +49,7 @@ int blackjack(int money) {
 	shuffle(card_deck, DECK);
 
 	printArray(card_deck, DECK); //셔플된 카드덱 출력(확인용, 주석처리가능)
-	printf("\n");// ..
+	printf("\n");//
 	
 
 	//카드지급 테스트
@@ -120,7 +120,7 @@ int blackjack(int money) {
 
 		card_table(dealerCard, dealer_index, playerCard, player_index);
 
-		//2장뽑았을때 21이 나오면 blackjack(배팅머니 1.5배)
+		//2장뽑았을때 21이 나오면 blackjack(배팅머니 2배)
 		if (card_dsum(dealerCard, dealer_index)==21) { //딜러가 21일때
 		
 			printf("black Jack\n");
