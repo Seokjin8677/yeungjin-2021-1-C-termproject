@@ -1,10 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <Windows.h>
-#include <time.h>
-#define KEY_LEFT  0x4B
-#define KEY_RIGHT 0x4D
-#define KEY_RETURN 0x0D
+#include "modm.h"
+
+
+
 
 extern void gotoxy(int, int);
 void textcolor(int color_number)

@@ -1,26 +1,15 @@
-#include <stdio.h>
-#include <Windows.h>
-#include <conio.h>
-#include <mmsystem.h>
-#pragma comment(lib, "winmm.lib")
+#include "modm.h"
 
-#define MAIN_MENU 3
-#define SINGLE_MENU 8
-#define MULTI_MENU 4
-#define MULTI_SEL_MENU 3
-#define KEY_UP  0x48
-#define KEY_DOWN 0x50
-#define KEY_LEFT  0x4B
-#define KEY_RIGHT 0x4D
-#define KEY_RETURN 0x0D
-#define MAX_MENU_CHAR 20
 
 extern void textcolor(int);
 extern int poker();
 extern int pokersingle(int, int);
 extern int poker_server(int);
 extern void poker_client(int*);
+
+
 void gotoxy(int, int);
+
 void CursorView() // 커서 숨기는 함수
 {
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
@@ -209,3 +198,6 @@ void gotoxy(int x, int y)
 	Pos.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); //프로토타입의 값대로 위치이동
 }
+
+
+

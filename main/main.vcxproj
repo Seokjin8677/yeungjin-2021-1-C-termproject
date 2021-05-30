@@ -141,9 +141,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="image.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="poker.c" />
     <ClCompile Include="poker_multi.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="modm.h" />
+    <ClInclude Include="ImageLayer.h" />
+    <ClInclude Include="ImageLayerImpl.h" />
+    <ClInclude Include="ImageLayerInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="헤더 파일\imageLayer">
+      <UniqueIdentifier>{053799a0-a5b3-45e1-a654-a05094075cc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -24,5 +27,22 @@
     <ClCompile Include="poker_multi.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="image.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImageLayer.h">
+      <Filter>헤더 파일\imageLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLayerImpl.h">
+      <Filter>헤더 파일\imageLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLayerInterface.h">
+      <Filter>헤더 파일\imageLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="modm.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
