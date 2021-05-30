@@ -135,7 +135,7 @@ int blackjack(int money) {
 
 		int flag = 0;
 
-		//Stay or Hit
+		//Stay(Stand) or Hit
 		while (1) { //플레이어가 stay or -1 잘못입력했을때 반복문 종료. -1 이 나오면 Stay.
 			
 			int temp = 0; //선택값을 담기위한 tmep 변수
@@ -390,6 +390,38 @@ void printArray(int arr[], int size) { //가지고 있는 카드배열을 출력하는 함수 , 
 
 
 }
+
+void dealerCardArray(int arr[], int size) { //딜러 카드배열
+	int count = 0;
+
+
+	for (int i = 0; i < size; i++) {
+		if (i == 0) {
+			printf("[?]");
+		}
+		if (arr[i] < 14) {
+			printf("♠%d ", arr[i]);
+		}
+		else if (arr[i] < 114) {
+			printf("◆%d ", arr[i] - 100);
+		}
+		else if (arr[i] < 214) {
+			printf("♥%d ", arr[i] - 200);
+
+		}
+		else {
+			printf("♣%d ", arr[i] - 300);
+		}
+		count++;
+		if (count % 13 == 0)
+			printf("\n");
+	}
+
+	printf("\n");
+
+
+}
+
 void makingCard(int card_deck[]) { //카드덱을 만드는 함수
 
 	int index = 0;
