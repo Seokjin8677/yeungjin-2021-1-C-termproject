@@ -52,12 +52,43 @@ int blackjack(int money) {
 	int bating_money; //배팅머니
 
 
-
 	while (1) {
 		
 		player_index = 0; //게임시작시 딜러와 플레이어 카드배열 인덱스 초기화.
 		dealer_index = 0;
 		bating_money = 0; //배팅머니 초기화
+		
+		while (1)
+		{
+
+			printf("1.게임시작\n"); 
+			printf("2.도움말\n");
+			printf("3.뒤로가기\n");
+			int temp;
+			scanf_s("%d", &temp);
+			if (temp<0||temp>4) {
+				system("cls");
+				continue;
+			}
+			else if (temp == 1) {
+				system("cls");
+				break;
+			}
+			else if (temp == 2) {
+				system("cls");
+				printf("(대충 블랙잭 설명하는 내용)\n");
+				printf("(뒤로가러면 아무키 입력)\n");
+				_getch();
+				system("cls");
+				continue;
+			}
+			else
+			{
+				system("cls");
+				return money;
+			}
+		}
+		
 
 		printf("배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n",game_money); //배팅머니 입력받기
 		
@@ -80,6 +111,7 @@ int blackjack(int money) {
 			shuffle(card_deck, DECK);
 		}
 		*/
+
 		//Start
 		printf("카드를 두장씩 가집니다(아무키나 입력).\n"); 
 		_getch();
