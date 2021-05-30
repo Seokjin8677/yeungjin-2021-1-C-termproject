@@ -34,40 +34,30 @@ struct pokerStruct // 구조체로 바꾸면 코드량이 줄것같음
 */
 
 int blackjack(int money) {
-
-	
+		
 	//Card_deck 52장
 
 	int card_deck[52]; //카드를 담을 배열
 	
-	makingCard(card_deck);
+	makingCard(card_deck); //없어도 되긴함
 	
 	//printArray(card_deck, DECK); //카드배열 출력
 
-	shuffle(card_deck, DECK);
+	shuffle(card_deck, DECK);  //카드셔플
 
-	printf("\n");//
-	
+	int player_index = 0;//플레이어 카드배열 인덱스값
+	int dealer_index = 0;////딜러 카드배열 인덱스값
 
-	//카드지급 테스트
-
-	int player_index = 0; //get함수에서 같이 처리할지 생각
-	int dealer_index = 0;
+	int game_money = money;  //보유머니
+	int bating_money; //배팅머니
 
 
-	int game_money = money; //매개변수로 입력받는 금액
-	int bating_money; 
-	/*
-	게임머니 / 배팅머니 / 
-	
-	*/
 
 	while (1) {
 		
-		
 		player_index = 0; //게임시작시 딜러와 플레이어 카드배열 인덱스 초기화.
 		dealer_index = 0;
-		bating_money = 0; 
+		bating_money = 0; //배팅머니 초기화
 
 		printf("배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n",game_money); //배팅머니 입력받기
 		
@@ -83,13 +73,14 @@ int blackjack(int money) {
 		system("cls");
 
 		//Start
+
 		/*
 		if (count > 46) { //카드를 전부사용했을시
 			count = -1;
 			shuffle(card_deck, DECK);
 		}
 		*/
-
+		//Start
 		printf("카드를 두장씩 가집니다(아무키나 입력).\n"); 
 		_getch();
 		system("cls");
@@ -136,12 +127,13 @@ int blackjack(int money) {
 			continue;
 		}
 
-		int flag = 0;
+		int flag = 0; //bust 또는 surrender 확인 flag 
+
 
 		//Stay(Stand) or Hit
 
 		while (1) { //플레이어가 stay or -1 잘못입력했을때 반복문 종료. -1 이 나오면 Stay.
-			card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+			card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money); //현재 게임정보
 
 
 			int temp = 0; //선택값을 담기위한 tmep 변수
@@ -150,7 +142,7 @@ int blackjack(int money) {
 			
 			system("cls");
 
-			if (temp == 1||temp==-1) {
+			if (temp == 1||temp==-1) {//1또는 잘못입력시 
 				
 				card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
 				printf("Stay\n");
@@ -159,9 +151,18 @@ int blackjack(int money) {
 				break;
 
 			}
+			else if (temp==3) {
+				card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+				printf("Surrender\n");
+				_getch();
+				system("cls");
+				flag = 2;//21이 넘으면 Bust 체크를 위해 flag 변수에 1대입
+				break;
+
+			}
 			else{   //Hit 선택시 21 이 넘으면 Bust
 				
-				get_playingCard(card_deck, playerCard,player_index);
+				get_playingCard(card_deck, playerCard,player_index); //Hit시 카드한장을 더 배열에 추기한다.
 				player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.
 
 				
@@ -192,6 +193,13 @@ int blackjack(int money) {
 			printf("Bust (player)\n");
 			_getch();
 			system("cls");
+			continue;
+		}
+		else if (flag == 2) {//Surrender 확인
+			printf("Surrender\n");
+			_getch();
+			system("cls");
+			game_money += bating_money * 0.5; //배팅금의 0.5배만 차감
 			continue;
 		}
 
@@ -251,7 +259,7 @@ int blackjack(int money) {
 	return 0;
 
 }
-void card_table(int *dealerCard, int dealer_index, int *playerCard, int player_index,int money, int batMoney) { //딜러카드 배열 과 플레이어 카드배열 출력
+void card_table(int *dealerCard, int dealer_index, int *playerCard, int player_index,int money, int batMoney) { //딜러카드 배열 과 플레이어 카드배열 출력(현재 게임정보)
 
 	printf("딜러카드 : ");
 	printDealerCardArray(dealerCard, dealer_index);
@@ -263,21 +271,28 @@ void card_table(int *dealerCard, int dealer_index, int *playerCard, int player_i
 	printf("\n");
 
 }
-int choice( ) { //배팅후 카드2장씩을 받으면 다음행동을 정한다.
+int choice( ) { //배팅후 다음행동을 정한다. 
 
 	int temp;
-	printf("1.Stay 2.Hit\n");
+	printf("1.Stay 2.Hit 3.Surrender 4.DoubleDown\n");
 	scanf_s("%d", &temp);
 
-	if (!(temp == 1 || temp == 2)) {
+	if (temp == 1) {
+		return 1;
+	}
+	else if (temp == 2) {
+		return 2;
+	}
+	else if (temp == 3) {
+		return 3;
+	}
+	else if (temp == 4) {
+		return 4;
+	}
+	else{
 		return -1; //오류방어
 
 	}
-	else if (temp == 1) {
-		return 1;
-	}
-	else
-		return 2;
 
 }
 
@@ -294,7 +309,7 @@ int card_sum(int* cardlist, int size) {//카드배열의 합을 구하는 함수, 합이 21보�
 
 
 	for (int i = 0; i < size; i++) {
-		temp = (cardlist[i] % 13) +1;
+		temp = (cardlist[i] % 13) + 1;
 		if (temp == 1) {
 			sum += 11;
 			count_ace++;
@@ -304,64 +319,18 @@ int card_sum(int* cardlist, int size) {//카드배열의 합을 구하는 함수, 합이 21보�
 		}
 		else
 			sum += temp;
-	
+
 	}
 	if (sum > 21) {
 		for (int i = 0; i < count_ace; i++) {
 			if (sum <= 21) {
 				break;
 			}
-			else 
+			else
 				sum -= 10;
 
-		}	
+		}
 	}	return sum;
-
-}
-
-int change_jqk(int value) { //배열의 카드가  J Q K 인지 확인하고 10으로 바꿔주는 함수
-	return value < 11 ? value : 10;
-
-}
-int change_ace(int* arr_sum, int sum, int size) { //배열의합이 21을 초과할때 A(1)을 1로 게산하는 함수
-	//카드 배열의 값을 내림차순 후 더한다.
-
-	
-	for (int i = 0; i < size; i++) {
-		if (arr_sum[i] == 1) {
-			sum -= 10;
-		}
-	}	
-	return sum;
-}
-
-
-
-
-void printArray(int arr[], int size) { //가지고 있는 카드배열을 출력하는 함수 , J, Q , K 도 표현하기
-	int count = 0;
-	for (int i = 0; i <size; i++) {
-		if (arr[i] < 14) {
-			printf("♠%d ", arr[i]);
-		}
-		else if (arr[i] < 114) {
-			printf("◆%d ", arr[i]-100);
-		}
-		else if (arr[i] < 214) {
-			printf("♥%d ", arr[i] - 200);
-
-		}
-		else {
-			printf("♣%d ", arr[i] - 300);
-		}
-		count++;
-		if (count % 13 == 0)
-			printf("\n");
-	}
-
-	printf("\n");
-
-
 }
 
 void printPlayerCardArray(int *arr, int size) { //가지고 있는 카드배열을 출력하는 함수 , J, Q , K 도 표현하기
@@ -462,11 +431,11 @@ void printDealerCardArray(int *arr, int size) { //딜러 카드배열 , 1장은 안보이게
 	int temp = 0;
 	int suite = 0; //문양
 	for (int i = 0; i < size; i++) {
-		temp = (arr[i] % 13) + 1;
-		suite = temp / 13;
+		temp = (arr[i] % 13) + 1; //13으로 나눈값의 나머지
+		suite = temp / 13; //13으로 나눈값
 		
 		/*
-		if (i == 0) { //1번째카드는 보여주지않는다.
+		if (i == 0) { //1번째카드는 보여주지않는다. (승패가 결정되면 무시)  
 			printf("[?] ");
 		}
 
