@@ -1,4 +1,6 @@
 #include "modm.h"
+#include "ImageLayer.h"
+
 
 
 extern void textcolor(int);
@@ -9,14 +11,10 @@ extern void poker_client(int*);
 
 
 void gotoxy(int, int);
+void init();
+void start_game();
 
-void CursorView() // 커서 숨기는 함수
-{
-	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
-	cursorInfo.dwSize = 1; //커서 굵기 (1 ~ 100)
-	cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
-	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
-}
+
 int pullDownMenu(int,char[][MAX_MENU_CHAR]);
 int sel = 0;
 int main(void) {
@@ -27,7 +25,12 @@ int main(void) {
 	char singlemenulist[SINGLE_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
 	char multimenulist[MULTI_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","잔액조회","이전" };
 	char multimenu_pokerlist[MULTI_SEL_MENU][MAX_MENU_CHAR] = { "게임 생성","게임 참가","이전" };
-	CursorView(); // 커서 숨기기
+	
+
+	
+	init(); //콘솔화면 초기화
+	start_game();
+
 	
 	do {
 		menu = pullDownMenu(MAIN_MENU, mainmenulist);
@@ -199,5 +202,43 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); //프로토타입의 값대로 위치이동
 }
 
+//콘솔 화면 초기화
+void init() 
+{
+	system("mode con cols=100 lines=40 | title 영진카지노");		//콘솔 해상도 설정, 제목 설정
 
+	//↓↓ 커서 숨기는 함수
+	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
+	cursorInfo.dwSize = 1; //커서 굵기 (1 ~ 100)
+	cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+}
 
+void start_game()
+{
+	while (1)
+	{
+		if (_kbhit())		// 특정키가 눌리면..
+		{
+			if (_getch() == 'z')			//눌린키가 z이면 스탑.
+				break;
+		}
+
+		Sleep(500);
+
+		ImageLayer imageLayer = DEFAULT_IMAGE_LAYER;
+		imageLayer.initialize(&imageLayer); //초기화
+
+		Image images[3] = {
+			{"1.bmp", 0, 0, 2}//{이미지 이름, 시작 x좌표, 시작 y좌표, 크기 배율(쓰지 않으면 기본값인 16이 들어감)} 
+		}; //배열의 첫 원소가 가장 아래 그려진다.
+
+		imageLayer.imageCount = 3; //images 배열의 크기보다 작거나 같아야 한다.
+		imageLayer.images = images;
+
+		imageLayer.renderAll(&imageLayer);
+
+		//무한반복에서 하려는 작업
+	}
+
+}
