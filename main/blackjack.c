@@ -50,7 +50,37 @@ int blackjack(int money) {
 
 	int game_money = money;  //보유머니
 	int bating_money; //배팅머니
+	
+	while (1)
+	{
 
+		printf("1.게임시작\n");
+		printf("2.도움말\n");
+		printf("3.뒤로가기\n");
+		int temp;
+		scanf_s("%d", &temp);
+		if (temp < 0 || temp>4) {
+			system("cls");
+			continue;
+		}
+		else if (temp == 1) {
+			system("cls");
+			break;
+		}
+		else if (temp == 2) {
+			system("cls");
+			printf("(대충 블랙잭 설명하는 내용)\n");
+			printf("(뒤로가려면 아무키 입력)\n");
+			_getch();
+			system("cls");
+			continue;
+		}
+		else
+		{
+			system("cls");
+			return money;
+		}
+	}
 
 	while (1) {
 		
@@ -58,36 +88,7 @@ int blackjack(int money) {
 		dealer_index = 0;
 		bating_money = 0; //배팅머니 초기화
 		
-		while (1)
-		{
 
-			printf("1.게임시작\n"); 
-			printf("2.도움말\n");
-			printf("3.뒤로가기\n");
-			int temp;
-			scanf_s("%d", &temp);
-			if (temp<0||temp>4) {
-				system("cls");
-				continue;
-			}
-			else if (temp == 1) {
-				system("cls");
-				break;
-			}
-			else if (temp == 2) {
-				system("cls");
-				printf("(대충 블랙잭 설명하는 내용)\n");
-				printf("(뒤로가러면 아무키 입력)\n");
-				_getch();
-				system("cls");
-				continue;
-			}
-			else
-			{
-				system("cls");
-				return money;
-			}
-		}
 		
 
 		printf("배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n",game_money); //배팅머니 입력받기
@@ -192,12 +193,43 @@ int blackjack(int money) {
 				break;
 
 			}
+			else if (temp==4) { //DoubleDown 
+			//한장 드로우 후 반복문 종료
+				card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+				
+				int temp_money;
+				
+				printf("추가 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", game_money); //추가 배팅머니 입력받기
+
+				scanf_s("%d", &temp_money);
+
+				if (temp_money < 1000) { //추가 배팅머니은 최소 1000원
+					continue;
+				}
+				else {
+					bating_money += temp_money; //기존 배팅머니에 추가입력된 배팅머니를 더해준다.
+					game_money -= temp_money; //게임머니에서 배팅머니를 빼준다.
+					system("cls");
+				}
+
+				get_playingCard(card_deck, playerCard, player_index); //Hit시 카드한장을 더 배열에 추기한다.
+				player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.
+				
+				card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+				printf("DoubleDown\n");
+				_getch();
+				system("cls");
+
+				if (card_sum(playerCard, player_index) > 21) { //21이 넘으면 Bust
+					flag = 1;//21이 넘으면 Bust 체크를 위해 flag 변수에 1대입	
+				}
+				break;
+
+			}
 			else{   //Hit 선택시 21 이 넘으면 Bust
 				
 				get_playingCard(card_deck, playerCard,player_index); //Hit시 카드한장을 더 배열에 추기한다.
-				player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.
-
-				
+				player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.	
 				card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
 				printf("Hit\n");
 				_getch();
@@ -221,6 +253,7 @@ int blackjack(int money) {
 		_getch();
 		system("cls");
 
+
 		if (flag == 1) { //Bust 확인
 			printf("Bust (player)\n");
 			_getch();
@@ -234,6 +267,7 @@ int blackjack(int money) {
 			game_money += bating_money * 0.5; //배팅금의 0.5배만 차감
 			continue;
 		}
+
 
 		//Stay 시에
 		//
