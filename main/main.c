@@ -28,16 +28,16 @@ void CursorView() // 커서 숨기는 함수
 	cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
-int pullDownMenu(int,char[][MAX_MENU_CHAR]);
+int pullDownMenu(int,char**); // 메모리 절약을 위한 래그드 배열 사용
 int sel = 0;
 int main(void) {
 	int menu;
 	int money = 10000;
 	int insertmoney;
-	char mainmenulist[MAIN_MENU][MAX_MENU_CHAR] = { "싱글플레이","멀티플레이","종료" };
-	char singlemenulist[SINGLE_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
-	char multimenulist[MULTI_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","잔액조회","이전" };
-	char multimenu_pokerlist[MULTI_SEL_MENU][MAX_MENU_CHAR] = { "게임 생성","게임 참가","이전" };
+	char *mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
+	char *singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
+	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","잔액조회","이전" };
+	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
 	CursorView(); // 커서 숨기기
 	
 	do {
@@ -150,7 +150,7 @@ int main(void) {
 	return 0;
 }
 
-int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
+int pullDownMenu(int max_menu, char** menulist)
 {
 	char ch;
 	while (1) {
