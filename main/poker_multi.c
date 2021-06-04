@@ -250,7 +250,6 @@ void poker_client(int *money) {
 		return;
 	}
 	if(moneyCheck(*money, insertmoney)==0) {
-		PlaySound(TEXT("sound\\scanning.wav"), NULL, SND_ASYNC);
 		char joinMessage[] = "exit";
 		send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
 		closesocket(hSocket);

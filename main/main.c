@@ -217,12 +217,14 @@ void gotoxy(int x, int y)
 
 int moneyCheck(int money, int insertmoney) {
 	if (insertmoney > money) {
+		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("가지고 있는 돈이 적습니다...\n");
 		system("pause");
 		system("cls");
 		return 0;
 	}
 	if (insertmoney < 0) {
+		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("1원 이상 넣어주세요!\n");
 		system("pause");
 		system("cls");
