@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
+
 #define LOGIN_SIZE 20
 #define MAIN_MENU 3
 #define SINGLE_MENU 8
@@ -36,23 +37,52 @@ void CursorView() // 커서 숨기는 함수
 int pullDownMenu(int,char**); // 메모리 절약을 위한 래그드 배열 사용
 int sel = 0;
 int startadd; // 돈 불러오기 위한 위치값 저장
-USER get_record()
+
+int id_check(FILE* fp, char* id) {
+	USER data;
+	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
+	while (!feof(fp)) {		// 파일의 끝까지 반복한다
+		fread(&data, sizeof(data), 1, fp);
+		if (strcmp(data.id, id) == 0) {	// 이름을 비교한다
+			return 1;
+		}
+	}
+	return 0;
+}
+USER get_record(FILE *fp)
 {
 	USER data;
 	fflush(stdin);		// 표준 입력의 버퍼를 비운다
-	printf("아이디: "); gets_s(data.id, LOGIN_SIZE);	// 이름을 입력받는다
-	printf("비밀번호: ");	gets_s(data.password, LOGIN_SIZE);	// 주소를 입력받는다
+	do {
+		printf("아이디: ");
+		gets_s(data.id, LOGIN_SIZE);	// 이름을 입력받는다
+		printf("비밀번호: ");
+		gets_s(data.password, LOGIN_SIZE);	// 주소를 입력받는다
+		if ((strcmp(data.id, "") == 0 )||(strcmp(data.password, "") == 0)) {
+			printf("공백을 입력할 수 없습니다.\n");
+			system("pause");
+			system("cls");
+			continue;
+		}
+		break;
+	} while (1);
 	data.userMoney = 10000;
 	return data;
 }
+
 void add_record(FILE* fp)
 {
 	USER data;
-	data = get_record();	// 사용자로부터 데이터를 받아서 구조체에 저장
+	data = get_record(fp);	// 사용자로부터 데이터를 받아서 구조체에 저장
+	if (id_check(fp, data.id)) {
+		printf("중복된 아이디 입니다!\n");
+		system("pause");
+		return;
+	}
 	fseek(fp, 0, SEEK_END);	// 파일의 끝으로 간다	
 	fwrite(&data, sizeof(data), 1, fp);	// 구조체 데이터를 파일에 쓴다
 }
-int search_record(FILE* fp, int* money)
+int login_record(FILE* fp, int* money)
 {
 	char id[LOGIN_SIZE];
 	char password[LOGIN_SIZE];
@@ -70,7 +100,7 @@ int search_record(FILE* fp, int* money)
 			//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
 			*money = data.userMoney;
 			startadd = ftell(fp)-4;
-			printf("로그인 성공!\n");
+			//printf("로그인 성공!\n");
 			return 0;
 			/*if ((strcmp(data.password, password) == 0)) {
 				return 0;
@@ -89,7 +119,7 @@ void update_record(FILE* fp,int *money)
 	//printf("%d\n", data.userMoney);
 	//fopen_s(&fp, "user.dat", "wb");
 	fopen_s(fp, "user.dat", "r+t");
-	printf("%d", startadd);
+	//printf("%d", startadd);
 	fseek(fp, startadd, SEEK_SET);
 	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
 	fwrite(money,sizeof(int),1,fp);
@@ -110,7 +140,7 @@ int main(void) {
 	int loginStatus = 0;
 	// 이진 파일을 추가 모드로 오픈한다. 
 	if (fopen_s(&fp,"user.dat", "a+")) {
-		printf(stderr, "입력을 위한 파일을 열 수 없습니다");
+		//printf(stderr, "입력을 위한 파일을 열 수 없습니다");
 		exit(1);
 	}
 	do {
@@ -120,12 +150,11 @@ int main(void) {
 		case 0:
 			printf("계정 로그인");
 			system("cls");
-			if (search_record(fp,&money)) {
+			if (login_record(fp,&money)) {
 				system("pause");
 				system("cls");
 				break;
 			}
-			system("pause");
 			system("cls");
 			loginStatus = 1;
 			fclose(fp);
