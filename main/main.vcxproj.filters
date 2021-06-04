@@ -16,6 +16,9 @@
     <Filter Include="헤더 파일\imageLayer">
       <UniqueIdentifier>{053799a0-a5b3-45e1-a654-a05094075cc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\img">
+      <UniqueIdentifier>{ecc22478-544a-4a86-a8b1-0dd180122e67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -27,8 +30,8 @@
     <ClCompile Include="poker_multi.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="image.c">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="start_screen.c">
+      <Filter>소스 파일\img</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,5 +47,10 @@
     <ClInclude Include="modm.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="1.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

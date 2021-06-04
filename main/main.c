@@ -1,5 +1,5 @@
 #include "modm.h"
-#include "ImageLayer.h"
+
 
 
 
@@ -17,6 +17,8 @@ void start_game();
 
 int pullDownMenu(int,char[][MAX_MENU_CHAR]);
 int sel = 0;
+
+
 int main(void) {
 	int menu;
 	int money = 10000;
@@ -25,12 +27,10 @@ int main(void) {
 	char singlemenulist[SINGLE_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
 	char multimenulist[MULTI_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","잔액조회","이전" };
 	char multimenu_pokerlist[MULTI_SEL_MENU][MAX_MENU_CHAR] = { "게임 생성","게임 참가","이전" };
-	
 
-	
-	init(); //콘솔화면 초기화
+	init();
 	start_game();
-
+	
 	
 	do {
 		menu = pullDownMenu(MAIN_MENU, mainmenulist);
@@ -218,27 +218,18 @@ void start_game()
 {
 	while (1)
 	{
-		if (_kbhit())		// 특정키가 눌리면..
+		if (_kbhit())
 		{
-			if (_getch() == 'z')			//눌린키가 z이면 스탑.
+			if (_getch() == KEY_RETURN)
 				break;
 		}
+		//  ↓↓무한반복에서 하려는 작업↓↓
 
-		Sleep(500);
+		start();
 
-		ImageLayer imageLayer = DEFAULT_IMAGE_LAYER;
-		imageLayer.initialize(&imageLayer); //초기화
-
-		Image images[3] = {
-			{"1.bmp", 0, 0, 2}//{이미지 이름, 시작 x좌표, 시작 y좌표, 크기 배율(쓰지 않으면 기본값인 16이 들어감)} 
-		}; //배열의 첫 원소가 가장 아래 그려진다.
-
-		imageLayer.imageCount = 3; //images 배열의 크기보다 작거나 같아야 한다.
-		imageLayer.images = images;
-
-		imageLayer.renderAll(&imageLayer);
-
-		//무한반복에서 하려는 작업
 	}
-
+	system("cls");
 }
+
+
+

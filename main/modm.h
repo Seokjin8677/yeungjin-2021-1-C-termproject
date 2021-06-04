@@ -51,7 +51,6 @@
 
 
 
-
 // 키보드 값  
 #ifndef KEY_CODE
 #define KEY_CODE
@@ -76,3 +75,5 @@
 
 #endif
 
+
+void start();

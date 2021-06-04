@@ -3,6 +3,8 @@
 
 
 
+
+
 extern void gotoxy(int, int);
 void textcolor(int color_number)
 {
@@ -330,7 +332,7 @@ void card_print2(int i, int sel) { // 카드를 선택하면 빨간색, 이미 선택된 카드는
 		textcolor(12);
 	else
 		textcolor(15);
-	gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ ");
+	gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ "); 
 	for (int j = 2; j < 9; j++)
 	{
 		gotoxy(3 + i * 15, j); printf("┃");
@@ -409,3 +411,4 @@ void pullDownMenu_poker(int* selcard2) // 카드를 키보드로 선택하게 하는 함수
 	system("cls");
 	return 0;
 }
+
