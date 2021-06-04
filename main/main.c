@@ -14,6 +14,7 @@
 
 extern void textcolor(int);
 extern int poker(int);
+extern int horse(int);
 void gotoxy(int, int);
 int pullDownMenu(int,char[][MAX_MENU_CHAR]);
 int sel = 0;
@@ -58,10 +59,15 @@ int main(void) {
 					system("cls");
 					break;
 				case 4:
-					printf("준비중입니다.\n");
+					printf("판돈을 입력하세요: ");
+					scanf_s("%d", &insertmoney);
+					system("cls");
+					money -= insertmoney;
+					money += horse(insertmoney);
 					_getch();
 					system("cls");
 					break;
+					
 				case 5:
 					printf("잔액: %d\n", money);
 					_getch();
