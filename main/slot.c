@@ -359,8 +359,11 @@ void game_control(char reel[][3], int reel_num[][3], int money)
         num[i] = reel_num[1][i]; //가운데만 보기때문에
 
     }
-
-    thank = return_money(num, money);
+    for (i = 0; i < 3; i++) {
+        printf("%d ", reel_num[1][i]);
+    }
+    //num[i] = reel_num[0][i];
+    thank = return_money(reel_num, money);
     printf("\t 상금: %d", thank);
 
 }
@@ -373,80 +376,13 @@ void game_control(char reel[][3], int reel_num[][3], int money)
 
 */
 
-int return_money(int r[], int money)
+int return_money(int r[][3], int money)
 
 {
-    if (r[0] == r[1] && r[1] == r[2] && r[0] == r[2]) //문양이 세개 동일할경우(★, ♠, ◆)
-
+    if (r[1][0] == r[1][1] || r[1][1] == r[1][2] || r[1][0] == r[1][2]) //문양이 세개 동일할경우(★, ♠, ◆)
     {
-
-        if (r[0] == 0)
-
-        {
-            printf("\t돈을 얻었다");
-            return money * 2;
-        }
-
-        else if (r[0] == 1)
-
-        {
-            printf("\t돈을 얻었다");
-            return money * 2;
-        }
-
-        else if (r[0] == 2)
-
-        {
-            printf("\t돈을 얻었다");
-            return money * 2;
-        }
-
+        printf("\t돈을 얻었다");  return money*2;
     }
-
-    //그 외 두개가 동일할 경우
-    /*
-    else if ((r[0] == 0 && r[1] == 0) || (r[1] == 0 && r[2] == 0) || (r[0] == 0 && r[2] == 0))
-
-    {
-        printf("lose money");
-        return money * 2;
-    }
-
-    else if ((r[0] == 1 && r[1] == 1) || (r[1] == 1 && r[2] == 1) || (r[0] == 1 && r[2] == 1))
-
-    {
-        printf("lose money");
-        return money * 2;
-    }
-
-    else if ((r[0] == 2 && r[1] == 2) || (r[1] == 2 && r[2] == 2) || (r[0] == 2 && r[2] == 2))
-
-    {
-        printf("lose money");
-        return money * 2;
-    }
-
-    else if ((r[0] == 3 && r[1] == 3) || (r[1] == 3 || r[2] == 3) || (r[0] == 3 && r[2] == 3))
-
-    {
-        printf("lose money");
-        return money * 2;
-    }
-
-    else if ((r[0] == 4 && r[1] == 4) || (r[1] == 4 && r[2] == 4) || (r[0] == 4 && r[2] == 4))
-
-    {
-        printf("lose money");
-        return money * 2;
-    }
-
-    else if ((r[0] == 5 && r[1] == 5) || (r[1] == 5 && r[2] == 5) || (r[0] == 5 && r[2] == 5))
-
-    {
-        printf("lose money");
-        return money * 2;
-    }
-    */
     else //당첨 사례가 없을 경우
         printf("\t돈을 읽었다");  return 0;
 
