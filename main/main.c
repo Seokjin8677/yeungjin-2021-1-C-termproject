@@ -21,6 +21,7 @@ extern int pokersingle(int, int);
 extern int poker_server(int);
 extern void poker_client(int*);
 void gotoxy(int, int);
+int moneyCheck(int, int);
 void CursorView() // 커서 숨기는 함수
 {
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
@@ -52,11 +53,13 @@ int main(void) {
 				case 0:
 					printf("판돈을 입력하세요: ");
 					scanf_s("%d", &insertmoney);
-					system("cls");
-					money -= insertmoney;
-					money += pokersingle(insertmoney,poker());
-					system("pause");
-					system("cls");
+					if (moneyCheck(money,insertmoney)) {
+						system("cls");
+						money -= insertmoney;
+						money += pokersingle(insertmoney, poker());
+						system("pause");
+						system("cls");
+					}
 					break;
 				case 1:
 					printf("준비중입니다.\n");
@@ -112,10 +115,12 @@ int main(void) {
 						case 0:
 							printf("판돈을 입력하세요: ");
 							scanf_s("%d", &insertmoney);
-							system("cls");
-							money -= insertmoney;
-							printf("사용자의 접속을 기다리는 중...\n이전으로 가려면 q를 입력하세요.\n");
-							money += poker_server(insertmoney);
+							if (moneyCheck(money, insertmoney)) {
+								system("cls");
+								money -= insertmoney;
+								printf("사용자의 접속을 기다리는 중...\n이전으로 가려면 q를 입력하세요.\n");
+								money += poker_server(insertmoney);
+							}
 							break;
 						case 1:
 							poker_client(&money);
@@ -208,4 +213,20 @@ void gotoxy(int x, int y)
 	Pos.X = x;
 	Pos.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); //프로토타입의 값대로 위치이동
+}
+
+int moneyCheck(int money, int insertmoney) {
+	if (insertmoney > money) {
+		printf("가지고 있는 돈이 적습니다...\n");
+		system("pause");
+		system("cls");
+		return 0;
+	}
+	if (insertmoney < 0) {
+		printf("1원 이상 넣어주세요!\n");
+		system("pause");
+		system("cls");
+		return 0;
+	}
+	return 1;
 }

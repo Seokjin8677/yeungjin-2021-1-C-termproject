@@ -8,6 +8,7 @@
 
 extern int poker();
 extern void pokermulti(int);
+extern int moneyCheck(int, int);
 int server_flag = 0;
 void ErrorHandling(char* message);
 void serverExit(int hServSock)
@@ -111,10 +112,11 @@ int poker_server(int money) {
 	joinMessage[strLen] = '\0';
 
 	if (strcmp(joinMessage, "exit") == 0) {
-		printf("상대방이 판돈을 보고 참가를 거부했습니다.\n아무키나 누르면 이전 메뉴로 돌아갑니다.\n");
+		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		printf("상대방이 판돈을 보고 참가를 거부했습니다.\n");
 		closesocket(hClntSock);
 		WSACleanup();
-		_getch();
+		system("pause");
 		system("cls");
 		return money;
 	} 
@@ -238,18 +240,25 @@ void poker_client(int *money) {
 
 	if (ch == 'Q' || ch == 'q') {
 		char joinMessage[] = "exit";
-		printf("게임을 취소했습니다. 계속하려면 아무키나 누르세요.\n");
+		PlaySound(TEXT("sound\\scanning.wav"), NULL, SND_ASYNC);
+		printf("게임을 취소했습니다.\n");
 		send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
 		closesocket(hSocket);
 		WSACleanup();
-		_getch();
+		system("pause");
 		system("cls");
 		return;
 	}
-	else {
-		char joinMessage[] = "go";
+	if(moneyCheck(*money, insertmoney)==0) {
+		PlaySound(TEXT("sound\\scanning.wav"), NULL, SND_ASYNC);
+		char joinMessage[] = "exit";
 		send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
+		closesocket(hSocket);
+		WSACleanup();
+		return;
 	}
+	char joinMessage[] = "go";
+	send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
 	
 	*money -= insertmoney; // 서버가 설정한 판돈 내기
 	system("cls");
