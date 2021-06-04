@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
-
+#define LOGIN_SIZE 20
 #define MAIN_MENU 3
 #define SINGLE_MENU 8
 #define MULTI_MENU 4
@@ -14,7 +14,11 @@
 #define KEY_RIGHT 0x4D
 #define KEY_RETURN 0x0D
 #define MAX_MENU_CHAR 20
-
+typedef struct user {
+	char id[LOGIN_SIZE];		// 아이디
+	char password[LOGIN_SIZE];	// 비밀번호
+	int userMoney;
+} USER;
 extern void textcolor(int);
 extern int poker();
 extern int pokersingle(int, int);
@@ -31,16 +35,113 @@ void CursorView() // 커서 숨기는 함수
 }
 int pullDownMenu(int,char**); // 메모리 절약을 위한 래그드 배열 사용
 int sel = 0;
+int startadd; // 돈 불러오기 위한 위치값 저장
+USER get_record()
+{
+	USER data;
+	fflush(stdin);		// 표준 입력의 버퍼를 비운다
+	printf("아이디: "); gets_s(data.id, LOGIN_SIZE);	// 이름을 입력받는다
+	printf("비밀번호: ");	gets_s(data.password, LOGIN_SIZE);	// 주소를 입력받는다
+	data.userMoney = 10000;
+	return data;
+}
+void add_record(FILE* fp)
+{
+	USER data;
+	data = get_record();	// 사용자로부터 데이터를 받아서 구조체에 저장
+	fseek(fp, 0, SEEK_END);	// 파일의 끝으로 간다	
+	fwrite(&data, sizeof(data), 1, fp);	// 구조체 데이터를 파일에 쓴다
+}
+int search_record(FILE* fp, int* money)
+{
+	char id[LOGIN_SIZE];
+	char password[LOGIN_SIZE];
+	USER data;
+	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
+	fflush(stdin);
+	printf("아이디: ");
+	gets_s(id, LOGIN_SIZE);		// 이름을 입력받는다
+	fflush(stdin);
+	printf("비밀번호: ");
+	gets_s(password, LOGIN_SIZE);
+	while (!feof(fp)) {		// 파일의 끝까지 반복한다
+		fread(&data, sizeof(data), 1, fp);
+		if ((strcmp(data.id, id) == 0)&& (strcmp(data.password, password) == 0)) {	// 이름을 비교한다
+			//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+			*money = data.userMoney;
+			startadd = ftell(fp)-4;
+			printf("로그인 성공!\n");
+			return 0;
+			/*if ((strcmp(data.password, password) == 0)) {
+				return 0;
+			}*/
+		}
+	}
+	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+	printf("해당되는 계정이 없거나 비밀번호가 맞지 않습니다.\n");
+	return 1;
+}
+void update_record(FILE* fp,int *money)
+{
+	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+	//USER data;
+	//data.userMoney = *money;
+	//printf("%d\n", data.userMoney);
+	//fopen_s(&fp, "user.dat", "wb");
+	fopen_s(fp, "user.dat", "r+t");
+	printf("%d", startadd);
+	fseek(fp, startadd, SEEK_SET);
+	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+	fwrite(money,sizeof(int),1,fp);
+	fclose(fp);
+}
 int main(void) {
 	int menu;
-	int money = 10000;
+	int money = 0;
 	int insertmoney;
+	char *loginmenulist[MAIN_MENU] = {"로그인","계정생성","종료"};
 	char *mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
 	char *singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
 	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","잔액조회","이전" };
 	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
 	CursorView(); // 커서 숨기기
-	
+	FILE* fp = NULL;
+	int select;
+	int loginStatus = 0;
+	// 이진 파일을 추가 모드로 오픈한다. 
+	if (fopen_s(&fp,"user.dat", "a+")) {
+		printf(stderr, "입력을 위한 파일을 열 수 없습니다");
+		exit(1);
+	}
+	do {
+		menu = pullDownMenu(MAIN_MENU, loginmenulist);
+		switch (menu)
+		{
+		case 0:
+			printf("계정 로그인");
+			system("cls");
+			if (search_record(fp,&money)) {
+				system("pause");
+				system("cls");
+				break;
+			}
+			system("pause");
+			system("cls");
+			loginStatus = 1;
+			fclose(fp);
+			break;
+		case 1:
+			printf("계정 생성");
+			system("cls");
+			add_record(fp);
+			break;
+		case 2:
+			fclose(fp);
+			PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_SYNC);
+			return 0;
+		}
+		system("cls");
+	} while (loginStatus != 1);
 	do {
 		menu = pullDownMenu(MAIN_MENU, mainmenulist);
 		switch (menu)
@@ -60,9 +161,10 @@ int main(void) {
 						system("pause");
 						system("cls");
 					}
+					update_record(fp, &money);
 					break;
 				case 1:
-					printf("준비중입니다.\n");
+					//printf("준비중입니다.\n");
 					_getch();
 					system("cls");
 					break;
@@ -88,6 +190,7 @@ int main(void) {
 					break;
 				case 6:
 					money += 1000;
+					update_record(fp, &money);
 					printf("1000원을 벌었습니다.\n");
 					_getch();
 					system("cls");
@@ -121,9 +224,11 @@ int main(void) {
 								printf("사용자의 접속을 기다리는 중...\n이전으로 가려면 q를 입력하세요.\n");
 								money += poker_server(insertmoney);
 							}
+							update_record(fp, &money);
 							break;
 						case 1:
 							poker_client(&money);
+							update_record(fp, &money);
 							break;
 						case 2:
 							break;
@@ -148,10 +253,10 @@ int main(void) {
 			sel = 1; // 메인 메뉴로 갈시 멀티플레이 메뉴 선택되게
 			break;
 		case 2:
-			PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_SYNC);
 			break;
 		}
 	} while (menu != 2);
+	PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_SYNC);
 	return 0;
 }
 
