@@ -27,6 +27,7 @@ extern int poker_server(int);
 extern void poker_client(int*);
 void gotoxy(int, int);
 int moneyCheck(int, int);
+void quit_message();
 void CursorView() // 커서 숨기는 함수
 {
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
@@ -84,7 +85,8 @@ int main(void) {
 			break;
 		case 2:
 			fclose(fp);
-			PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_SYNC);
+			PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_ASYNC);
+			quit_message();
 			return 0;
 		}
 		system("cls");
@@ -203,7 +205,8 @@ int main(void) {
 			break;
 		}
 	} while (menu != 2);
-	PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_SYNC);
+	PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_ASYNC);
+	quit_message();
 	return 0;
 }
 
@@ -317,6 +320,7 @@ int login_record(FILE* fp, int* money)
 			//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
 			*money = data.userMoney;
 			startadd = ftell(fp) - 4;
+			PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 			//printf("로그인 성공!\n");
 			return 0;
 			/*if ((strcmp(data.password, password) == 0)) {
@@ -325,6 +329,7 @@ int login_record(FILE* fp, int* money)
 		}
 	}
 	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+	PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 	printf("해당되는 계정이 없거나 비밀번호가 맞지 않습니다.\n");
 	return 1;
 }
@@ -333,6 +338,7 @@ void add_record(FILE* fp)
 	USER data;
 	data = get_record(fp);	// 사용자로부터 데이터를 받아서 구조체에 저장
 	if (id_check(fp, data.id)) {
+		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("중복된 아이디 입니다!\n");
 		system("pause");
 		return;
@@ -348,9 +354,11 @@ USER get_record(FILE* fp)
 	do {
 		printf("아이디: ");
 		gets_s(data.id, LOGIN_SIZE);	// 이름을 입력받는다
+		PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 		printf("비밀번호: ");
 		gets_s(data.password, LOGIN_SIZE);	// 주소를 입력받는다
 		if ((strcmp(data.id, "") == 0) || (strcmp(data.password, "") == 0)) {
+			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("공백을 입력할 수 없습니다.\n");
 			system("pause");
 			system("cls");
@@ -358,6 +366,7 @@ USER get_record(FILE* fp)
 		}
 		break;
 	} while (1);
+	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 	data.userMoney = 10000;
 	return data;
 }
@@ -371,4 +380,12 @@ int id_check(FILE* fp, char* id) {
 		}
 	}
 	return 0;
+}
+void quit_message() {
+	printf("종료중입니다.");
+	for (int i = 0; i < 3; i++)
+	{
+		Sleep(300);
+		printf(".");
+	}
 }
