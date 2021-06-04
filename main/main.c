@@ -37,94 +37,12 @@ void CursorView() // 커서 숨기는 함수
 int pullDownMenu(int,char**); // 메모리 절약을 위한 래그드 배열 사용
 int sel = 0;
 int startadd; // 돈 불러오기 위한 위치값 저장
+int id_check(FILE*, char*);
+USER get_record(FILE*);
+void add_record(FILE*);
+int login_record(FILE*, int*);
+void update_money(FILE*, int*);
 
-int id_check(FILE* fp, char* id) {
-	USER data;
-	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
-	while (!feof(fp)) {		// 파일의 끝까지 반복한다
-		fread(&data, sizeof(data), 1, fp);
-		if (strcmp(data.id, id) == 0) {	// 이름을 비교한다
-			return 1;
-		}
-	}
-	return 0;
-}
-USER get_record(FILE *fp)
-{
-	USER data;
-	fflush(stdin);		// 표준 입력의 버퍼를 비운다
-	do {
-		printf("아이디: ");
-		gets_s(data.id, LOGIN_SIZE);	// 이름을 입력받는다
-		printf("비밀번호: ");
-		gets_s(data.password, LOGIN_SIZE);	// 주소를 입력받는다
-		if ((strcmp(data.id, "") == 0 )||(strcmp(data.password, "") == 0)) {
-			printf("공백을 입력할 수 없습니다.\n");
-			system("pause");
-			system("cls");
-			continue;
-		}
-		break;
-	} while (1);
-	data.userMoney = 10000;
-	return data;
-}
-
-void add_record(FILE* fp)
-{
-	USER data;
-	data = get_record(fp);	// 사용자로부터 데이터를 받아서 구조체에 저장
-	if (id_check(fp, data.id)) {
-		printf("중복된 아이디 입니다!\n");
-		system("pause");
-		return;
-	}
-	fseek(fp, 0, SEEK_END);	// 파일의 끝으로 간다	
-	fwrite(&data, sizeof(data), 1, fp);	// 구조체 데이터를 파일에 쓴다
-}
-int login_record(FILE* fp, int* money)
-{
-	char id[LOGIN_SIZE];
-	char password[LOGIN_SIZE];
-	USER data;
-	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
-	fflush(stdin);
-	printf("아이디: ");
-	gets_s(id, LOGIN_SIZE);		// 이름을 입력받는다
-	fflush(stdin);
-	printf("비밀번호: ");
-	gets_s(password, LOGIN_SIZE);
-	while (!feof(fp)) {		// 파일의 끝까지 반복한다
-		fread(&data, sizeof(data), 1, fp);
-		if ((strcmp(data.id, id) == 0)&& (strcmp(data.password, password) == 0)) {	// 이름을 비교한다
-			//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
-			*money = data.userMoney;
-			startadd = ftell(fp)-4;
-			//printf("로그인 성공!\n");
-			return 0;
-			/*if ((strcmp(data.password, password) == 0)) {
-				return 0;
-			}*/
-		}
-	}
-	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
-	printf("해당되는 계정이 없거나 비밀번호가 맞지 않습니다.\n");
-	return 1;
-}
-void update_record(FILE* fp,int *money)
-{
-	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
-	//USER data;
-	//data.userMoney = *money;
-	//printf("%d\n", data.userMoney);
-	//fopen_s(&fp, "user.dat", "wb");
-	fopen_s(fp, "user.dat", "r+t");
-	//printf("%d", startadd);
-	fseek(fp, startadd, SEEK_SET);
-	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
-	fwrite(money,sizeof(int),1,fp);
-	fclose(fp);
-}
 int main(void) {
 	int menu;
 	int money = 0;
@@ -190,7 +108,7 @@ int main(void) {
 						system("pause");
 						system("cls");
 					}
-					update_record(fp, &money);
+					update_money(fp, &money);
 					break;
 				case 1:
 					//printf("준비중입니다.\n");
@@ -219,7 +137,7 @@ int main(void) {
 					break;
 				case 6:
 					money += 1000;
-					update_record(fp, &money);
+					update_money(fp, &money);
 					printf("1000원을 벌었습니다.\n");
 					_getch();
 					system("cls");
@@ -253,11 +171,11 @@ int main(void) {
 								printf("사용자의 접속을 기다리는 중...\n이전으로 가려면 q를 입력하세요.\n");
 								money += poker_server(insertmoney);
 							}
-							update_record(fp, &money);
+							update_money(fp, &money);
 							break;
 						case 1:
 							poker_client(&money);
-							update_record(fp, &money);
+							update_money(fp, &money);
 							break;
 						case 2:
 							break;
@@ -365,4 +283,92 @@ int moneyCheck(int money, int insertmoney) {
 		return 0;
 	}
 	return 1;
+}
+
+void update_money(FILE* fp, int* money)
+{
+	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+	//USER data;
+	//data.userMoney = *money;
+	//printf("%d\n", data.userMoney);
+	//fopen_s(&fp, "user.dat", "wb");
+	fopen_s(fp, "user.dat", "r+t");
+	//printf("%d", startadd);
+	fseek(fp, startadd, SEEK_SET);
+	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+	fwrite(money, sizeof(int), 1, fp);
+	fclose(fp);
+}
+int login_record(FILE* fp, int* money)
+{
+	char id[LOGIN_SIZE];
+	char password[LOGIN_SIZE];
+	USER data;
+	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
+	fflush(stdin);
+	printf("아이디: ");
+	gets_s(id, LOGIN_SIZE);		// 이름을 입력받는다
+	fflush(stdin);
+	printf("비밀번호: ");
+	gets_s(password, LOGIN_SIZE);
+	while (!feof(fp)) {		// 파일의 끝까지 반복한다
+		fread(&data, sizeof(data), 1, fp);
+		if ((strcmp(data.id, id) == 0) && (strcmp(data.password, password) == 0)) {	// 이름을 비교한다
+			//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+			*money = data.userMoney;
+			startadd = ftell(fp) - 4;
+			//printf("로그인 성공!\n");
+			return 0;
+			/*if ((strcmp(data.password, password) == 0)) {
+				return 0;
+			}*/
+		}
+	}
+	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
+	printf("해당되는 계정이 없거나 비밀번호가 맞지 않습니다.\n");
+	return 1;
+}
+void add_record(FILE* fp)
+{
+	USER data;
+	data = get_record(fp);	// 사용자로부터 데이터를 받아서 구조체에 저장
+	if (id_check(fp, data.id)) {
+		printf("중복된 아이디 입니다!\n");
+		system("pause");
+		return;
+	}
+	fseek(fp, 0, SEEK_END);	// 파일의 끝으로 간다	
+	fwrite(&data, sizeof(data), 1, fp);	// 구조체 데이터를 파일에 쓴다
+}
+
+USER get_record(FILE* fp)
+{
+	USER data;
+	fflush(stdin);		// 표준 입력의 버퍼를 비운다
+	do {
+		printf("아이디: ");
+		gets_s(data.id, LOGIN_SIZE);	// 이름을 입력받는다
+		printf("비밀번호: ");
+		gets_s(data.password, LOGIN_SIZE);	// 주소를 입력받는다
+		if ((strcmp(data.id, "") == 0) || (strcmp(data.password, "") == 0)) {
+			printf("공백을 입력할 수 없습니다.\n");
+			system("pause");
+			system("cls");
+			continue;
+		}
+		break;
+	} while (1);
+	data.userMoney = 10000;
+	return data;
+}
+int id_check(FILE* fp, char* id) {
+	USER data;
+	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
+	while (!feof(fp)) {		// 파일의 끝까지 반복한다
+		fread(&data, sizeof(data), 1, fp);
+		if (strcmp(data.id, id) == 0) {	// 이름을 비교한다
+			return 1;
+		}
+	}
+	return 0;
 }
