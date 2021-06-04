@@ -27,9 +27,13 @@ int main(void) {
 	char singlemenulist[SINGLE_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","슬릇머신","룰렛","경마","잔액조회","돈벌기","이전" };
 	char multimenulist[MULTI_MENU][MAX_MENU_CHAR] = { "포커","블랙잭","잔액조회","이전" };
 	char multimenu_pokerlist[MULTI_SEL_MENU][MAX_MENU_CHAR] = { "게임 생성","게임 참가","이전" };
+	
 
 	init();
 	start_game();
+	
+	
+
 	
 	
 	do {
@@ -152,17 +156,19 @@ int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
 			else
 				textcolor(15);
 			if (max_menu % 2 == 1) {
-				gotoxy(20 * i + 1, 3);
-				printf("%d.%s", i + 1, menulist[i]);
+				single_1();
+				single_2();
+				single_3();
+				/*printf("%d.%s", i + 1, menulist[i]);	*/ 	//첫번째 메뉴 사진 넣을것
 			}
 			else {
 				if (i < max_menu / 2) {
 					gotoxy(20 * i + 1, 3);
-					printf("%d.%s", i + 1, menulist[i]);
+					printf("%d.%s", i + 1, menulist[i]);						//싱글 메뉴 사진 넣을것
 				}
 				else {
 					gotoxy(20 * (i - max_menu / 2) + 1, 6);
-					printf("%d.%s", i + 1, menulist[i]);
+					printf("%d.%s", i + 1, menulist[i]);						//멀티 메뉴 사진 넣을것
 				}
 			}
 		}
@@ -224,9 +230,7 @@ void start_game()
 				break;
 		}
 		//  ↓↓무한반복에서 하려는 작업↓↓
-
 		start();
-
 	}
 	system("cls");
 }

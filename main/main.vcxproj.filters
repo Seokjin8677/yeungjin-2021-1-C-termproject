@@ -30,7 +30,7 @@
     <ClCompile Include="poker_multi.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="start_screen.c">
+    <ClCompile Include="img.c">
       <Filter>소스 파일\img</Filter>
     </ClCompile>
   </ItemGroup>

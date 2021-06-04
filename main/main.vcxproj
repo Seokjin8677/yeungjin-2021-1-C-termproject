@@ -144,7 +144,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="poker.c" />
     <ClCompile Include="poker_multi.c" />
-    <ClCompile Include="start_screen.c" />
+    <ClCompile Include="img.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="modm.h" />
