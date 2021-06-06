@@ -4,7 +4,7 @@
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
-#define LOGIN_SIZE 20
+#define LOGIN_SIZE 22
 #define MAIN_MENU 3
 #define SINGLE_MENU 8
 #define MULTI_MENU 4
@@ -37,7 +37,7 @@ void CursorView() // 커서 숨기는 함수
 }
 int pullDownMenu(int,char**); // 메모리 절약을 위한 래그드 배열 사용
 int sel = 0;
-int startadd; // 돈 불러오기 위한 위치값 저장
+long startadd; // 돈 불러오기 위한 위치값 저장
 int id_check(FILE*, char*);
 USER get_record(FILE*);
 void add_record(FILE*);
@@ -55,7 +55,6 @@ int main(void) {
 	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
 	CursorView(); // 커서 숨기기
 	FILE* fp = NULL;
-	int select;
 	int loginStatus = 0;
 	// 이진 파일을 추가 모드로 오픈한다. 
 	if (fopen_s(&fp,"user.dat", "a+")) {
@@ -290,30 +289,55 @@ int moneyCheck(int money, int insertmoney) {
 
 void update_money(FILE* fp, int* money)
 {
-	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
-	//USER data;
-	//data.userMoney = *money;
-	//printf("%d\n", data.userMoney);
-	//fopen_s(&fp, "user.dat", "wb");
-	fopen_s(fp, "user.dat", "r+t");
-	//printf("%d", startadd);
+	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd, SEEK_SET);
-	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
 	fwrite(money, sizeof(int), 1, fp);
 	fclose(fp);
 }
 int login_record(FILE* fp, int* money)
 {
-	char id[LOGIN_SIZE];
-	char password[LOGIN_SIZE];
+	char id[LOGIN_SIZE] = { 0 };
+	char password[LOGIN_SIZE] = { 0 };
+	int num = 0;
 	USER data;
 	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
 	fflush(stdin);
 	printf("아이디: ");
-	gets_s(id, LOGIN_SIZE);		// 이름을 입력받는다
+	//gets_s(id, LOGIN_SIZE);		// 이름을 입력받는다
+	while ((id[num] = _getch()) != '\r')
+	{
+		if (id[num] == '\b' && num != 0) {
+			printf("%\b \b");
+			num--;
+		}
+		else {
+			if ((id[num] == '\b' && num == 0) || num >= LOGIN_SIZE-2)
+				continue;
+			else
+				_putch(id[num]);
+			num++;
+		}
+	}
+	printf("\n");
+	num = 0;
 	fflush(stdin);
 	printf("비밀번호: ");
-	gets_s(password, LOGIN_SIZE);
+	//gets_s(password, LOGIN_SIZE);
+	while ((password[num] = _getch()) != '\r')
+	{
+		if (password[num] == '\b' && num != 0) {
+			printf("%\b \b");
+			num--;
+		}
+		else {
+			if ((password[num] == '\b' && num == 0) || num >= LOGIN_SIZE-2)
+				continue;
+			else 
+				_putch('*');
+			num++;
+		}
+	}
+	printf("\n");
 	while (!feof(fp)) {		// 파일의 끝까지 반복한다
 		fread(&data, sizeof(data), 1, fp);
 		if ((strcmp(data.id, id) == 0) && (strcmp(data.password, password) == 0)) {	// 이름을 비교한다
@@ -330,6 +354,7 @@ int login_record(FILE* fp, int* money)
 	}
 	//printf("\n현재 파일 위치 지시자의 위치 : %ld\n", ftell(fp));
 	PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+	
 	printf("해당되는 계정이 없거나 비밀번호가 맞지 않습니다.\n");
 	return 1;
 }
@@ -350,14 +375,53 @@ void add_record(FILE* fp)
 USER get_record(FILE* fp)
 {
 	USER data;
+	int num = 0;
+	for (int i = 0; i < LOGIN_SIZE; i++) {
+		data.id[i] = '\0';
+		data.password[i] = '\0';
+	}
 	fflush(stdin);		// 표준 입력의 버퍼를 비운다
 	do {
+		num = 0;
 		printf("아이디: ");
-		gets_s(data.id, LOGIN_SIZE);	// 이름을 입력받는다
+		//gets_s(data.id, LOGIN_SIZE);	// 이름을 입력받는다
+		while ((data.id[num] = _getch()) != '\r')
+		{
+			if (data.id[num] == '\b' && num != 0) {
+				printf("%\b \b");
+				num--;
+			}
+			else {
+				if ((data.id[num] == '\b' && num == 0) || num >= LOGIN_SIZE-2)
+					continue;
+				else
+					_putch(data.id[num]);
+				num++;
+			}
+		}
+		printf("\n");
+		num = 0;
 		PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 		printf("비밀번호: ");
-		gets_s(data.password, LOGIN_SIZE);	// 주소를 입력받는다
-		if ((strcmp(data.id, "") == 0) || (strcmp(data.password, "") == 0)) {
+		//gets_s(data.password, LOGIN_SIZE);	// 주소를 입력받는다
+		
+		while ((data.password[num] = _getch()) != '\r')
+		{
+			if (data.password[num] == '\b' && num != 0) {
+				printf("%\b \b");
+				num--;
+			}
+			else {
+				if ((data.password[num] == '\b' && num == 0) || num >= LOGIN_SIZE-2)
+					continue;
+				else
+					_putch('*');
+				num++;
+			}
+		}
+		printf("\n");
+		//data.password[num + 1] = '\0';
+		if (data.id[0] == '\r' || data.password[0] == '\r') {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("공백을 입력할 수 없습니다.\n");
 			system("pause");
