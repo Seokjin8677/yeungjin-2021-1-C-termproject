@@ -289,7 +289,7 @@ int moneyCheck(int money, int insertmoney) {
 
 void update_money(FILE* fp, int* money)
 {
-	fopen_s(fp, "user.dat", "r+");
+	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd, SEEK_SET);
 	fwrite(money, sizeof(int), 1, fp);
 	fclose(fp);
@@ -307,7 +307,7 @@ int login_record(FILE* fp, int* money)
 	while ((id[num] = _getch()) != '\r')
 	{
 		if (id[num] == '\b' && num != 0) {
-			printf("%\b \b");
+			printf("\b \b");
 			num--;
 		}
 		else {
@@ -326,7 +326,7 @@ int login_record(FILE* fp, int* money)
 	while ((password[num] = _getch()) != '\r')
 	{
 		if (password[num] == '\b' && num != 0) {
-			printf("%\b \b");
+			printf("\b \b");
 			num--;
 		}
 		else {
@@ -388,7 +388,7 @@ USER get_record(FILE* fp)
 		while ((data.id[num] = _getch()) != '\r')
 		{
 			if (data.id[num] == '\b' && num != 0) {
-				printf("%\b \b");
+				printf("\b \b");
 				num--;
 			}
 			else {
@@ -408,7 +408,7 @@ USER get_record(FILE* fp)
 		while ((data.password[num] = _getch()) != '\r')
 		{
 			if (data.password[num] == '\b' && num != 0) {
-				printf("%\b \b");
+				printf("\b \b");
 				num--;
 			}
 			else {
