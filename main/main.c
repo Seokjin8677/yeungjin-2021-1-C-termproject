@@ -289,7 +289,7 @@ int moneyCheck(int money, int insertmoney) {
 
 void update_money(FILE* fp, int* money)
 {
-	fopen_s(&fp, "user.dat", "r+");
+	fopen_s(fp, "user.dat", "r+");
 	fseek(fp, startadd, SEEK_SET);
 	fwrite(money, sizeof(int), 1, fp);
 	fclose(fp);
