@@ -18,7 +18,7 @@
 typedef struct user {
 	char id[LOGIN_SIZE];		// 아이디
 	char password[LOGIN_SIZE];	// 비밀번호
-	int userMoney;
+	unsigned int userMoney;
 } USER;
 extern void textcolor(int);
 extern int poker();
@@ -46,7 +46,7 @@ void update_money(FILE*, int*);
 
 int main(void) {
 	int menu;
-	int money = 0;
+	unsigned int money = 0;
 	int insertmoney;
 	char *loginmenulist[MAIN_MENU] = {"로그인","계정생성","종료"};
 	char *mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
