@@ -345,7 +345,7 @@ void update_money(FILE* fp, int* money)
 {
 	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd, SEEK_SET);
-	fwrite(money, sizeof(money), 1, fp);
+	fwrite(money, sizeof(int), 1, fp);
 	fclose(fp);
 }
 int login_record(FILE* fp, int* money)
@@ -360,7 +360,7 @@ int login_record(FILE* fp, int* money)
 		fread(&data, sizeof(data), 1, fp);
 		if ((strcmp(data.id, id) == 0) && (strcmp(data.password, password) == 0)) {	// 이름을 비교한다
 			*money = data.userMoney;
-			startadd = ftell(fp) - sizeof(money);
+			startadd = ftell(fp) - sizeof(int);
 			PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 			return 0;
 		}
