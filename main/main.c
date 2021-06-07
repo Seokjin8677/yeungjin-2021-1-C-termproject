@@ -4,7 +4,7 @@
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
-#define LOGIN_SIZE 34
+#define LOGIN_SIZE 32
 #define MAIN_MENU 3
 #define SINGLE_MENU 8
 #define MULTI_MENU 4
@@ -290,30 +290,34 @@ int moneyCheck(int money, int insertmoney) {
 void login_menu(char* id, char* password) {
 	int num = 0;
 	gotoxy(4, 1); printf("LOGIN");
-	gotoxy(3, 2); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	gotoxy(3, 2); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 	gotoxy(3, 3); printf("┃");
-	gotoxy(37, 3); printf("┃");
-	gotoxy(3, 4); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	gotoxy(36, 3); printf("┃");
+	gotoxy(3, 4); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 	gotoxy(4, 6); printf("PASSWORD");
-	gotoxy(3, 7); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	gotoxy(3, 7); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 	gotoxy(3, 8); printf("┃");
-	gotoxy(37, 8); printf("┃");
-	gotoxy(3, 9); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	gotoxy(36, 8); printf("┃");
+	gotoxy(3, 9); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 	gotoxy(5, 3); printf("_"); gotoxy(5, 3);
 	while ((id[num] = _getch()) != '\r')
 	{
 		if (id[num] == '\b' && num != 0) {
 			printf("\b \b");
+			id[num] = '\0';
 			num--;
 		}
 		else {
-			if ((id[num] == '\b' && num == 0) || num >= LOGIN_SIZE - 2)
+			if ((id[num] == '\b' && num == 0) || num >= LOGIN_SIZE - 1)
 				continue;
+			if ((id[num]) == '\t')
+				break;
 			else
 				_putch(id[num]);
 			num++;
 		}
 	}
+	id[num] = '\0';
 	gotoxy(5, 8); printf("_"); gotoxy(5, 8);
 	num = 0;
 	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
@@ -321,23 +325,27 @@ void login_menu(char* id, char* password) {
 	{
 		if (password[num] == '\b' && num != 0) {
 			printf("\b \b");
+			password[num] = '\0';
 			num--;
 		}
 		else {
-			if ((password[num] == '\b' && num == 0) || num >= LOGIN_SIZE - 2)
+			if ((password[num] == '\b' && num == 0) || num >= LOGIN_SIZE - 1)
+				continue;
+			if ((password[num]) == '\t')
 				continue;
 			else
 				_putch('*');
 			num++;
 		}
 	}
+	password[num] = '\0';
 	gotoxy(0, 11);
 }
 void update_money(FILE* fp, int* money)
 {
 	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd, SEEK_SET);
-	fwrite(money, sizeof(int), 1, fp);
+	fwrite(money, sizeof(money), 1, fp);
 	fclose(fp);
 }
 int login_record(FILE* fp, int* money)
@@ -386,43 +394,8 @@ USER get_record(FILE* fp)
 	fflush(stdin);		// 표준 입력의 버퍼를 비운다
 	do {
 		login_menu(data.id,data.password);
-		/*num = 0;
-		printf("아이디: ");
-		while ((data.id[num] = _getch()) != '\r')
-		{
-			if (data.id[num] == '\b' && num != 0) {
-				printf("\b \b");
-				num--;
-			}
-			else {
-				if ((data.id[num] == '\b' && num == 0) || num >= LOGIN_SIZE-2)
-					continue;
-				else
-					_putch(data.id[num]);
-				num++;
-			}
-		}
 		printf("\n");
-		num = 0;
-		PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
-		printf("비밀번호: ");
-		
-		while ((data.password[num] = _getch()) != '\r')
-		{
-			if (data.password[num] == '\b' && num != 0) {
-				printf("\b \b");
-				num--;
-			}
-			else {
-				if ((data.password[num] == '\b' && num == 0) || num >= LOGIN_SIZE-2)
-					continue;
-				else
-					_putch('*');
-				num++;
-			}
-		} */
-		printf("\n");
-		if (data.id[0] == '\r' || data.password[0] == '\r') {
+		if (data.id[0] == '\0' || data.password[0] == '\0') {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("공백을 입력할 수 없습니다.\n");
 			system("pause");
