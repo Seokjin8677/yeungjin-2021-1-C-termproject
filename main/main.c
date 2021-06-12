@@ -25,7 +25,7 @@ typedef struct user {
 	char savedGugeolUpgrade[MONEY_SIZE];
 	char savedUserMoney[MONEY_SIZE];
 } USER;
-int moneyCheck(int*, int);
+int moneyCheck(int*, int, int);
 extern void textcolor(int);
 extern int poker();
 extern int pokersingle(int, int);
@@ -111,16 +111,16 @@ int main(void) {
 				switch (menu)
 				{
 				case 0:
-					printf("판돈을 입력하세요: ");
+					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%d", &insertmoney);
-					if (moneyCheck(&money,insertmoney)) {
+					if (moneyCheck(&money,insertmoney,100000)) {
 						system("cls");
 						money -= insertmoney;
 						money += pokersingle(insertmoney, poker());
+						update_money(fp, &money);
 						system("pause");
 						system("cls");
 					}
-					update_money(fp, &money);
 					break;
 				case 1:
 					printf("블랙잭\n");
@@ -178,7 +178,7 @@ int main(void) {
 							printf("현재 스킬 Lv.%d\n",gugeolUpgrade);
 							printf("구매 하시겠습니까?(10,000원)\n");
 							if (pullDownMenu_yesorno(YESORNO_MENU, yesornomenulist, 3, 5) == 0) {
-								if (moneyCheck(&money, 10000)) {
+								if (moneyCheck(&money, 10000,100000)) {
 									money -= 10000;
 									update_money(fp, &money);
 									gugeolUpgrade++;
@@ -232,7 +232,7 @@ int main(void) {
 						case 0:
 							printf("판돈을 입력하세요: ");
 							scanf_s("%d", &insertmoney);
-							if (moneyCheck(&money, insertmoney)) {
+							if (moneyCheck(&money, insertmoney,100000)) {
 								system("cls");
 								money -= insertmoney;
 								printf("사용자의 접속을 기다리는 중...\n이전으로 가려면 q를 입력하세요.\n");
@@ -366,10 +366,18 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); //프로토타입의 값대로 위치이동
 }
 
-int moneyCheck(int *money, int insertmoney) {
+int moneyCheck(int *money, int insertmoney, int maxmoney) {
+	rewind(stdin);
+	if (insertmoney > maxmoney) {
+		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		printf("%d원 이하만 가능합니다!\n",maxmoney);
+		system("pause");
+		system("cls");
+		return 0;
+	}
 	if (insertmoney > *money) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
-		printf("가지고 있는 돈이 적습니다...\n");
+		printf("가지고 있는 돈이 적습니다!\n");
 		system("pause");
 		system("cls");
 		return 0;
