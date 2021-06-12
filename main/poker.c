@@ -409,5 +409,4 @@ void pullDownMenu_poker(int* selcard2) // 카드를 키보드로 선택하게 하는 함수
 		Sleep(1); // 최적화를 위한 Sleep(1)
 	}
 	system("cls");
-	return 0;
 }

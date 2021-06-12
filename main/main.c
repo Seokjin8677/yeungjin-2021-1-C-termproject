@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <Windows.h>
 #include <conio.h>
@@ -7,7 +8,8 @@
 #pragma comment(lib, "winmm.lib")
 
 
-#define LOGIN_SIZE 32
+#define ID_SIZE 32
+#define PASS_SIZE 65
 #define MAIN_MENU 3
 #define SINGLE_MENU 10
 #define MULTI_MENU 3
@@ -23,8 +25,8 @@
 #define MONEY_SIZE 11
 
 typedef struct user {
-	char id[LOGIN_SIZE];		// 아이디
-	char password[LOGIN_SIZE];	// 비밀번호
+	char id[ID_SIZE];		// 아이디
+	char password[PASS_SIZE];	// 비밀번호
 	char savedborrowmoney[MONEY_SIZE];
 	char savedGugeolUpgrade[MONEY_SIZE];
 	char savedUserMoney[MONEY_SIZE];
@@ -37,7 +39,6 @@ MCI_OPEN_PARMS mciOpen;
 MCI_PLAY_PARMS mciPlay;
 
 int dwID;
-
 int moneyCheck(int*, int, int);
 int moneyCheck_borrow(int*, int, int*, int*);
 extern void textcolor(int);
@@ -46,6 +47,7 @@ extern int pokersingle(int, int);
 extern int poker_server(int);
 extern void poker_client(int*);
 extern int roulette(int);
+extern void mySHA(unsigned char*, unsigned char*);
 void gotoxy(int, int);
 void quit_message();
 void CursorView() // 커서 숨기는 함수
@@ -82,6 +84,8 @@ int main(void) {
 	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
 	char* bankmenulist[BANK_MENU] = {"잔액조회","대출금 확인","대출상환","이전"};
 	char* yesornomenulist[2] = {"예","아니오"};
+	unsigned char plain[32] = { 0 };
+	unsigned char encrypt[32] = { 0 };
 	CursorView(); // 커서 숨기기
 	FILE* fp = NULL;
 	int loginStatus = 0;
@@ -144,7 +148,15 @@ int main(void) {
 					}
 					break;
 				case 1:
-					printf("블랙잭\n");
+					//rewind("stdin");
+					printf("입력: ");
+					scanf("%s", plain);
+					mySHA(plain,encrypt);
+					for (int i = 0; i < 32; i++)
+					{
+						printf("%02X", encrypt[i]);
+					}
+					printf("\n");
 					system("pause");
 					system("cls");
 					break;
@@ -180,6 +192,7 @@ int main(void) {
 						{
 						case 0:
 							printf("소지금: %d\n", money);
+							printf("현위치: %d\n", startadd);
 							system("pause");
 							system("cls");
 							break;
@@ -485,6 +498,10 @@ int moneyCheck(int *money, int insertmoney, int maxmoney) {
 }
 void login_menu(char* id, char* password) {
 	int num = 0;
+	unsigned char plain[32];
+	unsigned char encrypt[32];
+	memset(plain, 0x00, sizeof(plain));
+	memset(encrypt, 0x00, sizeof(encrypt));
 	gotoxy(4, 1); printf("LOGIN");
 	gotoxy(3, 2); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 	gotoxy(3, 3); printf("┃");
@@ -504,7 +521,7 @@ void login_menu(char* id, char* password) {
 			num--;
 		}
 		else {
-			if ((id[num] == '\b' && num == 0) || num >= LOGIN_SIZE - 1)
+			if ((id[num] == '\b' && num == 0) || num >= ID_SIZE - 1)
 				continue;
 			if ((id[num]) == '\t')
 				break;
@@ -517,30 +534,33 @@ void login_menu(char* id, char* password) {
 	gotoxy(5, 8); printf("_"); gotoxy(5, 8);
 	num = 0;
 	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
-	while ((password[num] = _getch()) != '\r')
+	while ((plain[num] = _getch()) != '\r')
 	{
-		if (password[num] == '\b' && num != 0) {
+		if (plain[num] == '\b' && num != 0) {
 			printf("\b \b");
-			password[num] = '\0';
+			plain[num] = '\0';
 			num--;
 		}
 		else {
-			if ((password[num] == '\b' && num == 0) || num >= LOGIN_SIZE - 1)
+			if ((plain[num] == '\b' && num == 0) || num >= ID_SIZE - 1)
 				continue;
-			if ((password[num]) == '\t')
+			if ((plain[num]) == '\t')
 				continue;
 			else
 				_putch('*');
 			num++;
 		}
 	}
-	password[num] = '\0';
+	plain[num] = '\0';
+	mySHA(plain, encrypt);
+	for (int i = 0; i < 32; i++)
+		sprintf(password + 2 * i, "%02x", encrypt[i]);
 	gotoxy(0, 11);
 }
 void update_money(FILE* fp, int* money)
 {
 	char tempmoney[MONEY_SIZE] = { 0 };
-	fopen_s(&fp, "user.dat", "r+");
+	fopen_s(fp, "user.dat", "r+");
 	fseek(fp, startadd - MONEY_SIZE, SEEK_SET);
 	sprintf_s(tempmoney, MONEY_SIZE,"%d",*money);
 	fwrite(tempmoney, MONEY_SIZE, 1, fp);
@@ -549,7 +569,7 @@ void update_money(FILE* fp, int* money)
 void update_gugeolUpgrade(FILE* fp, int* gugeolUpgrade)
 {
 	char tempupgrade[MONEY_SIZE] = { 0 };
-	fopen_s(&fp, "user.dat", "r+");
+	fopen_s(fp, "user.dat", "r+");
 	fseek(fp, startadd - MONEY_SIZE*2, SEEK_SET);
 	sprintf_s(tempupgrade, MONEY_SIZE,"%d", *gugeolUpgrade);
 	fwrite(tempupgrade, MONEY_SIZE, 1, fp);
@@ -558,7 +578,7 @@ void update_gugeolUpgrade(FILE* fp, int* gugeolUpgrade)
 void update_borrowmoney(FILE* fp, int* borrowmoney)
 {
 	char tempborrowmoney[MONEY_SIZE] = { 0 };
-	fopen_s(&fp, "user.dat", "r+");
+	fopen_s(fp, "user.dat", "r+");
 	fseek(fp, startadd - MONEY_SIZE * 3, SEEK_SET);
 	sprintf_s(tempborrowmoney, MONEY_SIZE, "%d", *borrowmoney);
 	fwrite(tempborrowmoney, MONEY_SIZE, 1, fp);
@@ -566,9 +586,8 @@ void update_borrowmoney(FILE* fp, int* borrowmoney)
 }
 int login_record(FILE* fp, int* money, int* gugeolUpgrade,int *borrowmoney)
 {
-	char id[LOGIN_SIZE] = { 0 };
-	char password[LOGIN_SIZE] = { 0 };
-	int num = 0;
+	char id[ID_SIZE] = { '\0' };
+	char password[PASS_SIZE] = { '\0' };
 	USER data;
 	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
 	login_menu(id, password);
@@ -604,9 +623,11 @@ void add_record(FILE* fp)
 USER get_record(FILE* fp)
 {
 	USER data;
-	int num = 0;
-	for (int i = 0; i < LOGIN_SIZE; i++) {
+	for (int i = 0; i < ID_SIZE; i++)
+	{
 		data.id[i] = '\0';
+	}
+	for (int i = 0; i < PASS_SIZE; i++) {
 		data.password[i] = '\0';
 	}
 	for (int i = 0; i < MONEY_SIZE-1; i++)
