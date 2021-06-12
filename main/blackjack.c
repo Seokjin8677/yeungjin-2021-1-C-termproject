@@ -20,6 +20,7 @@ void printDealerCardArray(int* arr, int size);
 void printPlayerCardArray(int* arr, int size);
 void blackjackDealerPrint(int* arr, int size);
 void blackjackPlayerPrint(int* arr, int size);
+int choiceBlackjack(int max_menu, char** menulist);
 int hideFlag = 0;
 
 int playingCard[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,	// CLOVER
@@ -29,17 +30,10 @@ int playingCard[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,	// CLOVER
 };
 
 
-int playerCard[8] = { 0 }; //player가 게임중 가질수있는 카드의 배열
-int dealerCard[8] = { 0 }; ////dealer가 게임중 가질수있는 카드의 배열
+int playerCard[15] = { 0 }; //player가 게임중 가질수있는 카드의 배열
+int dealerCard[15] = { 0 }; ////dealer가 게임중 가질수있는 카드의 배열
 
-/*
-struct pokerStruct // 구조체로 바꾸면 코드량이 줄것같음
-{
-	int rank[5];
-	int suit[5];
-	int sum;
-};
-*/
+
 
 int blackjack(int money) {
 	gotoxy(0, 0);
@@ -91,8 +85,8 @@ int blackjack(int money) {
 				hideFlag = 1;
 
 
-
-				printf("배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", game_money); //배팅머니 입력받기
+				//int test = 25 / 13;
+				printf(" 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", game_money); //배팅머니 입력받기
 
 				scanf_s("%d", &bating_money);
 				rewind(stdin);
@@ -117,7 +111,7 @@ int blackjack(int money) {
 				*/
 
 				//Start
-				printf("카드를 두장씩 가집니다(아무키나 입력).\n");
+				printf(" 카드를 두장씩 가집니다(아무키나 입력).\n");
 				_getch();
 				system("cls");
 				for (int i = 0; i < 2; i++) {
@@ -136,6 +130,7 @@ int blackjack(int money) {
 
 
 				}
+
 				/*
 				*인덱스 , 카운트 확인용
 				printf("딜러 인덱스 값 :%d 카운트값 :%d\n", dealer_index, count);
@@ -149,9 +144,10 @@ int blackjack(int money) {
 				if (card_sum(dealerCard, dealer_index) == 21) { //딜러가 21일때
 					hideFlag = 0;
 					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
-					printf("\nblack Jack\n");
+					gotoxy(0, 21);
+					printf("\n black Jack\n");
 					_getch();
-					temp = pullDownMenuBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
+					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
 						system("cls");
@@ -167,9 +163,10 @@ int blackjack(int money) {
 					hideFlag = 0;
 					game_money += bating_money * 3; //배팅금의 3배
 					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
-					printf("\nblack Jack\n");
+					gotoxy(0, 21);
+					printf("\n black Jack\n");
 					_getch();
-					temp = pullDownMenuBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
+					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
 						system("cls");
@@ -190,11 +187,12 @@ int blackjack(int money) {
 				while (1) { //플레이어가 stay or -1 잘못입력했을때 반복문 종료. -1 이 나오면 Stay.
 					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money); //현재 게임정보
 					int temp = 0; //선택값을 담기위한 tmep 변수
-					temp = pullDownMenuBlackjack(4, blackjackChoiceList); // 메뉴의선택값 반환
+					temp = choiceBlackjack(4, blackjackChoiceList); // 메뉴의선택값 반환
 					if (temp == 0 || temp == -1) {//1또는 잘못입력시 
 
 						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
-						printf("Stay\n");
+						gotoxy(0, 21);
+						printf(" Stay\n");
 						_getch();
 						system("cls");
 						break;
@@ -202,7 +200,8 @@ int blackjack(int money) {
 					}
 					else if (temp == 2) {
 						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
-						printf("Surrender\n");
+						gotoxy(0, 21);
+						printf(" Surrender\n");
 						_getch();
 						system("cls");
 						flag = 2;//21이 넘으면 Bust 체크를 위해 flag 변수에 1대입
@@ -214,9 +213,8 @@ int blackjack(int money) {
 						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
 
 						int temp_money;
-
-						printf("추가 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", game_money); //추가 배팅머니 입력받기
-
+						gotoxy(0, 21);
+						printf(" 추가 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", game_money); //추가 배팅머니 입력받기
 						scanf_s("%d", &temp_money);
 
 						if (temp_money < 1000 || game_money - bating_money < 0) { //추가 배팅머니은 최소 1000원
@@ -232,7 +230,8 @@ int blackjack(int money) {
 						player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.
 
 						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
-						printf("DoubleDown\n");
+						gotoxy(0, 21);
+						printf(" DoubleDown\n");
 						_getch();
 						system("cls");
 
@@ -247,7 +246,8 @@ int blackjack(int money) {
 						get_playingCard(card_deck, playerCard, player_index); //Hit시 카드한장을 더 배열에 추기한다.
 						player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.	
 						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
-						printf("Hit\n");
+						gotoxy(0, 21);
+						printf(" Hit\n");
 						_getch();
 						system("cls");
 
@@ -272,9 +272,10 @@ int blackjack(int money) {
 
 				if (flag == 1) { //Bust 확인
 					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
-					printf("Bust (player)\n");
+					gotoxy(0, 21);
+					printf(" Bust (player)\n");
 					_getch();
-					temp = pullDownMenuBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
+					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
 						system("cls");
@@ -288,10 +289,11 @@ int blackjack(int money) {
 				}
 				else if (flag == 2) {//Surrender 확인
 					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
-					printf("Surrender\n");
+					gotoxy(0, 21);
+					printf(" Surrender\n");
 					_getch();
 					game_money += bating_money * 0.5; //배팅금의 0.5배만 차감
-					temp = pullDownMenuBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
+					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
 						system("cls");
@@ -329,9 +331,10 @@ int blackjack(int money) {
 
 
 				if (flag == 1) { //Bust 확인
-					printf("Bust (Dealer)\n");
+					gotoxy(0, 21);
+					printf(" Bust (Dealer)\n");
 					game_money += bating_money * 2; //player 승리로 배팅금액 2배 휙득
-					temp = pullDownMenuBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
+					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
 						system("cls");
@@ -344,25 +347,28 @@ int blackjack(int money) {
 					}
 				}
 
-
-				printf("딜러합 : %d\n", card_sum(dealerCard, dealer_index));
-				printf("플레이어합 : %d\n", card_sum(playerCard, player_index));
+				gotoxy(0, 21);
+				printf(" 딜러합 : %d\n", card_sum(dealerCard, dealer_index));
+				printf(" 플레이어합 : %d\n", card_sum(playerCard, player_index));
 
 				if (card_sum(dealerCard, dealer_index) == card_sum(playerCard, player_index)) { //비길시
 					game_money += bating_money; //배팅금액 
-					printf("Push(동점)\n");
+					gotoxy(0, 23);
+					printf(" Push(동점)\n");
 				}
 				else if (card_sum(playerCard, player_index) < card_sum(dealerCard, dealer_index)) { //딜러가 높을시
-					printf("딜러 승\n");
+					gotoxy(0, 23);
+					printf(" 딜러 승\n");
 				}
 				else {
 					game_money += bating_money * 2;
-					printf("플레이어 승\n");
+					gotoxy(0, 23);
+					printf(" 플레이어 승\n");
 				}
 
 				_getch();
 
-				temp = pullDownMenuBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
+				temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 				if (temp == 0) {
 					//계속하기
 					system("cls");
@@ -413,42 +419,18 @@ int blackjack(int money) {
 }
 void card_table(int* dealerCard, int dealer_index, int* playerCard, int player_index, int money, int batMoney) { //딜러카드 배열 과 플레이어 카드배열 출력(현재 게임정보)
 
-	printf("딜러카드 : ");
-	//printDealerCardArray(dealerCard, dealer_index);
+
+	printf("           보유자금 : %d  현재 배팅금액 :%d", money, batMoney);
 	blackjackDealerPrint(dealerCard, dealer_index);
-	printf("\n\n\n");
-	printf("플레이어카드 : ");
-	//printPlayerCardArray(playerCard, player_index);
+	//printf("\n\n\n");
+	//printDealerCardArray(playerCard, player_index);
 	blackjackPlayerPrint(playerCard, player_index);
-	printf("\n");
-	printf("보유자금 : %d  현재 배팅금액 :%d", money, batMoney);
-	printf("\n");
+	
+	
+
 
 }
-int choice() { //배팅후 다음행동을 정한다. 
 
-	int temp;
-	printf("1.Stay 2.Hit 3.Surrender 4.DoubleDown\n");
-	scanf_s("%d", &temp);
-
-	if (temp == 1) {
-		return 1;
-	}
-	else if (temp == 2) {
-		return 2;
-	}
-	else if (temp == 3) {
-		return 3;
-	}
-	else if (temp == 4) {
-		return 4;
-	}
-	else {
-		return -1; //오류방어
-
-	}
-
-}
 
 int pullDownMenuBlackjack(int max_menu, char** menulist)
 {
@@ -463,16 +445,16 @@ int pullDownMenuBlackjack(int max_menu, char** menulist)
 				textcolor(15);
 			if (max_menu % 2 == 1) {
 				gotoxy(20 * i + 1, 3 + 4);
-				printf("%d.%s", i + 1, menulist[i]);
+				printf("%s",  menulist[i]);
 			}
 			else {
 				if (i < max_menu / 2) {
 					gotoxy(20 * i + 1, 3 + 4);
-					printf("%d.%s", i + 1, menulist[i]);
+					printf("%s", menulist[i]);
 				}
 				else {
 					gotoxy(20 * (i - max_menu / 2) + 1, 6 + 4);
-					printf("%d.%s", i + 1, menulist[i]);
+					printf("%s", menulist[i]);
 				}
 			}
 		}
@@ -504,12 +486,54 @@ int pullDownMenuBlackjack(int max_menu, char** menulist)
 	return sel;
 }
 
-
+int choiceBlackjack(int max_menu, char** menulist)
+{
+	gotoxy(0, 0);
+	char ch;
+	int sel = 0;
+	while (1) {
+		for (int i = 0; i < max_menu; i++) {
+			if (sel == i)
+				textcolor(12);
+			else
+				textcolor(15);
+			
+			gotoxy(15 * (i - max_menu / 2) + 45,22);
+			printf("%s", menulist[i]);
+		
+		}
+		textcolor(15);
+		ch = _getch();
+		if (ch == KEY_LEFT) {
+			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			sel = ((sel - 1) + max_menu) % max_menu;
+		}
+		else if (ch == KEY_RIGHT) {
+			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			sel = (sel + 1) % max_menu;
+		}
+		else if (ch == KEY_UP && max_menu % 2 == 0) {
+			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			sel = ((sel + max_menu / 2) + max_menu) % max_menu;
+		}
+		else if (ch == KEY_DOWN && max_menu % 2 == 0) {
+			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			sel = ((sel - max_menu / 2) + max_menu) % max_menu;
+		}
+		else if (ch == KEY_RETURN) {
+			//PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
+			break;
+		}
+		Sleep(1);
+	}
+	system("cls");
+	return sel;
+}
 
 int card_sum(int* cardlist, int size) {//카드배열의 합을 구하는 함수, 합이 21보다 낮을시 A(1)은 10으로 계산, 높을시 1로 계산, J,Q,K는 10으로 계산
 
   //A(1)가 있을시 나온순서에 상관없이 카드배열의합이 21 이하면 11로 계산, 넘으면 1로계산
-	// * A(1) 두번나오거나 뒤쪽에 나오면 계산하는데 오류가있음
+	
 
 
 	int sum = 0; //카드배열의 합
@@ -745,82 +769,84 @@ void printDealerCardArray(int* arr, int size) { //딜러 카드배열 , 1장은 안보이게
 }
 
 void blackjackDealerPrint(int* arr, int size) { // 포커 패 출력
-	gotoxy(0, 0);
+	
 	int temp = 0;
 	int suite = 0; //문양
-
+	printf("\n 딜러카드 : ");
+	gotoxy(0, 0);
 	for (int i = 0; i < size; i++)
 	{
 		temp = (arr[i] % 13) + 1; //13으로 나눈값의 나머지
-		suite = temp / 13; //13으로 나눈값
+		suite = arr[i] / 13; //13으로 나눈값
 
 	   //PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
 
-		gotoxy(3 + i * 15, 1);
-		printf("┏━━━━━━━┓ "); // 카드 모양 출력
+		gotoxy(3 + i * 15, 2);
+		printf("┏━━━━━━━┓"); // 카드 모양 출력
 
 		for (int j = 2; j < 9; j++)
 		{
-			gotoxy(3 + i * 15, j);
+			gotoxy(3 + i * 15, j+1);
 			printf("┃       ┃ "); // 카드 모양 출력
 		}
 
-		gotoxy(3 + i * 15, 9);
+		gotoxy(3 + i * 15, 10);
 		printf("┗━━━━━━━┛ "); // 카드 모양 출력
 		if (i == 0 && hideFlag == 1)
 		{
-			gotoxy(7 + i * 15, 5);
+			gotoxy(7 + i * 15, 6);
 			printf("?");
-			gotoxy(5 + i * 15, 2);
+			gotoxy(5 + i * 15, 3);
 			printf("?");
-			gotoxy(10 + i * 15, 8);
+			gotoxy(10 + i * 15, 9);
 			printf("?");
 		}
 		else {
 			switch (suite) // 카드 문양 출력
 			{
 			case 0:
-				gotoxy(7 + i * 15, 5); printf("♣");
+				gotoxy(7 + i * 15, 6); printf("♣");
 				break;
 			case 1:
-				gotoxy(7 + i * 15, 5); printf("♥");
+				gotoxy(7 + i * 15, 6); printf("♥");
 				break;
 			case 2:
-				gotoxy(7 + i * 15, 5); printf("◆");
+				gotoxy(7 + i * 15, 6); printf("◆");
 				break;
 			case 3:
-				gotoxy(7 + i * 15, 5); printf("♠");
+				gotoxy(7 + i * 15, 6); printf("♠");
 				break;
 			default:
+				gotoxy(7 + i * 15, 6); printf("에러");
 				break;
 			}
 			switch (temp) // 카드 숫자 출력
 			{
 			case 11:
-				gotoxy(5 + i * 15, 2); printf("J");
-				gotoxy(10 + i * 15, 8); printf("J");
+				gotoxy(5 + i * 15, 3); printf("J");
+				gotoxy(10 + i * 15, 9); printf("J");
 				break;
 			case 12:
-				gotoxy(5 + i * 15, 2); printf("Q");
-				gotoxy(10 + i * 15, 8); printf("Q");
+				gotoxy(5 + i * 15, 3); printf("Q");
+				gotoxy(10 + i * 15, 9); printf("Q");
 				break;
 			case 13:
-				gotoxy(5 + i * 15, 2); printf("K");
-				gotoxy(10 + i * 15, 8); printf("K");
+				gotoxy(5 + i * 15, 3); printf("K");
+				gotoxy(10 + i * 15, 9); printf("K");
 				break;
 			case 1:
-				gotoxy(5 + i * 15, 2); printf("A");
-				gotoxy(10 + i * 15, 8); printf("A");
+				gotoxy(5 + i * 15, 3); printf("A");
+				gotoxy(10 + i * 15, 9); printf("A");
 				break;
 			default:
-				gotoxy(5 + i * 15, 2); printf("%d", temp);
-				gotoxy(9 + i * 15, 8); printf("%2d", temp);
+				gotoxy(5 + i * 15, 3); printf("%d", temp);
+				gotoxy(9 + i * 15, 9); printf("%2d", temp);
 				break;
 			}
 			textcolor(15);
 		}
 	}
-
+	gotoxy(0, 0);
 
 }
 
@@ -828,70 +854,76 @@ void blackjackPlayerPrint(int* arr, int size) { // 포커 패 출력
 	gotoxy(0, 0);
 	int temp = 0;
 	int suite = 0; //문양
-
+	printf("\n\n\n\n\n\n\n\n\n\n\n 플레이어카드 : ");
 	for (int i = 0; i < size; i++)
 	{
 		temp = (arr[i] % 13) + 1; //13으로 나눈값의 나머지
-		suite = temp / 13; //13으로 나눈값
+		suite = arr[i] / 13; //13으로 나눈값
 
 	   //PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
 
-		gotoxy(3 + i * 15, 1 + 10);
-		printf("┏━━━━━━━┓ "); // 카드 모양 출력
+		gotoxy(3 + i * 15, 1 + 11);
+		printf("┏━━━━━━━┓"); // 카드 모양 출력
 
 		for (int j = 2; j < 9; j++)
 		{
-			gotoxy(3 + i * 15, j + 10);
+			gotoxy(3 + i * 15, j + 11);
 			printf("┃       ┃ "); // 카드 모양 출력
 		}
 
-		gotoxy(3 + i * 15 + 10, 19);
+		gotoxy(3 + i * 15, 20);
 		printf("┗━━━━━━━┛ "); // 카드 모양 출력
 		switch (suite) // 카드 문양 출력
 		{
 		case 0:
-			gotoxy(7 + i * 15, 15 + 3); printf("♣");
+			gotoxy(7 + i * 15, 16);
+			printf("♣");
 			break;
 		case 1:
-			gotoxy(7 + i * 15, 15 + 3); printf("♥");
+			gotoxy(7 + i * 15, 16);
+			printf("♥");
 			break;
 		case 2:
-			gotoxy(7 + i * 15, 15 + 3); printf("◆");
+			gotoxy(7 + i * 15, 16);
+			printf("◆");
 			break;
 		case 3:
-			gotoxy(7 + i * 15, 15 + 3); printf("♠");
+			gotoxy(7 + i * 15, 16);
+			printf("♠");
 			break;
 		default:
+			gotoxy(7 + i * 15, 16);
+			printf("에러");
 			break;
 		}
 		switch (temp) // 카드 숫자 출력
 		{
 		case 11:
-			gotoxy(5 + i * 15, 15); printf("J");
-			gotoxy(10 + i * 15, 18); printf("J");
+			gotoxy(5 + i * 15, 13); printf("J");
+			gotoxy(10 + i * 15, 19); printf("J");
 			break;
 		case 12:
-			gotoxy(5 + i * 15, 12); printf("Q");
-			gotoxy(10 + i * 15, 18); printf("Q");
+			gotoxy(5 + i * 15, 13); printf("Q");
+			gotoxy(10 + i * 15, 19); printf("Q");
 			break;
 		case 13:
-			gotoxy(5 + i * 15, 12); printf("K");
-			gotoxy(10 + i * 15, 18); printf("K");
+			gotoxy(5 + i * 15, 13); printf("K");
+			gotoxy(10 + i * 15, 19); printf("K");
 			break;
 		case 1:
-			gotoxy(5 + i * 15, 12); printf("A");
-			gotoxy(10 + i * 15, 18); printf("A");
+			gotoxy(5 + i * 15, 13); printf("A");
+			gotoxy(10 + i * 15, 19); printf("A");
 			break;
 		default:
-			gotoxy(5 + i * 15, 12); printf("%d", temp);
-			gotoxy(9 + i * 15, 18); printf("%2d", temp);
+			gotoxy(5 + i * 15, 13); printf("%d", temp);
+			gotoxy(9 + i * 15, 19); printf("%2d", temp);
 			break;
 		}
 		textcolor(15);
 
 	}
-
-	printf("\n\n");
+	gotoxy(0, 0);
+	
 
 }
 
@@ -931,9 +963,9 @@ void shuffle(int* arr, int n)
 
 void get_playingCard(int* deck, int* cardArray, int index) { //게임 끝나면 베열을 비우고 카운터값을 초기화 시켜야함.
 
-	static int count = -1;
-	if (count > DECK) {
-		count = -1;  //-1로 초기화
+	static int count = 0;
+	if (count >= DECK) {
+		count = 0;  //-1로 초기화
 		shuffle(*deck, DECK);  //카드셔플
 	}
 	else {

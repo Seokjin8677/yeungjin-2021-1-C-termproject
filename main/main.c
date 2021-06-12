@@ -44,7 +44,7 @@ int main(void) {
 					system("cls");
 					break;
 				case 1:
-					money += blackjack(80000);
+					money += blackjack(money);
 					_getch();
 					system("cls");
 					break;
