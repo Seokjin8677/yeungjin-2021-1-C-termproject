@@ -3,14 +3,17 @@
 #include <conio.h>
 #include <mmsystem.h>
 #include <time.h>
+#include <Digitalv.h>
 #pragma comment(lib, "winmm.lib")
+
 
 #define LOGIN_SIZE 32
 #define MAIN_MENU 3
 #define SINGLE_MENU 10
-#define MULTI_MENU 4
+#define MULTI_MENU 3
 #define MULTI_SEL_MENU 3
 #define SHOP_MENU 3
+#define BANK_MENU 4
 #define KEY_UP  0x48
 #define KEY_DOWN 0x50
 #define KEY_LEFT  0x4B
@@ -18,13 +21,25 @@
 #define KEY_RETURN 0x0D
 #define MAX_MENU_CHAR 20
 #define MONEY_SIZE 11
+
 typedef struct user {
 	char id[LOGIN_SIZE];		// 아이디
 	char password[LOGIN_SIZE];	// 비밀번호
+	char savedborrowmoney[MONEY_SIZE];
 	char savedGugeolUpgrade[MONEY_SIZE];
 	char savedUserMoney[MONEY_SIZE];
 } USER;
+
+MCI_OPEN_PARMS m_mciOpenParms;
+MCI_PLAY_PARMS m_mciPlayParms;
+DWORD m_dwDeviceID;
+MCI_OPEN_PARMS mciOpen;
+MCI_PLAY_PARMS mciPlay;
+
+int dwID;
+
 int moneyCheck(int*, int, int);
+int moneyCheck_borrow(int*, int, int*, int*);
 extern void textcolor(int);
 extern int poker();
 extern int pokersingle(int, int);
@@ -47,12 +62,15 @@ int sel = 0;
 long startadd; // 값 불러오기 위한 위치값 저장
 USER get_record(FILE*);
 void add_record(FILE*);
-int login_record(FILE*, int*, int *);
+int login_record(FILE*, int*, int *,int *);
 void update_money(FILE*, int*);
 void update_gugeolUpgrade(FILE*, int*);
+void update_borrowmoney(FILE*, int*);
 void login_menu(char*, char*);
+void ending();
 int money = 0;
 int gugeolUpgrade = 1;
+int borrowmoney = 0;
 int main(void) {
 	int menu;
 	int insertmoney;
@@ -60,8 +78,9 @@ int main(void) {
 	char *mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
 	char *singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","은행","돈벌기","상점","설명","이전" };
 	char* shopmenulist[SHOP_MENU] = { "구걸 업그레이드","테스트","이전"};
-	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","잔액조회","이전" };
+	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","이전" };
 	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
+	char* bankmenulist[BANK_MENU] = {"잔액조회","대출금 확인","대출상환","이전"};
 	char* yesornomenulist[2] = {"예","아니오"};
 	CursorView(); // 커서 숨기기
 	FILE* fp = NULL;
@@ -72,6 +91,7 @@ int main(void) {
 		//printf(stderr, "입력을 위한 파일을 열 수 없습니다");
 		exit(1);
 	}
+	
 	do {
 		menu = pullDownMenu(MAIN_MENU, loginmenulist,1,3);
 		switch (menu)
@@ -79,7 +99,7 @@ int main(void) {
 		case 0:
 			printf("계정 로그인");
 			system("cls");
-			if (login_record(fp,&money,&gugeolUpgrade)) {
+			if (login_record(fp,&money,&gugeolUpgrade,&borrowmoney)) {
 				system("pause");
 				system("cls");
 				break;
@@ -111,6 +131,7 @@ int main(void) {
 				switch (menu)
 				{
 				case 0:
+					printf("소지하고 있는 돈: %d\n", money);
 					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%d", &insertmoney);
 					if (moneyCheck(&money,insertmoney,100000)) {
@@ -133,6 +154,7 @@ int main(void) {
 					system("cls");
 					break;
 				case 3: // 룰렛
+					printf("소지하고 있는 돈: %d\n",money);
 					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%d", &insertmoney);
 					if (moneyCheck(&money, insertmoney, 100000)) {
@@ -150,10 +172,49 @@ int main(void) {
 					system("cls");
 					break;
 				case 5:
-					printf("잔액: %d\n", money);
-					printf("구걸스킬: %d\n", gugeolUpgrade);
-					system("pause");
-					system("cls");
+					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
+					do
+					{
+						menu = pullDownMenu(BANK_MENU, bankmenulist, 1, 3);
+						switch (menu)
+						{
+						case 0:
+							printf("소지금: %d\n", money);
+							system("pause");
+							system("cls");
+							break;
+						case 1:
+							printf("남은 대출금: %d\n",borrowmoney);
+							system("pause");
+							system("cls");
+							break;
+						case 2:
+							if (borrowmoney <= 0) {
+								printf("이미 대출금을 모두 갚았습니다!\n");
+								system("pause");
+								system("cls");
+								break;
+							}
+							printf("상환할 대출금을 입력하세요: ");
+							scanf_s("%d", &insertmoney);
+							if (moneyCheck_borrow(&money, insertmoney, &borrowmoney, &gugeolUpgrade)) {
+								system("cls");
+								PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
+								money -= insertmoney;
+								borrowmoney -= insertmoney;
+								update_money(fp, &money);
+								update_borrowmoney(fp, &borrowmoney);
+								system("cls");
+							}
+							if (borrowmoney == 0) {
+								ending();
+							}
+							break;
+						case 3:
+							break;
+						}
+					} while (menu != 3);
+					sel = 5; // 메인 메뉴로 갈시 상점 메뉴 선택되게
 					break;
 				case 6:
 					if (money < 1000) {
@@ -183,6 +244,7 @@ int main(void) {
 								break;
 							}
 							printf("현재 스킬 Lv.%d\n",gugeolUpgrade);
+							printf("소지하고 있는 돈: %d\n", money);
 							printf("구매 하시겠습니까?(10,000원)\n");
 							if (pullDownMenu_yesorno(yesornomenulist, 3, 5) == 0) {
 								if (moneyCheck(&money, 10000,100000)) {
@@ -237,6 +299,7 @@ int main(void) {
 						switch (menu)
 						{
 						case 0:
+							printf("소지하고 있는 돈: %d\n", money);
 							printf("판돈을 입력하세요: ");
 							scanf_s("%d", &insertmoney);
 							if (moneyCheck(&money, insertmoney,0)) {
@@ -263,15 +326,10 @@ int main(void) {
 					system("cls");
 					break;
 				case 2:
-					printf("잔액: %d\n", money);
-					printf("구걸스킬: %d\n", gugeolUpgrade);
-					system("pause");
-					system("cls");
-					break;
-				case 3:
 					break;
 				}
-			} while (menu != 3);
+			} while (menu != 2);
+			menu = 0;
 			sel = 1; // 메인 메뉴로 갈시 멀티플레이 메뉴 선택되게
 			break;
 		case 2:
@@ -373,7 +431,31 @@ void gotoxy(int x, int y)
 	Pos.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); //프로토타입의 값대로 위치이동
 }
-
+int moneyCheck_borrow(int* money, int insertmoney,int* borrowmoney,int* gugeolUpgrade) {
+	rewind(stdin);
+	if (insertmoney > *borrowmoney) {
+		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		printf("빚보다 많이 갚을 수 없습니다!\n");
+		system("pause");
+		system("cls");
+		return 0;
+	}
+	if (insertmoney > *money) {
+		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		printf("가지고 있는 돈이 적습니다!\n");
+		system("pause");
+		system("cls");
+		return 0;
+	}
+	if (insertmoney <= *gugeolUpgrade*1000) {
+		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		printf("구걸할 수 있는 돈보다는 많아야 합니다!\n");
+		system("pause");
+		system("cls");
+		return 0;
+	}
+	return 1;
+}
 int moneyCheck(int *money, int insertmoney, int maxmoney) {
 	rewind(stdin);
 	if (maxmoney != 0) { // 0으로 설정시 무제한
@@ -473,7 +555,16 @@ void update_gugeolUpgrade(FILE* fp, int* gugeolUpgrade)
 	fwrite(tempupgrade, MONEY_SIZE, 1, fp);
 	fclose(fp);
 }
-int login_record(FILE* fp, int* money, int* gugeolUpgrade)
+void update_borrowmoney(FILE* fp, int* borrowmoney)
+{
+	char tempborrowmoney[MONEY_SIZE] = { 0 };
+	fopen_s(&fp, "user.dat", "r+");
+	fseek(fp, startadd - MONEY_SIZE * 3, SEEK_SET);
+	sprintf_s(tempborrowmoney, MONEY_SIZE, "%d", *borrowmoney);
+	fwrite(tempborrowmoney, MONEY_SIZE, 1, fp);
+	fclose(fp);
+}
+int login_record(FILE* fp, int* money, int* gugeolUpgrade,int *borrowmoney)
 {
 	char id[LOGIN_SIZE] = { 0 };
 	char password[LOGIN_SIZE] = { 0 };
@@ -485,6 +576,7 @@ int login_record(FILE* fp, int* money, int* gugeolUpgrade)
 		fread(&data, sizeof(data), 1, fp);
 		if ((strcmp(data.id, id) == 0) && (strcmp(data.password, password) == 0)) {	// 이름을 비교한다
 			startadd = ftell(fp);
+			*borrowmoney = atoi(data.savedborrowmoney);
 			*gugeolUpgrade = atoi(data.savedGugeolUpgrade);
 			*money = atoi(data.savedUserMoney);
 			PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
@@ -521,9 +613,11 @@ USER get_record(FILE* fp)
 	{
 		data.savedUserMoney[i] = '0';
 		data.savedGugeolUpgrade[i] = '0';
+		data.savedborrowmoney[i] = '0';
 	}
 	data.savedUserMoney[MONEY_SIZE-1] = '\0';
 	data.savedGugeolUpgrade[MONEY_SIZE-1] = '\0';
+	data.savedborrowmoney[MONEY_SIZE - 1] = '\0';
 	fflush(stdin);		// 표준 입력의 버퍼를 비운다
 	do {
 		login_menu(data.id,data.password);
@@ -539,7 +633,8 @@ USER get_record(FILE* fp)
 	} while (1);
 	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 	data.savedGugeolUpgrade[9] = '1'; // 1
-	data.savedUserMoney[4] = '1'; // 100000
+	data.savedUserMoney[1] = '1'; // 1000
+	data.savedborrowmoney[2] = '1'; // 10000000
 	return data;
 }
 int id_check(FILE* fp, char* id) {
@@ -560,4 +655,80 @@ void quit_message() {
 		Sleep(300);
 		printf(".");
 	}
+}
+void ending() {
+	mciOpen.lpstrElementName = "sound\\bgm.mp3"; // 파일 경로 입력
+	mciOpen.lpstrDeviceType = "mpegvideo";
+
+	mciSendCommand(NULL, MCI_OPEN, MCI_OPEN_ELEMENT | MCI_OPEN_TYPE,
+		(DWORD)(LPVOID)&mciOpen);
+
+	dwID = mciOpen.wDeviceID;
+
+	mciSendCommand(dwID, MCI_PLAY, MCI_DGV_PLAY_REPEAT, // play & repeat
+		(DWORD)(LPVOID)&m_mciPlayParms);
+	system("cls");
+	for (int i = 1; i < 92; i++)
+	{
+		system("cls");
+		textcolor(15);
+		if (i <= 35) {
+			gotoxy(14, 37 - i); printf("♠Yeungjin Casino♠");
+		}
+		
+		
+		if (i <= 47) {
+			textcolor(12);
+			gotoxy(17, 47 - i); printf("PM, 포커, 룰렛");
+			textcolor(15);
+		}
+		if (i <= 49) {
+			gotoxy(20, 49 - i); printf("전 석 진");
+		}
+		if (i <= 54) {
+			textcolor(12);
+			gotoxy(21, 54 - i); printf("블랙잭");
+			textcolor(15);
+		}
+		if (i <= 56) {
+			gotoxy(20, 56 - i); printf("김 재 현");
+		}
+		if (i <= 61) {
+			textcolor(12);
+			gotoxy(22, 61 - i); printf("경마");
+			textcolor(15);
+		}
+		if (i <= 63) {
+			gotoxy(20, 63 - i); printf("권 오 윤");
+		}
+		if (i <= 68) {
+			textcolor(12);
+			gotoxy(20, 68 - i); printf("슬릇머신");
+			textcolor(15);
+		}
+		if (i <= 70) {
+			gotoxy(20, 70 - i); printf("전 태 웅");
+		}
+		if (i <= 75) {
+			textcolor(12);
+			gotoxy(21, 75 - i); printf("디자인");
+			textcolor(15);
+		}
+		if (i <= 77) {
+			gotoxy(20, 77 - i); printf("최 진 영");
+		}
+		textcolor(12);
+		if (i <= 87) {
+			gotoxy(13, 87 - i); printf("♠Thanks For Playing!♠");
+		}
+
+		gotoxy(0, 0);
+		Sleep(400);
+
+
+	}
+	textcolor(15);
+	system("pause");
+	mciSendCommandW(dwID, MCI_CLOSE, 0, NULL);
+	system("cls");
 }

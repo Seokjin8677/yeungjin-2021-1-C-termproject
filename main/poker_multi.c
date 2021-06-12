@@ -233,6 +233,7 @@ void poker_client(int *money) {
 	insertmoney = atoi(moneys);
 
 	system("cls");
+	printf("소지하고 있는 돈: %d\n", *money);
 	printf("게임의 판돈은 %d원 입니다.\n진행하려면 아무키나 누르거나, 게임을 나가려면 q를 입력하세요.\n", insertmoney); // 판돈을 보고 게임에 참가할지 결정
 
 	ch = _getch();
