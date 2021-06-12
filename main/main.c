@@ -124,28 +124,28 @@ int main(void) {
 					break;
 				case 1:
 					printf("블랙잭\n");
-					_getch();
+					system("pause");
 					system("cls");
 					break;
 				case 2:
 					printf("슬릇머신\n");
-					_getch();
+					system("pause");
 					system("cls");
 					break;
 				case 3:
 					printf("룰렛\n");
-					_getch();
+					system("pause");
 					system("cls");
 					break;
 				case 4:
 					printf("경마\n");
-					_getch();
+					system("pause");
 					system("cls");
 					break;
 				case 5:
 					printf("잔액: %d\n", money);
 					printf("구걸스킬: %d\n", gugeolUpgrade);
-					_getch();
+					system("pause");
 					system("cls");
 					break;
 				case 6:
@@ -206,7 +206,7 @@ int main(void) {
 					break;
 				case 8:
 					printf("설명\n");
-					_getch();
+					system("pause");
 					system("cls");
 					break;
 				case 9:
@@ -232,13 +232,13 @@ int main(void) {
 						case 0:
 							printf("판돈을 입력하세요: ");
 							scanf_s("%d", &insertmoney);
-							if (moneyCheck(&money, insertmoney,100000)) {
+							if (moneyCheck(&money, insertmoney,0)) {
 								system("cls");
 								money -= insertmoney;
 								printf("사용자의 접속을 기다리는 중...\n이전으로 가려면 q를 입력하세요.\n");
 								money += poker_server(insertmoney);
+								update_money(fp, &money);
 							}
-							update_money(fp, &money);
 							break;
 						case 1:
 							poker_client(&money);
@@ -251,13 +251,14 @@ int main(void) {
 					sel = 0;
 					break;
 				case 1:
-					printf("준비중입니다.\n");
-					_getch();
+					printf("블랙잭 멀티\n");
+					system("pause");
 					system("cls");
 					break;
 				case 2:
-					printf("준비중입니다.\n");
-					_getch();
+					printf("잔액: %d\n", money);
+					printf("구걸스킬: %d\n", gugeolUpgrade);
+					system("pause");
 					system("cls");
 					break;
 				case 3:
@@ -368,12 +369,14 @@ void gotoxy(int x, int y)
 
 int moneyCheck(int *money, int insertmoney, int maxmoney) {
 	rewind(stdin);
-	if (insertmoney > maxmoney) {
-		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
-		printf("%d원 이하만 가능합니다!\n",maxmoney);
-		system("pause");
-		system("cls");
-		return 0;
+	if (maxmoney != 0) { // 0으로 설정시 무제한
+		if (insertmoney > maxmoney) {
+			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+			printf("%d원 이하만 가능합니다!\n", maxmoney);
+			system("pause");
+			system("cls");
+			return 0;
+		}
 	}
 	if (insertmoney > *money) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
