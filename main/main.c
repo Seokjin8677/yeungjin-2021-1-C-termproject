@@ -11,7 +11,6 @@
 #define MULTI_MENU 4
 #define MULTI_SEL_MENU 3
 #define SHOP_MENU 3
-#define YESORNO_MENU 2
 #define KEY_UP  0x48
 #define KEY_DOWN 0x50
 #define KEY_LEFT  0x4B
@@ -31,6 +30,7 @@ extern int poker();
 extern int pokersingle(int, int);
 extern int poker_server(int);
 extern void poker_client(int*);
+extern int roulette(int);
 void gotoxy(int, int);
 void quit_message();
 void CursorView() // 커서 숨기는 함수
@@ -40,8 +40,8 @@ void CursorView() // 커서 숨기는 함수
 	cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
-int pullDownMenu(int,char**); // 메모리 절약을 위한 래그드 배열 사용
-int pullDownMenu_yesorno(int max_menu, char** menulist, int x, int y);
+int pullDownMenu(int,char**,int x, int y); // 메모리 절약을 위한 래그드 배열 사용
+int pullDownMenu_yesorno(char** menulist, int x, int y);
 int id_check(FILE*, char*);
 int sel = 0;
 long startadd; // 값 불러오기 위한 위치값 저장
@@ -62,7 +62,7 @@ int main(void) {
 	char* shopmenulist[SHOP_MENU] = { "구걸 업그레이드","테스트","이전"};
 	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","잔액조회","이전" };
 	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
-	char* yesornomenulist[YESORNO_MENU] = {"예","아니오"};
+	char* yesornomenulist[2] = {"예","아니오"};
 	CursorView(); // 커서 숨기기
 	FILE* fp = NULL;
 	int loginStatus = 0;
@@ -73,7 +73,7 @@ int main(void) {
 		exit(1);
 	}
 	do {
-		menu = pullDownMenu(MAIN_MENU, loginmenulist);
+		menu = pullDownMenu(MAIN_MENU, loginmenulist,1,3);
 		switch (menu)
 		{
 		case 0:
@@ -102,12 +102,12 @@ int main(void) {
 		system("cls");
 	} while (loginStatus != 1);
 	do {
-		menu = pullDownMenu(MAIN_MENU, mainmenulist);
+		menu = pullDownMenu(MAIN_MENU, mainmenulist,1,3);
 		switch (menu)
 		{
 		case 0:
 			do {
-				menu = pullDownMenu(SINGLE_MENU, singlemenulist);
+				menu = pullDownMenu(SINGLE_MENU, singlemenulist,1,3);
 				switch (menu)
 				{
 				case 0:
@@ -132,10 +132,17 @@ int main(void) {
 					system("pause");
 					system("cls");
 					break;
-				case 3:
-					printf("룰렛\n");
-					system("pause");
-					system("cls");
+				case 3: // 룰렛
+					printf("판돈을 입력하세요(최대 10만원): ");
+					scanf_s("%d", &insertmoney);
+					if (moneyCheck(&money, insertmoney, 100000)) {
+						system("cls");
+						money -= insertmoney;
+						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
+						money += roulette(insertmoney);
+						update_money(fp, &money);
+						system("cls");
+					}
 					break;
 				case 4:
 					printf("경마\n");
@@ -163,7 +170,7 @@ int main(void) {
 					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
 					do
 					{
-						menu = pullDownMenu(SHOP_MENU, shopmenulist);
+						menu = pullDownMenu(SHOP_MENU, shopmenulist,1,3);
 						switch (menu)
 						{
 						case 0:
@@ -177,7 +184,7 @@ int main(void) {
 							}
 							printf("현재 스킬 Lv.%d\n",gugeolUpgrade);
 							printf("구매 하시겠습니까?(10,000원)\n");
-							if (pullDownMenu_yesorno(YESORNO_MENU, yesornomenulist, 3, 5) == 0) {
+							if (pullDownMenu_yesorno(yesornomenulist, 3, 5) == 0) {
 								if (moneyCheck(&money, 10000,100000)) {
 									money -= 10000;
 									update_money(fp, &money);
@@ -219,14 +226,14 @@ int main(void) {
 			sel = 0; // 멀티플레이 메뉴 접속 시 1번 메뉴부터 선택되게
 			do
 			{
-				menu = pullDownMenu(MULTI_MENU, multimenulist);
+				menu = pullDownMenu(MULTI_MENU, multimenulist,1,3);
 				switch (menu)
 				{
 				case 0:
 					sel = 0;
 					do
 					{
-						menu = pullDownMenu(MULTI_SEL_MENU, multimenu_pokerlist);
+						menu = pullDownMenu(MULTI_SEL_MENU, multimenu_pokerlist,1,3);
 						switch (menu)
 						{
 						case 0:
@@ -276,7 +283,7 @@ int main(void) {
 	return 0;
 }
 
-int pullDownMenu(int max_menu, char** menulist)
+int pullDownMenu(int max_menu, char** menulist,int x,int y)
 {
 	char ch;
 	while (1) {
@@ -286,16 +293,16 @@ int pullDownMenu(int max_menu, char** menulist)
 			else
 				textcolor(15);
 			if (max_menu % 2 == 1) {
-				gotoxy(20 * i + 1, 3);
+				gotoxy(20 * i + x, y);
 				printf("%d.%s", i + 1, menulist[i]);
 			}
 			else {
 				if (i < max_menu / 2) {
-					gotoxy(20 * i + 1, 3);
+					gotoxy(20 * i + x, y);
 					printf("%d.%s", i + 1, menulist[i]);
 				}
 				else {
-					gotoxy(20 * (i - max_menu / 2) + 1, 6);
+					gotoxy(20 * (i - max_menu / 2) +x, 3+y);
 					printf("%d.%s", i + 1, menulist[i]);
 				}
 			}
@@ -327,12 +334,12 @@ int pullDownMenu(int max_menu, char** menulist)
 	system("cls");
 	return sel;
 }
-int pullDownMenu_yesorno(int max_menu, char** menulist,int x, int y)
+int pullDownMenu_yesorno(char** menulist,int x, int y)
 {
 	char ch;
 	int sel = 0;
 	while (1) {
-		for (int i = 0; i < max_menu; i++) {
+		for (int i = 0; i < 2; i++) {
 			if (sel == i)
 				textcolor(12);
 			else
@@ -344,11 +351,11 @@ int pullDownMenu_yesorno(int max_menu, char** menulist,int x, int y)
 		ch = _getch();
 		if (ch == KEY_LEFT) {
 			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
-			sel = ((sel - 1) + max_menu) % max_menu;
+			sel = ((sel - 1) + 2) % 2;
 		}
 		else if (ch == KEY_RIGHT) {
 			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
-			sel = (sel + 1) % max_menu;
+			sel = (sel + 1) % 2;
 		}
 		else if (ch == KEY_RETURN) {
 			PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
@@ -451,7 +458,7 @@ void login_menu(char* id, char* password) {
 void update_money(FILE* fp, int* money)
 {
 	char tempmoney[MONEY_SIZE] = { 0 };
-	fopen_s(fp, "user.dat", "r+");
+	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd - MONEY_SIZE, SEEK_SET);
 	sprintf_s(tempmoney, MONEY_SIZE,"%d",*money);
 	fwrite(tempmoney, MONEY_SIZE, 1, fp);
@@ -460,7 +467,7 @@ void update_money(FILE* fp, int* money)
 void update_gugeolUpgrade(FILE* fp, int* gugeolUpgrade)
 {
 	char tempupgrade[MONEY_SIZE] = { 0 };
-	fopen_s(fp, "user.dat", "r+");
+	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd - MONEY_SIZE*2, SEEK_SET);
 	sprintf_s(tempupgrade, MONEY_SIZE,"%d", *gugeolUpgrade);
 	fwrite(tempupgrade, MONEY_SIZE, 1, fp);
