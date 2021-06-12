@@ -24,7 +24,6 @@ int pokersingle(int, int);
 void card_print2(int , int);
 void pullDownMenu_poker(int*);
 int poker() {
-	srand(time(NULL));
 	int handtype;
 	int selcard2[5] = { 0 }; // 카드를 바꾸기 위한 배열
 	int cardlist[52] = {
@@ -139,26 +138,26 @@ int pokersingle(int money,int handtype) {
 	switch (handtype)
 	{
 	case 2:
-		printf("One Pair\n원금만 회수했다...\n");
-		return money;
+		printf("One Pair\n절반만 회수했다...\n");
+		return money * 0.5;
 	case 3:
-		printf("Two Pair\n%d원을 벌었다!\n", money * 2);
-		return money * 2;
-	case 4:
-		printf("Three Of A Kind\n%d원을 벌었다!\n", money * 3);
+		printf("Two Pair\n%d원을 벌었다!\n", money * 3);
 		return money * 3;
-	case 5:
-		printf("Straight\n%d원을 벌었다!\n", money * 5);
+	case 4:
+		printf("Three Of A Kind\n%d원을 벌었다!\n", money * 5);
 		return money * 5;
-	case 6:
-		printf("Flush\n%d원을 벌었다!\n", money * 10);
+	case 5:
+		printf("Straight\n%d원을 벌었다!\n", money * 10);
 		return money * 10;
-	case 7:
-		printf("Full House\n%d원을 벌었다!\n", money * 15);
+	case 6:
+		printf("Flush\n%d원을 벌었다!\n", money * 15);
 		return money * 15;
+	case 7:
+		printf("Full House\n%d원을 벌었다!\n", money * 30);
+		return money * 30;
 	case 8:
-		printf("Four Of A kind\n%d원을 벌었다!\n", money * 20);
-		return money * 20;
+		printf("Four Of A kind\n%d원을 벌었다!\n", money * 50);
+		return money * 50;
 	case 9:
 		printf("Straight Flush\n%d원을 벌었다!\n", money * 100);
 		return money * 100;
