@@ -42,6 +42,7 @@ MCI_PLAY_PARMS mciPlay;
 int dwID;
 int moneyCheck(int*, char*, int*, int);
 int moneyCheck_borrow(int*,char*, int*, int*, int*);
+extern int horse();
 extern int lotto();
 extern void textcolor(int);
 extern int poker();
@@ -185,13 +186,17 @@ int main(void) {
 					}
 					break;
 				case 4:
-					printf("판돈을 입력하세요: ");
-					scanf_s("%d", &insertmoney);
-					system("cls");
-					money -= insertmoney;
-					money += horse(insertmoney);
-					_getch();
-					system("cls");
+					printf("소지하고 있는 돈: %d\n", money); // 경마
+					printf("판돈을 입력하세요(최대 10만원): ");
+					scanf_s("%s", stringmoney, sizeof(stringmoney));
+					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
+						system("cls");
+						money -= insertmoney;
+						money += horse(insertmoney);
+						update_money(fp, &money);
+						system("pause");
+						system("cls");
+					}
 					break;
 					
 				case 5:
@@ -245,9 +250,13 @@ int main(void) {
 						money += 1000 * gugeolUpgrade;
 						update_money(fp, &money);
 						printf("%d원을 벌었습니다.\n", 1000 * gugeolUpgrade);
+						PlaySound(TEXT("sound\\coin.wav"), NULL, SND_ASYNC);
 					}
-					else
+					else {
 						printf("1000원 미만일때만 구걸이 가능합니다!\n");
+						PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+					}
+						
 					system("pause");
 					system("cls");
 					break;
@@ -263,6 +272,7 @@ int main(void) {
 							if (gugeolUpgrade >= 10) {
 								printf("현재 스킬 Lv.MAX\n");
 								printf("이미 최대 레벨에 도달해서 구매할 수 없습니다!\n");
+								PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 								system("pause");
 								system("cls");
 								break;
@@ -292,12 +302,14 @@ int main(void) {
 							if (pullDownMenu_yesorno(yesornomenulist, 3, 5) == 0) {
 								if (money < 1000) {
 									printf("돈이 모자랍니다!");
+									PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 									system("pause");
 									system("cls");
 									break;
 								}
 								if (money  <= 1000+ gugeolUpgrade * 1000) {
-									printf("구걸해서 얻을 수 있는 돈보다 많아야 구매가 가능합니다!\n");
+									printf("%d원 보다 많아야 구매가 가능합니다!\n", 1000 + gugeolUpgrade * 1000);
+									PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 									system("pause");
 									system("cls");
 									break;
@@ -364,7 +376,7 @@ int main(void) {
 							printf("* Ace카드 : Aac카드는 1 또는 11로 계산됩니다.\n");
 							printf("* J Q K 카드 : J Q K 카드는 10 으로 계산됩니다.\n");
 							printf("\n***추가행동***\n");
-							printf("* Stay : 카드를 더이상 받지않고 딜러의 턴으로 넘깁니다.\n* Hit : 카드한장을 더 받습니다.\n* Surrender : 자신의 패배를 인정하고 배팅금의 절반을 받습니다.\n* DoubleDown : 추가배팅을 하는대신 카드를 한장 더받고 딜러의 턴으론 넘깁니다.");
+							printf("* Stay : 카드를 더이상 받지않고 딜러의 턴으로 넘깁니다.\n* Hit : 카드한장을 더 받습니다.\n* Surrender : 자신의 패배를 인정하고 배팅금의 절반을 받습니다.\n* DoubleDown : 추가배팅을 하는대신 카드를 한장 더받고 딜러의 턴으론 넘깁니다.\n");
 							system("pause");
 							system("cls");
 							break;
@@ -577,7 +589,7 @@ int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borro
 	}
 	if (*insertmoney <= 1000+*gugeolUpgrade*1000) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
-		printf("구걸할 수 있는 돈보다는 많아야 합니다!\n");
+		printf("%d원 보다는 많아야 합니다!\n", 1000 + *gugeolUpgrade * 1000);
 		system("pause");
 		system("cls");
 		return 0;

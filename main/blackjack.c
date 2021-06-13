@@ -152,6 +152,7 @@ int blackjack(int insertmoney,int* money) {
 					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf("\n black Jack\n");
+					PlaySound(TEXT("sound\\lose.wav"), NULL, SND_ASYNC);
 					system("pause");
 					system("cls");
 					return 0;
@@ -174,6 +175,7 @@ int blackjack(int insertmoney,int* money) {
 					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf("\n black Jack\n");
+					PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
 					/*_getch();
 					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
@@ -287,6 +289,7 @@ int blackjack(int insertmoney,int* money) {
 					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf(" Bust (player)\n");
+					PlaySound(TEXT("sound\\lose.wav"), NULL, SND_ASYNC);
 					system("pause");
 					system("cls");
 					return 0;
@@ -307,6 +310,7 @@ int blackjack(int insertmoney,int* money) {
 					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf(" Surrender\n");
+					PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 					system("pause");
 					system("cls");
 					return insertmoney/2;
@@ -352,6 +356,8 @@ int blackjack(int insertmoney,int* money) {
 				if (flag == 1) { //Bust 확인
 					gotoxy(0, 21);
 					printf(" Bust (Dealer)\n");
+					printf(" 플레이어 승\n");
+					PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
 					system("pause");
 					system("cls");
 					return insertmoney * 2;
@@ -377,6 +383,7 @@ int blackjack(int insertmoney,int* money) {
 					//*money += insertmoney; //배팅금액 
 					gotoxy(0, 23);
 					printf(" Push(동점)\n");
+					PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 					system("pause");
 					system("cls");
 					return insertmoney;
@@ -384,6 +391,7 @@ int blackjack(int insertmoney,int* money) {
 				else if (card_sum(playerCard, player_index) < card_sum(dealerCard, dealer_index)) { //딜러가 높을시
 					gotoxy(0, 23);
 					printf(" 딜러 승\n");
+					PlaySound(TEXT("sound\\lose.wav"), NULL, SND_ASYNC);
 					system("pause");
 					system("cls");
 					return 0;
@@ -392,6 +400,7 @@ int blackjack(int insertmoney,int* money) {
 					//*money += insertmoney * 2;
 					gotoxy(0, 23);
 					printf(" 플레이어 승\n");
+					PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
 					system("pause");
 					system("cls");
 					return insertmoney * 2;
@@ -489,23 +498,23 @@ int pullDownMenuBlackjack(int max_menu, char** menulist)
 		textcolor(15);
 		ch = _getch();
 		if (ch == KEY_LEFT) {
-			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - 1) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_RIGHT) {
-			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = (sel + 1) % max_menu;
 		}
 		else if (ch == KEY_UP && max_menu % 2 == 0) {
-			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel + max_menu / 2) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_DOWN && max_menu % 2 == 0) {
-			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - max_menu / 2) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_RETURN) {
-			//PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 			break;
 		}
 		Sleep(1);
@@ -533,23 +542,23 @@ int choiceBlackjack(int max_menu, char** menulist)
 		textcolor(15);
 		ch = _getch();
 		if (ch == KEY_LEFT) {
-			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - 1) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_RIGHT) {
-			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = (sel + 1) % max_menu;
 		}
 		else if (ch == KEY_UP && max_menu % 2 == 0) {
-			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel + max_menu / 2) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_DOWN && max_menu % 2 == 0) {
-			//PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button2.wav"), NULL, SND_ASYNC);
 			sel = ((sel - max_menu / 2) + max_menu) % max_menu;
 		}
 		else if (ch == KEY_RETURN) {
-			//PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
+			PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 			break;
 		}
 		Sleep(1);
@@ -807,7 +816,7 @@ void blackjackDealerPrint(int* arr, int size) { // 포커 패 출력
 		temp = (arr[i] % 13) + 1; //13으로 나눈값의 나머지
 		suite = arr[i] / 13; //13으로 나눈값
 
-	   //PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
+		PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
 
 		gotoxy(3 + i * 15, 2);
 		printf("┏━━━━━━━┓"); // 카드 모양 출력
@@ -888,7 +897,7 @@ void blackjackPlayerPrint(int* arr, int size) { // 포커 패 출력
 		temp = (arr[i] % 13) + 1; //13으로 나눈값의 나머지
 		suite = arr[i] / 13; //13으로 나눈값
 
-	   //PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
+	    PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
 
 		gotoxy(3 + i * 15, 1 + 11);
 		printf("┏━━━━━━━┓"); // 카드 모양 출력
