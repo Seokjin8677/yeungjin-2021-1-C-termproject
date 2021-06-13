@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
-#include <Windows.h>
-#include <time.h>
+#include "modm.h"
 
 
 extern void gotoxy(int x, int y);

@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <conio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <windows.h>
+#include "modm.h"
 
 extern void gotoxy(int, int);
 void printhorsefield();
