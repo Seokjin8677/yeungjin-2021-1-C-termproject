@@ -42,7 +42,7 @@ MCI_PLAY_PARMS mciPlay;
 int dwID;
 int moneyCheck(int*, char*, int*, int);
 int moneyCheck_borrow(int*,char*, int*, int*, int*);
-extern int horse();
+extern int horse(int);
 extern int lotto();
 extern void textcolor(int);
 extern int poker();
