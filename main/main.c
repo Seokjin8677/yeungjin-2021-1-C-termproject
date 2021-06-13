@@ -42,6 +42,7 @@ MCI_PLAY_PARMS mciPlay;
 int dwID;
 int moneyCheck(int*, char*, int*, int);
 int moneyCheck_borrow(int*,char*, int*, int*, int*);
+extern int lotto();
 extern void textcolor(int);
 extern int poker();
 extern int pokersingle(int, int);
@@ -50,6 +51,7 @@ extern void poker_client(int*);
 extern int roulette(int);
 extern int blackjack(int,int*);
 extern void mySHA(unsigned char*, unsigned char*);
+void timeprocess(char *);
 void gotoxy(int, int);
 void quit_message();
 void CursorView() // 커서 숨기는 함수
@@ -80,8 +82,8 @@ int main(void) {
 	int insertmoney;
 	char *loginmenulist[MAIN_MENU] = {"로그인","계정생성","종료"};
 	char *mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
-	char *singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","은행","돈벌기","상점","설명","이전" };
-	char* shopmenulist[SHOP_MENU] = { "구걸 업그레이드","테스트","이전"};
+	char *singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","은행","구걸하기","상점","설명","이전" };
+	char* shopmenulist[SHOP_MENU] = { "구걸 업그레이드","로또","이전"};
 	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","이전" };
 	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
 	char* bankmenulist[BANK_MENU] = {"잔액조회","대출금 확인","대출상환","이전"};
@@ -234,6 +236,7 @@ int main(void) {
 					break;
 				case 6:
 					if (money < 1000) {
+						timeprocess("구걸중");
 						money += 1000 * gugeolUpgrade;
 						update_money(fp, &money);
 						printf("%d원을 벌었습니다.\n", 1000 * gugeolUpgrade);
@@ -278,8 +281,29 @@ int main(void) {
 							system("cls");
 							break;
 						case 1:
-							printf("준비중입니다.\n");
-							_getch();
+							printf("로또를 구매합니다.\n");
+							printf("소지하고 있는 돈: %d\n", money);
+							printf("구매 하시겠습니까?(1,000원)\n");
+							if (pullDownMenu_yesorno(yesornomenulist, 3, 5) == 0) {
+								if (money < 1000) {
+									printf("돈이 모자랍니다!");
+									system("pause");
+									system("cls");
+									break;
+								}
+								if (money  <= 1000+ gugeolUpgrade * 1000) {
+									printf("구걸해서 얻을 수 있는 돈보다 많아야 구매가 가능합니다!\n");
+									system("pause");
+									system("cls");
+									break;
+								}
+								money -= 1000;
+								money += lotto();
+								gotoxy(0, 18);
+								update_money(fp, &money);
+								system("pause");
+							}
+							
 							system("cls");
 							break;
 						case 2:
@@ -364,7 +388,7 @@ int main(void) {
 							break;
 						}
 					} while (menu != 7);
-					sel = 8; // 메인 메뉴로 갈시 상점 메뉴 선택되게
+					sel = 8; // 메인 메뉴로 갈시 메뉴 선택되게
 					break;
 				case 9:
 					break;
@@ -532,21 +556,21 @@ int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borro
 		}
 	}
 	*insertmoney = atoi(stringmoney);
-	if (insertmoney > *borrowmoney) {
+	if (*insertmoney > *borrowmoney) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("빚보다 많이 갚을 수 없습니다!\n");
 		system("pause");
 		system("cls");
 		return 0;
 	}
-	if (insertmoney > *money) {
+	if (*insertmoney > *money) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("가지고 있는 돈이 적습니다!\n");
 		system("pause");
 		system("cls");
 		return 0;
 	}
-	if (insertmoney <= *gugeolUpgrade*1000) {
+	if (*insertmoney <= 1000+*gugeolUpgrade*1000) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("구걸할 수 있는 돈보다는 많아야 합니다!\n");
 		system("pause");
@@ -774,6 +798,21 @@ void quit_message() {
 		printf(".");
 	}
 }
+void timeprocess(char * str) {
+	for (int i = 0; i < 5; i++)
+	{
+		printf("%s",str);
+		Sleep(250);
+		printf(".");
+		Sleep(250);
+		printf(".");
+		Sleep(250);
+		printf(".");
+		Sleep(250);
+		system("cls");
+	}
+}
+
 void ending() {
 	mciOpen.lpstrElementName = "sound\\bgm.mp3"; // 파일 경로 입력
 	mciOpen.lpstrDeviceType = "mpegvideo";
@@ -839,7 +878,7 @@ void ending() {
 			textcolor(15);
 		}
 		if (i <= 84) {
-			gotoxy(20, 84 - i); printf("2021/05/21~2021/06/13");
+			gotoxy(20, 84 - i); printf("2021/05/06~2021/06/13");
 		}
 
 		if (i <= 87) {

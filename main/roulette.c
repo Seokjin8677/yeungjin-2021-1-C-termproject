@@ -36,6 +36,8 @@ int roulette(int insertmoney) {
 				printf("0에서 36까지만 입력하세요!\n");
 				system("pause");
 				system("cls");
+				sel = 3;
+				return returnmoney = insertmoney;
 			}
 		} while (user_roulette < 0 || user_roulette > 36);
 		break;
