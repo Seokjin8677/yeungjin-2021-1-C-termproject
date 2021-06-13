@@ -10,17 +10,20 @@
 #define KEY_RIGHT 0x4D
 #define KEY_RETURN 0x0D
 
-
-void makingCard(int card_deck[]);
-void swap(int arr[], int i, int j);
-void shuffle(int* arr, int n);
-void get_playingCard(int* deck, int* cardArray, int index);
-void card_table(int* dealerCard, int dealer_index, int* playerCard, int player_index, int money, int batMoney);
-void printDealerCardArray(int* arr, int size);
-void printPlayerCardArray(int* arr, int size);
-void blackjackDealerPrint(int* arr, int size);
-void blackjackPlayerPrint(int* arr, int size);
-int choiceBlackjack(int max_menu, char** menulist);
+extern void textcolor(int);
+extern void gotoxy(int, int);
+void makingCard(int*);
+void swap(int *, int , int );
+void shuffle(int* , int );
+void get_playingCard(int* , int* , int );
+void card_table(int* , int , int* , int , int* , int );
+void printDealerCardArray(int* , int );
+void printPlayerCardArray(int* , int );
+void blackjackDealerPrint(int* , int );
+void blackjackPlayerPrint(int* , int );
+int choiceBlackjack(int , char** );
+int pullDownMenuBlackjack(int, char**);
+int card_sum(int*, int);
 int hideFlag = 0;
 
 int playingCard[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,	// CLOVER
@@ -35,7 +38,7 @@ int dealerCard[15] = { 0 }; ////dealer가 게임중 가질수있는 카드의 배열
 
 
 
-int blackjack(int money) {
+int blackjack(int insertmoney,int* money) {
 	gotoxy(0, 0);
 	char* blackjackChoiceList[] = { "Stay", "Hit", "Surrender", "DoubleDown" };
 	char* blackMenuList[] = { "게임시작","도움말","뒤로가기" };
@@ -54,52 +57,54 @@ int blackjack(int money) {
 	int player_index = 0;//플레이어 카드배열 인덱스값
 	int dealer_index = 0;////딜러 카드배열 인덱스값
 
-	int game_money = money;  //보유머니
-	int bating_money; //배팅머니
+	//int game_money = money;  //보유머니
+	//int bating_money; //배팅머니
 
 	while (1)
 	{
 		gotoxy(0, 0);
 		rewind(stdin);
-		int temp = 0; //선택값을 담기위한 tmep 변수
+		/*int temp = 0; //선택값을 담기위한 tmep 변수
 		temp = pullDownMenuBlackjack(3, blackMenuList); // 메뉴의선택값 반환
 		if (temp < 0 || temp>4) {
 			system("cls");
 			continue;
 		}
-		else if (temp == 0) {//게임시작
+		else if (temp == 0) {//게임시작*/
 
 			while (1) {
 				system("cls");
 				int temp = 0; //blackjack 메뉴선택을 위한 변수
-				if (game_money <= 0) {
+				/*if (*money <= 0) {
 					printf("보유금이 0원입니다");
 					_getch();
 					break;
 
-				}
+				}*/
 
 				player_index = 0; //게임시작시 딜러와 플레이어 카드배열 인덱스 초기화.
 				dealer_index = 0;
-				bating_money = 0; //배팅머니 초기화
+				//bating_money = 0; //배팅머니 초기화
 				hideFlag = 1;
 
 
 				//int test = 25 / 13;
-				printf(" 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", game_money); //배팅머니 입력받기
+				//printf(" 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", game_money); //배팅머니 입력받기
+				//printf(" 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", *money); //배팅머니 입력받기
 
-				scanf_s("%d", &bating_money);
-				rewind(stdin);
+				//scanf_s("%d", &bating_money);
+
+				/*rewind(stdin);
 				if (bating_money < 1000 || game_money - bating_money < 0) { //배팅머니은 최소 1000원
 					system("cls");
 					rewind(stdin);
 					continue;
-				}
+				} 
 				else {
 					game_money -= bating_money; //게임머니에서 배팅머니를 빼준다.
 
 				}
-				system("cls");
+				system("cls");*/
 
 				//Start
 
@@ -116,12 +121,12 @@ int blackjack(int money) {
 				system("cls");
 				for (int i = 0; i < 2; i++) {
 					//딜러와 플레이어 모두 카드2장씩을 받는다.
-					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+					card_table(dealerCard, dealer_index, playerCard, player_index,money, insertmoney);
 					_getch();
 					system("cls");
 					get_playingCard(card_deck, dealerCard, dealer_index);
 					dealer_index += 1;
-					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					_getch();
 					system("cls");
 					get_playingCard(card_deck, playerCard, player_index);
@@ -143,7 +148,7 @@ int blackjack(int money) {
 				//2장뽑았을때 21이 나오면 blackjack(배팅머니 2배)
 				if (card_sum(dealerCard, dealer_index) == 21) { //딜러가 21일때
 					hideFlag = 0;
-					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf("\n black Jack\n");
 					_getch();
@@ -161,11 +166,11 @@ int blackjack(int money) {
 				}
 				else if (card_sum(playerCard, player_index) == 21) { //플레이어 21일때
 					hideFlag = 0;
-					game_money += bating_money * 3; //배팅금의 3배
-					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+					//*money += insertmoney * 3; //배팅금의 3배
+					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf("\n black Jack\n");
-					_getch();
+					/*_getch();
 					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
@@ -176,7 +181,10 @@ int blackjack(int money) {
 					else if (temp == 1) {
 						//메뉴로가기
 						break;
-					}
+					}*/
+					system("pause");
+					system("cls");
+					return insertmoney * 3;
 				}
 
 				int flag = 0; //bust 또는 surrender 확인 flag 
@@ -185,12 +193,12 @@ int blackjack(int money) {
 
 				//choice
 				while (1) { //플레이어가 stay or -1 잘못입력했을때 반복문 종료. -1 이 나오면 Stay.
-					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money); //현재 게임정보
+					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney); //현재 게임정보
 					int temp = 0; //선택값을 담기위한 tmep 변수
 					temp = choiceBlackjack(4, blackjackChoiceList); // 메뉴의선택값 반환
 					if (temp == 0 || temp == -1) {//1또는 잘못입력시 
 
-						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 						gotoxy(0, 21);
 						printf(" Stay\n");
 						_getch();
@@ -199,7 +207,7 @@ int blackjack(int money) {
 
 					}
 					else if (temp == 2) {
-						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 						gotoxy(0, 21);
 						printf(" Surrender\n");
 						_getch();
@@ -210,26 +218,26 @@ int blackjack(int money) {
 					}
 					else if (temp == 3) { //DoubleDown 
 					//한장 드로우 후 반복문 종료
-						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 
 						int temp_money;
 						gotoxy(0, 21);
-						printf(" 추가 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", game_money); //추가 배팅머니 입력받기
+						printf(" 추가 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", *money); //추가 배팅머니 입력받기
 						scanf_s("%d", &temp_money);
 
-						if (temp_money < 1000 || game_money - bating_money < 0) { //추가 배팅머니은 최소 1000원
+						if (temp_money < 1000 || *money - insertmoney < 0) { //추가 배팅머니은 최소 1000원
 							continue;
 						}
 						else {
-							bating_money += temp_money; //기존 배팅머니에 추가입력된 배팅머니를 더해준다.
-							game_money -= temp_money; //게임머니에서 배팅머니를 빼준다.
+							insertmoney += temp_money; //기존 배팅머니에 추가입력된 배팅머니를 더해준다.
+							*money -= temp_money; //게임머니에서 배팅머니를 빼준다.
 							system("cls");
 						}
 
 						get_playingCard(card_deck, playerCard, player_index); //Hit시 카드한장을 더 배열에 추기한다.
 						player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.
 
-						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 						gotoxy(0, 21);
 						printf(" DoubleDown\n");
 						_getch();
@@ -245,7 +253,7 @@ int blackjack(int money) {
 
 						get_playingCard(card_deck, playerCard, player_index); //Hit시 카드한장을 더 배열에 추기한다.
 						player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.	
-						card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 						gotoxy(0, 21);
 						printf(" Hit\n");
 						_getch();
@@ -265,16 +273,19 @@ int blackjack(int money) {
 
 
 
-				card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+				card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 				_getch();
 				system("cls");
 
 
 				if (flag == 1) { //Bust 확인
-					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf(" Bust (player)\n");
-					_getch();
+					system("pause");
+					system("cls");
+					return 0;
+					/*_getch();
 					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
@@ -285,14 +296,17 @@ int blackjack(int money) {
 						//메뉴로가기
 						system("cls");
 						break;
-					}
+					}*/
 				}
 				else if (flag == 2) {//Surrender 확인
-					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf(" Surrender\n");
-					_getch();
-					game_money += bating_money * 0.5; //배팅금의 0.5배만 차감
+					system("pause");
+					system("cls");
+					return insertmoney/2;
+					/*_getch();
+					*money += insertmoney * 0.5; //배팅금의 0.5배만 차감
 					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
@@ -303,7 +317,7 @@ int blackjack(int money) {
 						//메뉴로가기
 						system("cls");
 						break;
-					}
+					}*/
 
 				}
 
@@ -314,7 +328,7 @@ int blackjack(int money) {
 
 					get_playingCard(card_deck, dealerCard, dealer_index);
 					dealer_index += 1;
-					card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					_getch();
 					system("cls");
 
@@ -326,14 +340,18 @@ int blackjack(int money) {
 
 				}
 
-				card_table(dealerCard, dealer_index, playerCard, player_index, game_money, bating_money);
+				card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 				_getch();
 
 
 				if (flag == 1) { //Bust 확인
 					gotoxy(0, 21);
 					printf(" Bust (Dealer)\n");
-					game_money += bating_money * 2; //player 승리로 배팅금액 2배 휙득
+					printf(" Surrender\n");
+					system("pause");
+					system("cls");
+					return insertmoney * 2;
+					/* *money += insertmoney * 2; //player 승리로 배팅금액 2배 휙득
 					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
@@ -344,7 +362,7 @@ int blackjack(int money) {
 						//메뉴로가기
 						system("cls");
 						break;
-					}
+					}*/
 				}
 
 				gotoxy(0, 21);
@@ -352,20 +370,29 @@ int blackjack(int money) {
 				printf(" 플레이어합 : %d\n", card_sum(playerCard, player_index));
 
 				if (card_sum(dealerCard, dealer_index) == card_sum(playerCard, player_index)) { //비길시
-					game_money += bating_money; //배팅금액 
+					//*money += insertmoney; //배팅금액 
 					gotoxy(0, 23);
 					printf(" Push(동점)\n");
+					system("pause");
+					system("cls");
+					return insertmoney;
 				}
 				else if (card_sum(playerCard, player_index) < card_sum(dealerCard, dealer_index)) { //딜러가 높을시
 					gotoxy(0, 23);
 					printf(" 딜러 승\n");
+					system("pause");
+					system("cls");
+					return 0;
 				}
 				else {
-					game_money += bating_money * 2;
+					//*money += insertmoney * 2;
 					gotoxy(0, 23);
 					printf(" 플레이어 승\n");
+					system("pause");
+					system("cls");
+					return insertmoney * 2;
 				}
-
+				/*
 				_getch();
 
 				temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
@@ -378,10 +405,10 @@ int blackjack(int money) {
 					//메뉴로가기
 					system("cls");
 					break;
-				}
+				}*/
 			}
 
-		}
+		/*}
 		else if (temp == 1) {//도움말
 			system("cls");
 			printf("*******도움말*******\n");
@@ -408,19 +435,16 @@ int blackjack(int money) {
 		else
 		{
 			system("cls");
-			return money;
-		}
+			return insertmoney;
+		}*/
 	}
-
-
-
-	return 0;
+	return insertmoney;
 
 }
-void card_table(int* dealerCard, int dealer_index, int* playerCard, int player_index, int money, int batMoney) { //딜러카드 배열 과 플레이어 카드배열 출력(현재 게임정보)
+void card_table(int* dealerCard, int dealer_index, int* playerCard, int player_index, int* money, int batMoney) { //딜러카드 배열 과 플레이어 카드배열 출력(현재 게임정보)
 
 
-	printf("           보유자금 : %d  현재 배팅금액 :%d", money, batMoney);
+	printf("           보유자금 : %d  현재 배팅금액 :%d", *money, batMoney);
 	blackjackDealerPrint(dealerCard, dealer_index);
 	//printf("\n\n\n");
 	//printDealerCardArray(playerCard, player_index);
@@ -927,7 +951,7 @@ void blackjackPlayerPrint(int* arr, int size) { // 포커 패 출력
 
 }
 
-void makingCard(int card_deck[]) { //카드덱을 만드는 함수
+void makingCard(int* card_deck) { //카드덱을 만드는 함수
 	for (int i = 0; i < 52; i++) {
 		card_deck[i] = playingCard[i];
 	}
@@ -936,7 +960,7 @@ void makingCard(int card_deck[]) { //카드덱을 만드는 함수
 }
 
 
-void swap(int arr[], int i, int j) //셔플할떄 쓰이는 함수
+void swap(int* arr, int i, int j) //셔플할떄 쓰이는 함수
 {
 	int temp = arr[i];
 	arr[i] = arr[j];
@@ -945,8 +969,6 @@ void swap(int arr[], int i, int j) //셔플할떄 쓰이는 함수
 
 void shuffle(int* arr, int n)
 {
-	srand(time(NULL));
-
 	int temp = 0;
 	int rn;
 
@@ -966,7 +988,7 @@ void get_playingCard(int* deck, int* cardArray, int index) { //게임 끝나면 베열�
 	static int count = 0;
 	if (count >= DECK) {
 		count = 0;  //-1로 초기화
-		shuffle(*deck, DECK);  //카드셔플
+		shuffle(deck, DECK);  //카드셔플
 	}
 	else {
 		cardArray[index] = deck[count];

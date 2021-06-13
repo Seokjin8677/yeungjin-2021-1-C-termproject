@@ -156,7 +156,7 @@ int pokersingle(int money,int handtype) {
 		printf("Full House\n%d원을 벌었다!\n", money * 30);
 		return money * 30;
 	case 8:
-		printf("Four Of A kind\n%d원을 벌었다!\n", money * 50);
+		printf("Four Of A Kind\n%d원을 벌었다!\n", money * 50);
 		return money * 50;
 	case 9:
 		printf("Straight Flush\n%d원을 벌었다!\n", money * 100);

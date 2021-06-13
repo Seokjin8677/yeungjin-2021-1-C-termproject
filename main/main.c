@@ -22,6 +22,7 @@
 #define KEY_RIGHT 0x4D
 #define KEY_RETURN 0x0D
 #define MAX_MENU_CHAR 20
+#define EXPLAIN_MENU 8
 #define MONEY_SIZE 11
 
 typedef struct user {
@@ -47,6 +48,7 @@ extern int pokersingle(int, int);
 extern int poker_server(int);
 extern void poker_client(int*);
 extern int roulette(int);
+extern int blackjack(int,int*);
 extern void mySHA(unsigned char*, unsigned char*);
 void gotoxy(int, int);
 void quit_message();
@@ -83,6 +85,7 @@ int main(void) {
 	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","이전" };
 	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
 	char* bankmenulist[BANK_MENU] = {"잔액조회","대출금 확인","대출상환","이전"};
+	char* explainmenulist[EXPLAIN_MENU] = { "스토리","포커","블랙잭","슬릇머신","룰렛","경마","상점","이전" };
 	char* yesornomenulist[2] = {"예","아니오"};
 	unsigned char plain[32] = { 0 };
 	unsigned char encrypt[32] = { 0 };
@@ -135,7 +138,7 @@ int main(void) {
 				switch (menu)
 				{
 				case 0:
-					printf("소지하고 있는 돈: %d\n", money);
+					printf("소지하고 있는 돈: %d\n", money); // 포커
 					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%d", &insertmoney);
 					if (moneyCheck(&money,insertmoney,100000)) {
@@ -148,9 +151,17 @@ int main(void) {
 					}
 					break;
 				case 1:
-					money += blackjack(money);
-					_getch();
-					system("cls");
+					printf("소지하고 있는 돈: %d\n", money); // 블랙잭
+					printf("판돈을 입력하세요(최대 10만원): ");
+					scanf_s("%d", &insertmoney);
+					if (moneyCheck(&money, insertmoney, 100000)) {
+						system("cls");
+						money -= insertmoney;
+						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
+						money += blackjack(insertmoney,&money);
+						update_money(fp, &money);
+						system("cls");
+					}
 					break;
 				case 2:
 					printf("슬릇머신\n");
@@ -184,7 +195,6 @@ int main(void) {
 						{
 						case 0:
 							printf("소지금: %d\n", money);
-							printf("현위치: %d\n", startadd);
 							system("pause");
 							system("cls");
 							break;
@@ -258,13 +268,12 @@ int main(void) {
 									gugeolUpgrade++;
 									update_gugeolUpgrade(fp, &gugeolUpgrade);
 									printf("구매완료!\n");
+									system("pause");
 								}
 								else 
 									break;
 							}
-							else
-								printf("구매를 취소했습니다!\n");
-							system("pause");
+							
 							system("cls");
 							break;
 						case 1:
@@ -279,9 +288,82 @@ int main(void) {
 					sel = 7; // 메인 메뉴로 갈시 상점 메뉴 선택되게
 					break;
 				case 8:
-					printf("설명\n");
-					system("pause");
-					system("cls");
+					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
+					do
+					{
+						menu = pullDownMenu(EXPLAIN_MENU, explainmenulist, 1, 3);
+						switch (menu)
+						{
+						case 0: // 스토리
+							printf("당신은 무리한 투자로 인해 빚을 가득 안은 빚쟁이 입니다...\n");
+							printf("당신에게 유일하게 남은 것은 1000원짜리 지폐와 1000만원 빚 뿐 입니다...\n");
+							printf("과연 당신은 빚을 모두 갚아 빚쟁이를 벗어날 수 있을까요?\n");
+							printf("행운을 빕니다.\n");
+							system("pause");
+							system("cls");
+							break;
+						case 1: // 포커
+							printf("게임의 룰은 파이브 카드 드로우를 따릅니다.\n");
+							printf("*** 싱글 플레이 ***\n");
+							printf("방향키로 원하는 카드를 가르킨 후 스페이스 바를 눌러 바꿀 카드를 선택합니다.\n");
+							printf("엔터를 누르면 선택한 카드를 바꿉니다.\n");
+							printf("High Card: 0배\tOne Pair: 0.5배\n");
+							printf("Two Pair: 3배\tThree of A Kind: 5배\n");
+							printf("Straight: 10배\tFlush: 15배\n");
+							printf("Full House: 30배\tFour of A Kind: 50배\n");
+							printf("Straight Flush: 100배\tRoyal Straigh Flush: 500배\n");
+							printf("*** 멀티 플레이 ***\n");
+							printf("방장이 먼저 카드를 드로우 한 후 참가자가 카드를 드로우 합니다.\n");
+							printf("카드의 족보가 높은 사람이 돈을 가져갑니다.\n");
+							printf("같은 족보가 나오면 비깁니다.\n");
+							system("pause");
+							system("cls");
+							break;
+						case 2: // 블랙잭
+							printf("***게임진행 방식***\n");
+							printf("* 배팅금액을 정한후 게임이 시작됩니다.\n");
+							printf("* 첫시작에 딜러와 플레이어가 각각 카드 2장씩을 받습니다.\n");
+							printf("* 딜러는 자신의 카드 중 첫번째 한 장을 오픈합니다.\n");
+							printf("* 플레이어는 자신의 카드가 21 넘지않는 범위 내에서 추가행동을 할수있습니다.\n");
+							printf("* 플레이어의 턴이 종료되면 딜러의 카드 2장을 오픈 합니다.\n"); 
+							printf("* 딜러의 카드합이 17을 넘을때까지 추가카드를 뽑아야합니다.\n"); 
+							printf("* 딜러의 턴이 종료되면 21범위내에서 가장 가까운 사람이 승리하게 됩니다..\n");
+							printf("\n***게임규칙***\n");
+							printf("* Bust : 카드의합이 21이 넘게되면 패배하게됩니다.\n");
+							printf("* BlackJack : 첫턴의 카드의 합이 21일때 배팅금의 3배를 받게됩니다.\n");
+							printf("* Ace카드 : Aac카드는 1 또는 11로 계산됩니다.\n");
+							printf("* J Q K 카드 : J Q K 카드는 10 으로 계산됩니다.\n");
+							printf("\n***추가행동***\n");
+							printf("* Stay : 카드를 더이상 받지않고 딜러의 턴으로 넘깁니다.\n* Hit : 카드한장을 더 받습니다.\n* Surrender : 자신의 패배를 인정하고 배팅금의 절반을 받습니다.\n* DoubleDown : 추가배팅을 하는대신 카드를 한장 더받고 딜러의 턴으론 넘깁니다.");
+							system("pause");
+							system("cls");
+							break;
+						case 3: // 슬릇머신
+							system("pause");
+							system("cls");
+							break;
+						case 4: // 룰렛
+							printf("세가지 룰 중 하나를 선택합니다.\n");
+							printf("숫자 하나는 원하는 숫자를 선택한 뒤 맞으면 35배의 돈을 얻습니다.\n");
+							printf("홀짝은 홀짝을 선택한 뒤 맞으면 2배의 돈을 얻습니다.\n");
+							printf("1~18/19~36은 원하는 범위를 선택한 뒤 맞으면 2배의 돈을 얻습니다.\n");
+							printf("0의 경우 홀수, 짝수도 아니고 범위에 속하지 않으므로 꽝 입니다.\n");
+							system("pause");
+							system("cls");
+							break;
+						case 5: // 경마
+							system("pause");
+							system("cls");
+							break;
+						case 6: // 상점
+							system("pause");
+							system("cls");
+							break;
+						case 7: //이전
+							break;
+						}
+					} while (menu != 7);
+					sel = 8; // 메인 메뉴로 갈시 상점 메뉴 선택되게
 					break;
 				case 9:
 					break;
