@@ -1,14 +1,6 @@
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-#include <windows.h>
+#include "modm.h"
 
-#define DECK 52
-#define KEY_UP  0x48
-#define KEY_DOWN 0x50
-#define KEY_LEFT  0x4B
-#define KEY_RIGHT 0x4D
-#define KEY_RETURN 0x0D
+
 
 extern void textcolor(int);
 extern void gotoxy(int, int);

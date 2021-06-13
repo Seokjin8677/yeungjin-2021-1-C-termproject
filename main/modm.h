@@ -49,6 +49,7 @@
 
 #endif
 
+
 #ifndef __WINMM_LIB__
 #define __WINMM_LIB__
 
@@ -78,6 +79,7 @@
 #define MAX_MENU_CHAR 20
 #define EXPLAIN_MENU 8
 #define MONEY_SIZE 11
+#define DECK 52
 
 #endif
 
