@@ -19,13 +19,13 @@ int slot(int money)
 
     // printf("\t슬롯머신 게임\n\n");
     PlaySound(TEXT("sound\\shot.wav"), NULL, SND_ASYNC);
-    gotoxy(7, 3);
+    gotoxy(44, 15);
 
     printf("┌──슬롯머신─┐");
 
-    gotoxy(7, 4);
+    gotoxy(30, 16);
 
-    draw_check02(6, 3); //바둑판생성
+    draw_check02(0, 0); //바둑판생성
 
     for (i = 0; i < 3; i++)
         reel_num[0][i] = rand() % 5; //난수생성
@@ -33,7 +33,7 @@ int slot(int money)
     reel_series(reel_num);      //기호순서 reel_num에다 순서를정함
     game_control(reel, reel_num, money);
     gotoxy(2, 16);
-    system("pause");
+    _getch();
     return thank;
 }
 
@@ -46,15 +46,15 @@ int slot(int money)
 
 void draw_check02(int c, int r)
 {
-    gotoxy(7, 4); printf("├───┬───┬───┤");
-    gotoxy(7, 5); printf("│   │   │   │");
-    gotoxy(7, 6); printf("│   │   │   │");
-    gotoxy(7, 7); printf("│   │   │   │");
-    gotoxy(7, 8); printf("│   │   │   │");
-    gotoxy(7, 9); printf("│   │   │   │");
-    gotoxy(7, 10); printf("├───┴───┴───┤");
-    gotoxy(7, 11); printf("│           │");
-    gotoxy(7, 12); printf("└───────────┘");
+    gotoxy(44, 16); printf("├───┬───┬───┤");
+    gotoxy(44, 17); printf("│   │   │   │");
+    gotoxy(44, 18); printf("│   │   │   │");
+    gotoxy(44, 19); printf("│   │   │   │");
+    gotoxy(44, 20); printf("│   │   │   │");
+    gotoxy(44, 21); printf("│   │   │   │");
+    gotoxy(44, 22); printf("├───┴───┴───┤");
+    gotoxy(44, 23); printf("│           │");
+    gotoxy(44, 24); printf("└───────────┘");
 }
 
 /*
@@ -113,7 +113,7 @@ void display_reel(char rc[][3], int r[][3])
 
         {
 
-            gotoxy(9 + j * 4, 5 + i * 2);
+            gotoxy(46 + j * 4, 17 + i * 2);
 
             printf("%s", rc[r[i][j]]);
 

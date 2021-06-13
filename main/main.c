@@ -94,6 +94,7 @@ int main(void) {
 	}
 
 	do {
+		background();
 		menu = pullDownMenu(MAIN_MENU, loginmenulist,MENU_X-2, MENU_Y);
 		switch (menu)
 		{
@@ -327,6 +328,7 @@ int main(void) {
 								printf("현재 스킬 Lv.MAX\n");
 								printf("이미 최대 레벨에 도달해서 구매할 수 없습니다!\n");
 								PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+								_getch();
 								system("cls");
 								break;
 							}
@@ -341,7 +343,7 @@ int main(void) {
 									gugeolUpgrade++;
 									update_gugeolUpgrade(fp, &gugeolUpgrade);
 									printf("구매완료!\n");
-									system("pause");
+									_getch();
 								}
 								else 
 									break;
@@ -358,14 +360,14 @@ int main(void) {
 								if (money < 1000) {
 									printf("돈이 모자랍니다!");
 									PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
-									system("pause");
+									_getch();
 									system("cls");
 									break;
 								}
 								if (money  <= 1000+ gugeolUpgrade * 1000) {
 									printf("%d원 보다 많아야 구매가 가능합니다!\n", 1000 + gugeolUpgrade * 1000);
 									PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
-									system("pause");
+									_getch();
 									system("cls");
 									break;
 								}
@@ -373,7 +375,7 @@ int main(void) {
 								money += lotto();
 								gotoxy(0, 18);
 								update_money(fp, &money);
-								system("pause");
+								_getch();
 							}
 							
 							system("cls");
@@ -496,7 +498,7 @@ int main(void) {
 					break;
 				case 1:
 					printf("블랙잭 멀티\n");
-					system("pause");
+					_getch();
 					system("cls");
 					break;
 				case 2:
@@ -606,7 +608,7 @@ int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borro
 		if (!isdigit(stringmoney[i])) {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("숫자만 넣어주세요!\n");
-			system("pause");
+			_getch();
 			system("cls");
 			return 0;
 		}
@@ -615,21 +617,21 @@ int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borro
 	if (*insertmoney > *borrowmoney) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("빚보다 많이 갚을 수 없습니다!\n");
-		system("pause");
+		_getch();
 		system("cls");
 		return 0;
 	}
 	if (*insertmoney > *money) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("가지고 있는 돈이 적습니다!\n");
-		system("pause");
+		_getch();
 		system("cls");
 		return 0;
 	}
 	if (*insertmoney <= 1000+*gugeolUpgrade*1000) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("%d원 보다는 많아야 합니다!\n", 1000 + *gugeolUpgrade * 1000);
-		system("pause");
+		_getch();
 		system("cls");
 		return 0;
 	}
@@ -642,7 +644,7 @@ int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 		if (!isdigit(stringmoney[i])) {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("숫자만 넣어주세요!\n");
-			system("pause");
+			_getch();
 			system("cls");
 			return 0;
 		}
@@ -652,7 +654,7 @@ int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 		if (*insertmoney > maxmoney) {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("%d원 이하만 가능합니다!\n", maxmoney);
-			system("pause");
+			_getch();
 			system("cls");
 			return 0;
 		}
@@ -660,14 +662,14 @@ int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 	if (*insertmoney > *money) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("가지고 있는 돈이 적습니다!\n");
-		system("pause");
+		_getch();
 		system("cls");
 		return 0;
 	}
 	if (*insertmoney <= 0) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("1원 이상 넣어주세요!\n");
-		system("pause");
+		_getch();
 		system("cls");
 		return 0;
 	}
@@ -799,7 +801,7 @@ void add_record(FILE* fp)
 	if (id_check(fp, data.id)) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("중복된 아이디 입니다!\n");
-		system("pause");
+		_getch();
 		return;
 	}
 	fseek(fp, 0, SEEK_END);	// 파일의 끝으로 간다	
@@ -832,7 +834,7 @@ USER get_record(FILE* fp)
 		if (data.id[0] == '\0' || data.password[0] == '\0') {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("공백을 입력할 수 없습니다.\n");
-			system("pause");
+			_getch();
 			system("cls");
 			continue;
 		}
@@ -958,7 +960,7 @@ void ending() {
 
 	}
 	
-	system("pause");
+	_getch();
 	mciSendCommandW(dwID, MCI_CLOSE, 0, NULL);
 	system("cls");
 }
