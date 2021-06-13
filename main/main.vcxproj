@@ -151,6 +151,7 @@
     <ClCompile Include="poker_multi.c" />
     <ClCompile Include="roulette.c" />
     <ClCompile Include="sha256.c" />
+    <ClCompile Include="blackjack.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KISA_SHA256.h" />

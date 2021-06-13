@@ -148,8 +148,8 @@ int main(void) {
 					}
 					break;
 				case 1:
-					printf("블랙잭\n");
-					system("pause");
+					money += blackjack(money);
+					_getch();
 					system("cls");
 					break;
 				case 2:
@@ -290,7 +290,6 @@ int main(void) {
 			sel = 0; // 메인 메뉴로 갈시 싱글플레이 메뉴 선택되게
 			break;
 		case 1:
-			sel = 0; // 멀티플레이 메뉴 접속 시 1번 메뉴부터 선택되게
 			do
 			{
 				menu = pullDownMenu(MULTI_MENU, multimenulist,1,3);

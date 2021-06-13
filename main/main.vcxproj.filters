@@ -27,6 +27,9 @@
     <ClCompile Include="roulette.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="blackjack.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="sha256.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
