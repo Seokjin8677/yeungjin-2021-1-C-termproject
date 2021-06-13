@@ -10,6 +10,7 @@
 #define KEY_RIGHT 0x4D
 #define KEY_RETURN 0x0D
 
+extern int moneycheck(int*, char*, int*, int );
 extern void textcolor(int);
 extern void gotoxy(int, int);
 void makingCard(int*);
@@ -230,7 +231,7 @@ int blackjack(int insertmoney,int* money) {
 						{
 							printf(" 추가 배팅금액을 정해주세요 / 잔고 : %d\n", *money); //추가 배팅머니 입력받기
 							scanf_s("%s", &stringmoney,sizeof(stringmoney));
-							if (moneyCheck(&money, stringmoney, &temp_money, 100000)) {
+							if (moneyCheck(money, stringmoney, &temp_money, 100000)) {
 								insertmoney += temp_money; //기존 배팅머니에 추가입력된 배팅머니를 더해준다.
 								*money -= temp_money; //게임머니에서 배팅머니를 빼준다.
 								break;
