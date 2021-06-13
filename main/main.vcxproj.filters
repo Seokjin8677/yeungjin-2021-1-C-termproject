@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="헤더 파일\Image">
+      <UniqueIdentifier>{8b81cd51-9a95-4dbc-90d3-da0ca061f7f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -58,6 +61,15 @@
     </ClInclude>
     <ClInclude Include="modm.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLayerInterface.h">
+      <Filter>헤더 파일\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLayer.h">
+      <Filter>헤더 파일\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLayerImpl.h">
+      <Filter>헤더 파일\Image</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

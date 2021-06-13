@@ -160,6 +160,9 @@
     <ClCompile Include="slot.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImageLayer.h" />
+    <ClInclude Include="ImageLayerImpl.h" />
+    <ClInclude Include="ImageLayerInterface.h" />
     <ClInclude Include="KISA_SHA256.h" />
     <ClInclude Include="modm.h" />
   </ItemGroup>
