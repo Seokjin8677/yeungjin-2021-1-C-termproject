@@ -10,9 +10,9 @@
 #define KEY_RIGHT 0x4D
 #define KEY_RETURN 0x0D
 
-extern int moneycheck(int*, char*, int*, int );
 extern void textcolor(int);
 extern void gotoxy(int, int);
+extern int moneyCheck(int*, char*, int*, int);
 void makingCard(int*);
 void swap(int *, int , int );
 void shuffle(int* , int );
