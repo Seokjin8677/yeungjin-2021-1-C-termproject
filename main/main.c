@@ -148,15 +148,7 @@ int main(void) {
 					}
 					break;
 				case 1:
-					//rewind("stdin");
-					printf("입력: ");
-					scanf("%s", plain);
-					mySHA(plain,encrypt);
-					for (int i = 0; i < 32; i++)
-					{
-						printf("%02X", encrypt[i]);
-					}
-					printf("\n");
+					printf("블랙잭\n");
 					system("pause");
 					system("cls");
 					break;
@@ -692,12 +684,9 @@ void ending() {
 	for (int i = 1; i < 92; i++)
 	{
 		system("cls");
-		textcolor(15);
 		if (i <= 35) {
 			gotoxy(14, 37 - i); printf("♠Yeungjin Casino♠");
 		}
-		
-		
 		if (i <= 47) {
 			textcolor(12);
 			gotoxy(17, 47 - i); printf("PM, 포커, 룰렛");
@@ -738,17 +727,28 @@ void ending() {
 		if (i <= 77) {
 			gotoxy(20, 77 - i); printf("최 진 영");
 		}
-		textcolor(12);
-		if (i <= 87) {
-			gotoxy(13, 87 - i); printf("♠Thanks For Playing!♠");
+
+		if (i <= 82) {
+			textcolor(12);
+			gotoxy(20, 82 - i); printf("제작기간");
+			textcolor(15);
+		}
+		if (i <= 84) {
+			gotoxy(20, 84 - i); printf("2021/05/21~2021/06/13");
 		}
 
+		if (i <= 87) {
+			textcolor(12);
+			gotoxy(13, 87 - i); printf("♠Thanks For Playing!♠");
+			textcolor(15);
+		}
+		
 		gotoxy(0, 0);
 		Sleep(400);
 
 
 	}
-	textcolor(15);
+	
 	system("pause");
 	mciSendCommandW(dwID, MCI_CLOSE, 0, NULL);
 	system("cls");

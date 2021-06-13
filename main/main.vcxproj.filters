@@ -30,9 +30,6 @@
     <ClCompile Include="sha256.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KISA_SHA256.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KISA_SHA256.h">
