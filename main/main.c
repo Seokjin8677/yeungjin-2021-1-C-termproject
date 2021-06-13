@@ -304,9 +304,11 @@ int main(void) {
 						PlaySound(TEXT("sound\\coin.wav"), NULL, SND_ASYNC);
 					}
 					else {
+						gotoxy(49, 20);
 						printf("1000원 미만일때만 구걸이 가능합니다!\n");
 						PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 					}
+					_getch();
 					system("cls");
 					break;
 				case 7:
@@ -392,44 +394,51 @@ int main(void) {
 						{
 						case 0: // 스토리
 							background();
+							gotoxy(55,10);
 							story_explain();
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 1: // 포커
 							background();
+							gotoxy(55, 5);
 							poker_explain();
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 2: // 블랙잭
 							background();
+							gotoxy(55, 3);
 							blackjack_explain();
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 3: // 슬릇머신
 							background();
+							gotoxy(55, 10);
 							slot_explain();
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 4: // 룰렛
 							background();
+							gotoxy(55, 10);
 							roulette_explain();
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 5: // 경마
 							background();
+							gotoxy(55, 10);
 							horse_explain();
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 6: // 상점
 							background();
+							gotoxy(53, 10);
 							shop_explain();
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 7: //이전
@@ -450,7 +459,7 @@ int main(void) {
 			do
 			{
 				background();
-				menu = pullDownMenu(MULTI_MENU, multimenulist,1,3);
+				menu = pullDownMenu(MULTI_MENU, multimenulist, MENU_X - 3, MENU_Y);
 				switch (menu)
 				{
 				case 0:
@@ -458,7 +467,7 @@ int main(void) {
 					do
 					{
 						background();
-						menu = pullDownMenu(MULTI_SEL_MENU, multimenu_pokerlist,1,3);
+						menu = pullDownMenu(MULTI_SEL_MENU, multimenu_pokerlist, MENU_X - 3, MENU_Y);
 						switch (menu)
 						{
 						case 0:
