@@ -45,6 +45,9 @@
     <ClCompile Include="explain.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="modm.c">
+      <Filter>헤더 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KISA_SHA256.h">

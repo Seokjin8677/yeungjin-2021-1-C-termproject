@@ -150,6 +150,7 @@
     <ClCompile Include="main.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)SHA\;</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="modm.c" />
     <ClCompile Include="poker.c" />
     <ClCompile Include="poker_multi.c" />
     <ClCompile Include="roulette.c" />

@@ -1,7 +1,6 @@
-#include <stdio.h>
-#include <Windows.h>
+#include "modm.h"
 
-extern void gotoxy(int, int);
+
 void story_explain() {
 	printf("\n\t당신은 무리한 투자로 인해 빚을 가득 안은 빚쟁이 입니다...\n");
 	printf("\t당신에게 유일하게 남은 것은 1000원짜리 지폐와 1000만원 빚 뿐 입니다...\n");

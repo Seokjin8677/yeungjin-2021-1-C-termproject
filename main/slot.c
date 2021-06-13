@@ -1,7 +1,6 @@
 #include "modm.h"
 
 
-extern void gotoxy(int x, int y);
 void draw_check02(int c, int r);
 void reel_series(int r[][3]);
 void display_reel(char rc[][3], int r[][3]);

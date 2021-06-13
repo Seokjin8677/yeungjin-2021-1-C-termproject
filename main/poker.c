@@ -1,6 +1,5 @@
 #include "modm.h"
 
-extern void gotoxy(int, int);
 void textcolor(int color_number)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color_number);

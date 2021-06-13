@@ -1,13 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <Windows.h>
+#include "modm.h"
 
-#define KEY_LEFT  0x4B
-#define KEY_RIGHT 0x4D
-#define KEY_UP  0x48
-#define KEY_DOWN 0x50
-#define KEY_RETURN 0x0D
-#define ROULETTE_MENU 3
 extern void gotoxy(int, int);
 extern int pullDownMenu(int, char**, int x, int y);
 extern int pullDownMenu_yesorno(char**, int, int);

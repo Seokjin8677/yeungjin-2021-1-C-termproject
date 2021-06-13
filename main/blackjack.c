@@ -2,9 +2,7 @@
 
 
 
-extern void textcolor(int);
-extern void gotoxy(int, int);
-extern int moneyCheck(int*, char*, int*, int);
+
 void makingCard(int*);
 void swap(int *, int , int );
 void shuffle(int* , int );
