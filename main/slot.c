@@ -379,7 +379,10 @@ int return_money(int r[][3], int money)
 {
     if (r[1][0] == r[1][1] && r[1][1] == r[1][2] && r[1][0] == r[1][2]) //문양이 세개 동일할경우(★, ♠, ◆)
     {
-        printf("\t돈을 얻었다");  return money*2;
+        printf("\t돈을 얻었다");  return money*5;
+    }
+    else if (r[1][0] == r[1][1] || r[1][1] == r[1][2] || r[1][0] == r[1][2]) {
+        printf("\t돈을 얻었다");  return money * 1.5;
     }
     else //당첨 사례가 없을 경우
         printf("\t돈을 읽었다");  return 0;
