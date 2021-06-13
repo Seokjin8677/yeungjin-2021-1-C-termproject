@@ -33,6 +33,9 @@
     <ClCompile Include="img.c">
       <Filter>소스 파일\img</Filter>
     </ClCompile>
+    <ClCompile Include="배경.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageLayer.h">

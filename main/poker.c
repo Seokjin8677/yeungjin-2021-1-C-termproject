@@ -227,6 +227,7 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 		}
 		Sleep(500);
 		textcolor(15);
+		
 	}
 	printf("\n\n");
 }

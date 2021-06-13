@@ -30,8 +30,8 @@ int main(void) {
 	
 
 	init();
+	background();
 	start_game();
-	
 	
 
 	
@@ -156,10 +156,8 @@ int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
 			else
 				textcolor(15);
 			if (max_menu % 2 == 1) {
-				single_1();
-				single_2();
-				single_3();
-				/*printf("%d.%s", i + 1, menulist[i]);	*/ 	//첫번째 메뉴 사진 넣을것
+				
+				*printf("%d.%s", i + 1, menulist[i]); 	//첫번째 메뉴 사진 넣을것
 			}
 			else {
 				if (i < max_menu / 2) {
@@ -211,7 +209,7 @@ void gotoxy(int x, int y)
 //콘솔 화면 초기화
 void init() 
 {
-	system("mode con cols=100 lines=40 | title 영진카지노");		//콘솔 해상도 설정, 제목 설정
+	system("mode con cols=100 lines=50 | title 영진카지노");		//콘솔 해상도 설정, 제목 설정
 
 	//↓↓ 커서 숨기는 함수
 	CONSOLE_CURSOR_INFO cursorInfo = { 0, };

@@ -81,3 +81,7 @@ void first_Menu();
 void single_1();
 void single_2();
 void single_3();
+void ttt();
+void t2();
+void t3();
+void t4();
