@@ -81,7 +81,20 @@
 #define MONEY_SIZE 11
 #define DECK 52
 #define ROULETTE_MENU 3
-
+#define MENU_X	9
+#define MENU_Y	27
 #endif
 
-
+/*
+gotoxy(4, 1); printf("LOGIN");
+	gotoxy(3, 2); printf("旨收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收旬");
+	gotoxy(3, 3); printf("早");
+	gotoxy(36, 3); printf("早");
+	gotoxy(3, 4); printf("曲收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收旭");
+	gotoxy(4, 6); printf("PASSWORD");
+	gotoxy(3, 7); printf("旨收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收旬");
+	gotoxy(3, 8); printf("早");
+	gotoxy(36, 8); printf("早");
+	gotoxy(3, 9); printf("曲收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收收旭");
+	gotoxy(5, 3); printf("_"); gotoxy(5, 3);
+*/

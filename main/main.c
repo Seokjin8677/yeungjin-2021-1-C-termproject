@@ -25,13 +25,8 @@ int moneyCheck_borrow(int*,char*, int*, int*, int*);
 void timeprocess(char *);
 void gotoxy(int, int);
 void quit_message();
-void CursorView() // 커서 숨기는 함수
-{
-	CONSOLE_CURSOR_INFO cursorInfo = { 0, };
-	cursorInfo.dwSize = 1; //커서 굵기 (1 ~ 100)
-	cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
-	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
-}
+
+
 int pullDownMenu(int,char**,int x, int y); // 메모리 절약을 위한 래그드 배열 사용
 int pullDownMenu_yesorno(char** menulist, int x, int y);
 int id_check(FILE*, char*);
@@ -48,6 +43,7 @@ void ending();
 int money = 0;
 int gugeolUpgrade = 1;
 int borrowmoney = 0;
+
 int main(void) {
 	int menu;
 	int insertmoney;
@@ -60,26 +56,32 @@ int main(void) {
 	char* bankmenulist[BANK_MENU] = {"잔액조회","대출금 확인","대출상환","이전"};
 	char* explainmenulist[EXPLAIN_MENU] = { "스토리","포커","블랙잭","슬릇머신","룰렛","경마","상점","이전" };
 	char* yesornomenulist[2] = {"예","아니오"};
+
 	unsigned char plain[32] = { 0 };
 	unsigned char encrypt[32] = { 0 };
 	char stringmoney[10] = { 0 };
-	CursorView(); // 커서 숨기기
+
+	init(); // 콘솔창 세팅
+	background();
+
 	FILE* fp = NULL;
 	int loginStatus = 0;
 	srand(time(NULL));
 	// 이진 파일을 추가 모드로 오픈한다. 
+
 	if (fopen_s(&fp,"user.dat", "a+")) {
 		//printf(stderr, "입력을 위한 파일을 열 수 없습니다");
 		exit(1);
 	}
 	
 	do {
-		menu = pullDownMenu(MAIN_MENU, loginmenulist,1,3);
+		menu = pullDownMenu(MAIN_MENU, loginmenulist,MENU_X, MENU_Y);
 		switch (menu)
 		{
 		case 0:
 			printf("계정 로그인");
 			system("cls");
+			background();
 			if (login_record(fp,&money,&gugeolUpgrade,&borrowmoney)) {
 				system("pause");
 				system("cls");
@@ -103,12 +105,14 @@ int main(void) {
 		system("cls");
 	} while (loginStatus != 1);
 	do {
-		menu = pullDownMenu(MAIN_MENU, mainmenulist,1,3);
+		background();
+		menu = pullDownMenu(MAIN_MENU, mainmenulist, MENU_X, MENU_Y);
 		switch (menu)
 		{
 		case 0:
 			do {
-				menu = pullDownMenu(SINGLE_MENU, singlemenulist,1,3);
+				background();
+				menu = pullDownMenu(SINGLE_MENU, singlemenulist, MENU_X, MENU_Y);
 				switch (menu)
 				{
 				case 0:
@@ -183,7 +187,7 @@ int main(void) {
 					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
 					do
 					{
-						menu = pullDownMenu(BANK_MENU, bankmenulist, 1, 3);
+						menu = pullDownMenu(BANK_MENU, bankmenulist, MENU_X, MENU_Y);
 						switch (menu)
 						{
 						case 0:
@@ -244,7 +248,7 @@ int main(void) {
 					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
 					do
 					{
-						menu = pullDownMenu(SHOP_MENU, shopmenulist,1,3);
+						menu = pullDownMenu(SHOP_MENU, shopmenulist, MENU_X, MENU_Y);
 						switch (menu)
 						{
 						case 0:
@@ -418,16 +422,16 @@ int pullDownMenu(int max_menu, char** menulist,int x,int y)
 			else
 				textcolor(15);
 			if (max_menu % 2 == 1) {
-				gotoxy(20 * i + x, y);
+				gotoxy(15 * i + x, y);
 				printf("%d.%s", i + 1, menulist[i]);
 			}
 			else {
 				if (i < max_menu / 2) {
-					gotoxy(20 * i + x, y);
+					gotoxy(15 * i + x, y);
 					printf("%d.%s", i + 1, menulist[i]);
 				}
 				else {
-					gotoxy(20 * (i - max_menu / 2) +x, 3+y);
+					gotoxy(15 * (i - max_menu / 2) +x, 3+y);
 					printf("%d.%s", i + 1, menulist[i]);
 				}
 			}
@@ -491,13 +495,7 @@ int pullDownMenu_yesorno(char** menulist,int x, int y)
 	system("cls");
 	return sel;
 }
-void gotoxy(int x, int y)
-{
-	COORD Pos;
-	Pos.X = x;
-	Pos.Y = y;
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); //프로토타입의 값대로 위치이동
-}
+
 int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borrowmoney,int* gugeolUpgrade) {
 	rewind(stdin);
 	for (int i = 0; stringmoney[i] != '\0'; i++)
@@ -578,17 +576,17 @@ void login_menu(char* id, char* password) {
 	unsigned char encrypt[32];
 	memset(plain, 0x00, sizeof(plain));
 	memset(encrypt, 0x00, sizeof(encrypt));
-	gotoxy(4, 1); printf("LOGIN");
-	gotoxy(3, 2); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-	gotoxy(3, 3); printf("┃");
-	gotoxy(36, 3); printf("┃");
-	gotoxy(3, 4); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-	gotoxy(4, 6); printf("PASSWORD");
-	gotoxy(3, 7); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-	gotoxy(3, 8); printf("┃");
-	gotoxy(36, 8); printf("┃");
-	gotoxy(3, 9); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-	gotoxy(5, 3); printf("_"); gotoxy(5, 3);
+	gotoxy(33, 20); printf("LOGIN");
+	gotoxy(32, 21); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	gotoxy(32, 22); printf("┃");
+	gotoxy(65, 22); printf("┃");
+	gotoxy(32, 23); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	gotoxy(33, 25); printf("PASSWORD");
+	gotoxy(32, 26); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	gotoxy(32, 27); printf("┃");
+	gotoxy(65, 27); printf("┃");
+	gotoxy(32, 28); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	gotoxy(34, 22); printf("_"); gotoxy(34, 22);
 	while ((id[num] = _getch()) != '\r')
 	{
 		if (id[num] == '\b' && num != 0) {
@@ -609,7 +607,7 @@ void login_menu(char* id, char* password) {
 		}
 	}
 	id[num] = '\0';
-	gotoxy(5, 8); printf("_"); gotoxy(5, 8);
+	gotoxy(34, 27); printf("_"); gotoxy(34, 27);
 	num = 0;
 	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 	do
