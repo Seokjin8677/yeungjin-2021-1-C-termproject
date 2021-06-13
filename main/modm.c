@@ -16,3 +16,12 @@ void init() // 커서 숨기는 함수, 콘솔창 크기 세팅
 	cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
+
+
+
+/*
+gotoxy(10, 20);
+
+*/
+
+

@@ -5,6 +5,7 @@
 
 
 
+
 typedef struct user {
 	char id[ID_SIZE];		// 아이디
 	char password[PASS_SIZE];	// 비밀번호
@@ -47,33 +48,51 @@ int borrowmoney = 0;
 int main(void) {
 	int menu;
 	int insertmoney;
-	char *loginmenulist[MAIN_MENU] = {"로그인","계정생성","종료"};
-	char *mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
-	char *singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","은행","구걸하기","상점","설명","이전" };
-	char* shopmenulist[SHOP_MENU] = { "구걸 UP","로또","이전"};
-	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","이전" };
-	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
-	char* bankmenulist[BANK_MENU] = {"잔액조회","대출금 확인","대출상환","이전"};
+	char* loginmenulist[MAIN_MENU] = { "로그인","계정생성","종료" };
+	char* mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
+	char* singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","은행","구걸하기","상점","설명","이전" };
+	char* shopmenulist[SHOP_MENU] = { "구걸 UP","로또","이전" };
+	char* multimenulist[MULTI_MENU] = { "포커","블랙잭","이전" };
+	char* multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
+	char* bankmenulist[BANK_MENU] = { "잔액조회","대출금 확인","대출상환","이전" };
 	char* explainmenulist[EXPLAIN_MENU] = { "스토리","포커","블랙잭","슬릇머신","룰렛","경마","상점","이전" };
-	char* yesornomenulist[2] = {"예","아니오"};
+	char* yesornomenulist[2] = { "예","아니오" };
 
 	unsigned char plain[32] = { 0 };
 	unsigned char encrypt[32] = { 0 };
 	char stringmoney[10] = { 0 };
 
+
 	init(); // 콘솔창 세팅
+
 	background();
+
+
+
+
+	/*start_screen();
+
+	
+
+
+
+	
+	Sleep(3000);
+	system("cls");
+	*/
+	
+	background();
+	
 
 	FILE* fp = NULL;
 	int loginStatus = 0;
 	srand(time(NULL));
 	// 이진 파일을 추가 모드로 오픈한다. 
-
 	if (fopen_s(&fp,"user.dat", "a+")) {
 		//printf(stderr, "입력을 위한 파일을 열 수 없습니다");
 		exit(1);
 	}
-	
+
 	do {
 		menu = pullDownMenu(MAIN_MENU, loginmenulist,MENU_X-2, MENU_Y);
 		switch (menu)
@@ -94,10 +113,12 @@ int main(void) {
 		case 1:
 			printf("계정 생성");
 			system("cls");
+			background();
 			add_record(fp);
 			break;
 		case 2:
 			fclose(fp);
+			background();
 			PlaySound(TEXT("sound\\poweroff.wav"), NULL, SND_ASYNC);
 			quit_message();
 			return 0;
@@ -120,10 +141,12 @@ int main(void) {
 					gotoxy(10,20);
 					printf("소지하고 있는 돈: %d", money); // 포커
 					gotoxy(10, 21);
-					printf("판돈을 입력하세요(최대 10만원): ");
+					printf("판돈을 입력하세요(최대 10만원)");
+					gotoxy(10, 22);
 					scanf_s("%s", stringmoney,sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney,&insertmoney,100000)) {
 						system("cls");
+						background();
 						money -= insertmoney;
 						money += pokersingle(insertmoney, poker());
 						update_money(fp, &money);
@@ -132,7 +155,10 @@ int main(void) {
 					}
 					break;
 				case 1:
+					background();
+					gotoxy(10, 20);
 					printf("소지하고 있는 돈: %d\n", money); // 블랙잭
+					gotoxy(10, 21);
 					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
@@ -145,7 +171,10 @@ int main(void) {
 					}
 					break;
 				case 2:
-					printf("소지하고 있는 돈: %d\n", money); // 슬릇머신
+					background();
+					gotoxy(10, 20);
+					printf("소지하고 있는 돈: %d\n", money);// 슬릇머신
+					gotoxy(10, 21);
 					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
@@ -160,7 +189,10 @@ int main(void) {
 					system("cls");
 					break;
 				case 3: // 룰렛
+					background();
+					gotoxy(10, 20);
 					printf("소지하고 있는 돈: %d\n",money);
+					gotoxy(10, 21);
 					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
@@ -173,7 +205,10 @@ int main(void) {
 					}
 					break;
 				case 4:
+					background();
+					gotoxy(10, 20);
 					printf("소지하고 있는 돈: %d\n", money); // 경마
+					gotoxy(10, 21);
 					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
@@ -195,23 +230,31 @@ int main(void) {
 						switch (menu)
 						{
 						case 0:
+							background();
+							gotoxy(10, 20);
 							printf("소지금: %d\n", money);
 							system("pause");
 							system("cls");
 							break;
 						case 1:
+							background();
+							gotoxy(10, 20);
 							printf("남은 대출금: %d\n",borrowmoney);
 							system("pause");
 							system("cls");
 							break;
 						case 2:
+							background();
 							if (borrowmoney <= 0) {
+								gotoxy(10, 20);
 								printf("이미 대출금을 모두 갚았습니다!\n");
 								system("pause");
 								system("cls");
 								break;
 							}
-							printf("상환할 대출금을 입력하세요: ");
+							background();
+							gotoxy(10, 20);
+							printf("상환할 대출금을 입력하세요:\n");
 							scanf_s("%s", stringmoney, sizeof(stringmoney));
 							if (moneyCheck_borrow(&money,stringmoney ,&insertmoney, &borrowmoney, &gugeolUpgrade)) {
 								system("cls");
@@ -233,6 +276,7 @@ int main(void) {
 					sel = 5; // 메인 메뉴로 갈시 상점 메뉴 선택되게
 					break;
 				case 6:
+					background();
 					if (money < 1000) {
 						timeprocess("구걸중");
 						money += 1000 * gugeolUpgrade;
@@ -244,11 +288,10 @@ int main(void) {
 						printf("1000원 미만일때만 구걸이 가능합니다!\n");
 						PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 					}
-						
-					system("pause");
 					system("cls");
 					break;
 				case 7:
+					background();
 					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
 					do
 					{
@@ -257,6 +300,7 @@ int main(void) {
 						switch (menu)
 						{
 						case 0:
+							background();
 							printf("구걸시 얻는 돈이 증가합니다.(Max Level 10)\n");
 							if (gugeolUpgrade >= 10) {
 								printf("현재 스킬 Lv.MAX\n");
@@ -266,6 +310,7 @@ int main(void) {
 								system("cls");
 								break;
 							}
+							background();
 							printf("현재 스킬 Lv.%d\n",gugeolUpgrade);
 							printf("소지하고 있는 돈: %d\n", money);
 							printf("구매 하시겠습니까?(10,000원)\n");
@@ -285,6 +330,7 @@ int main(void) {
 							system("cls");
 							break;
 						case 1:
+							background();
 							printf("로또를 구매합니다.\n");
 							printf("소지하고 있는 돈: %d\n", money);
 							printf("구매 하시겠습니까?(1,000원)\n");
@@ -327,36 +373,43 @@ int main(void) {
 						switch (menu)
 						{
 						case 0: // 스토리
+							background();
 							story_explain();
 							system("pause");
 							system("cls");
 							break;
 						case 1: // 포커
+							background();
 							poker_explain();
 							system("pause");
 							system("cls");
 							break;
 						case 2: // 블랙잭
+							background();
 							blackjack_explain();
 							system("pause");
 							system("cls");
 							break;
 						case 3: // 슬릇머신
+							background();
 							slot_explain();
 							system("pause");
 							system("cls");
 							break;
 						case 4: // 룰렛
+							background();
 							roulette_explain();
 							system("pause");
 							system("cls");
 							break;
 						case 5: // 경마
+							background();
 							horse_explain();
 							system("pause");
 							system("cls");
 							break;
 						case 6: // 상점
+							background();
 							shop_explain();
 							system("pause");
 							system("cls");
@@ -378,6 +431,7 @@ int main(void) {
 			sel = 0;
 			do
 			{
+				background();
 				menu = pullDownMenu(MULTI_MENU, multimenulist,1,3);
 				switch (menu)
 				{
@@ -385,10 +439,12 @@ int main(void) {
 					sel = 0;
 					do
 					{
+						background();
 						menu = pullDownMenu(MULTI_SEL_MENU, multimenu_pokerlist,1,3);
 						switch (menu)
 						{
 						case 0:
+							background();
 							printf("소지하고 있는 돈: %d\n", money);
 							printf("판돈을 입력하세요: ");
 							scanf_s("%s", stringmoney, sizeof(stringmoney));
@@ -401,6 +457,7 @@ int main(void) {
 							}
 							break;
 						case 1:
+							background();
 							poker_client(&money);
 							update_money(fp, &money);
 							break;
@@ -651,7 +708,6 @@ void login_menu(char* id, char* password) {
 			}
 		}
 	} while (plain[0] == '\r');
-	
 	
 	
 	plain[num] = '\0';

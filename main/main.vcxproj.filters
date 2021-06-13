@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="헤더 파일\Image">
+    <Filter Include="헤더 파일\Image.h">
       <UniqueIdentifier>{8b81cd51-9a95-4dbc-90d3-da0ca061f7f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -54,6 +54,9 @@
     <ClCompile Include="background.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="image.c">
+      <Filter>헤더 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KISA_SHA256.h">
@@ -63,13 +66,13 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ImageLayerInterface.h">
-      <Filter>헤더 파일\Image</Filter>
+      <Filter>헤더 파일\Image.h</Filter>
     </ClInclude>
     <ClInclude Include="ImageLayer.h">
-      <Filter>헤더 파일\Image</Filter>
+      <Filter>헤더 파일\Image.h</Filter>
     </ClInclude>
     <ClInclude Include="ImageLayerImpl.h">
-      <Filter>헤더 파일\Image</Filter>
+      <Filter>헤더 파일\Image.h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

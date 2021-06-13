@@ -147,6 +147,7 @@
     <ClCompile Include="background.c" />
     <ClCompile Include="explain.c" />
     <ClCompile Include="horse.c" />
+    <ClCompile Include="image.c" />
     <ClCompile Include="lotto.c" />
     <ClCompile Include="main.c">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)SHA\;</AdditionalIncludeDirectories>

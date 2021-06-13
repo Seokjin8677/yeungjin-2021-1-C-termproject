@@ -37,9 +37,9 @@ int poker() {
 		card[i].rank = tempcard % 13;
 		card[i].suit = tempcard / 13;
 	}
-	gotoxy(80, 3); printf("<-,->: 화살표 이동"); // 오른쪽 상단에 설명 출력
-	gotoxy(80, 4); printf("Space: 카드선택");
-	gotoxy(80, 5); printf("Enter: 선택확정");
+	gotoxy(65, 37); printf("<-,->: 화살표 이동"); // 오른쪽 상단에 설명 출력
+	gotoxy(65, 38); printf("  Space: 카드선택");
+	gotoxy(65, 39); printf("  Enter: 선택확정");
 	cardPrint(card);
 
 	/*do // 바꿀 카드 선택
@@ -168,12 +168,12 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 	{
 		PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
 		int temp = card[i].suit;
-		gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ "); // 카드 모양 출력
+		gotoxy(10 + i * 15, 1+19); printf("┏━━━━━━━┓ "); // 카드 모양 출력
 		for (int j = 2; j < 9; j++)
 		{
-			gotoxy(3 + i * 15, j); printf("┃       ┃ "); // 카드 모양 출력
+			gotoxy(10 + i * 15, j+19); printf("┃       ┃ "); // 카드 모양 출력
 		}
-		gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ "); // 카드 모양 출력
+		gotoxy(10 + i * 15, 9+19); printf("┗━━━━━━━┛ "); // 카드 모양 출력
 		if(temp == 1 || temp == 2)
 			textcolor(12);
 		else
@@ -181,16 +181,16 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 		switch (card[i].suit) // 카드 문양 출력
 		{
 		case 0:
-			gotoxy(7 + i * 15, 5); printf("♣");
+			gotoxy(14 + i * 15, 5 + 19); printf("♣");
 			break;
 		case 1:
-			gotoxy(7 + i * 15, 5); printf("♥");
+			gotoxy(14 + i * 15, 5 + 19); printf("♥");
 			break;
 		case 2:
-			gotoxy(7 + i * 15, 5); printf("◆");
+			gotoxy(14 + i * 15, 5 + 19); printf("◆");
 			break;
 		case 3:
-			gotoxy(7 + i * 15, 5); printf("♠");
+			gotoxy(14 + i * 15, 5 + 19); printf("♠");
 			break;
 		default:
 			break;
@@ -198,24 +198,24 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 		switch (card[i].rank) // 카드 숫자 출력
 		{
 		case 9:
-			gotoxy(5 + i * 15, 2); printf("J");
-			gotoxy(10 + i * 15, 8); printf("J");
+			gotoxy(12 + i * 15, 2 + 19); printf("J");
+			gotoxy(17 + i * 15, 8 + 19); printf("J");
 			break;
 		case 10:
-			gotoxy(5 + i * 15, 2); printf("Q");
-			gotoxy(10 + i * 15, 8); printf("Q");
+			gotoxy(12 + i * 15, 2 + 19); printf("Q");
+			gotoxy(17 + i * 15, 8 + 19); printf("Q");
 			break;
 		case 11:
-			gotoxy(5 + i * 15, 2); printf("K");
-			gotoxy(10 + i * 15, 8); printf("K");
+			gotoxy(12 + i * 15, 2 + 19); printf("K");
+			gotoxy(17 + i * 15, 8 + 19); printf("K");
 			break;
 		case 12:
-			gotoxy(5 + i * 15, 2); printf("A");
-			gotoxy(10 + i * 15, 8); printf("A");
+			gotoxy(12 + i * 15, 2 + 19); printf("A");
+			gotoxy(17 + i * 15, 8 + 19); printf("A");
 			break;
 		default:
-			gotoxy(5 + i * 15, 2); printf("%d", card[i].rank % 13 + 2);
-			gotoxy(9 + i * 15, 8); printf("%2d", card[i].rank % 13 + 2);
+			gotoxy(12 + i * 15, 2 + 19); printf("%d", card[i].rank % 13 + 2);
+			gotoxy(16 + i * 15, 8 + 19); printf("%2d", card[i].rank % 13 + 2);
 			break;
 		}
 		Sleep(500);
@@ -325,13 +325,13 @@ void card_print2(int i, int sel) { // 카드를 선택하면 빨간색, 이미 선택된 카드는
 		textcolor(12);
 	else
 		textcolor(15);
-	gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ ");
+	gotoxy(10 + i * 15, 1 + 19); printf("┏━━━━━━━┓ ");
 	for (int j = 2; j < 9; j++)
 	{
-		gotoxy(3 + i * 15, j); printf("┃");
-		gotoxy(11 + i * 15, j); printf("┃");
+		gotoxy(10 + i * 15, j + 19); printf("┃");
+		gotoxy(18 + i * 15, j + 19); printf("┃");
 	}
-	gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ ");
+	gotoxy(10 + i * 15, 9 + 19); printf("┗━━━━━━━┛ ");
 
 	textcolor(15);
 }
@@ -341,7 +341,7 @@ void pullDownMenu_poker(int* selcard2) // 카드를 키보드로 선택하게 하는 함수
 	int sel = 0;
 	int temp = 0;
 
-	gotoxy(7 + sel * 15, 11); printf("♠"); // 선택 메뉴 출력 및 초기화
+	gotoxy(14 + sel * 15, 11 + 19); printf("♠"); // 선택 메뉴 출력 및 초기화
 	while (1) {
 		ch = _getch();
 		if (ch == KEY_LEFT) {
@@ -396,8 +396,8 @@ void pullDownMenu_poker(int* selcard2) // 카드를 키보드로 선택하게 하는 함수
 		}
 		else if (ch == KEY_RETURN) // 엔터 누르면 끝
 			break;
-		gotoxy(7 + temp * 15, 11); printf("  "); // 이전 화살표 지우기
-		gotoxy(7 + sel * 15, 11); printf("♠");
+		gotoxy(14 + temp * 15, 11 + 19); printf("  "); // 이전 화살표 지우기
+		gotoxy(14 + sel * 15, 11 + 19); printf("♠");
 		temp = sel; // 이전 화살표를 위한 temp 설정
 		Sleep(1); // 최적화를 위한 Sleep(1)
 	}
