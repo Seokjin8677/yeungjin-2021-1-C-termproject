@@ -159,7 +159,7 @@ int main(void) {
 				case 1:
 					background();
 					gotoxy(60, 37);
-					printf("소지하고 있는 돈: %d", money); // 포커
+					printf("소지하고 있는 돈: %d", money); // 블랙잭
 					gotoxy(60, 38);
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
@@ -173,13 +173,14 @@ int main(void) {
 						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 						money += blackjack(insertmoney,&money);
 						update_money(fp, &money);
+						_getch();
 						system("cls");
 					}
 					break;
 				case 2:
 					background();
 					gotoxy(60, 37);
-					printf("소지하고 있는 돈: %d", money); // 포커
+					printf("소지하고 있는 돈: %d", money); // 슬롯머신
 					gotoxy(60, 38);
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
@@ -188,10 +189,12 @@ int main(void) {
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
+						background();
 						money -= insertmoney;
 						money += slot(insertmoney);
 						update_money(fp, &money);
 						//system("pause");
+						_getch();
 						system("cls");
 					}
 					break;
@@ -200,7 +203,7 @@ int main(void) {
 				case 3: // 룰렛
 					background();
 					gotoxy(60, 37);
-					printf("소지하고 있는 돈: %d", money); // 포커
+					printf("소지하고 있는 돈: %d", money); // 룰렛
 					gotoxy(60, 38);
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
@@ -213,13 +216,14 @@ int main(void) {
 						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 						money += roulette(insertmoney);
 						update_money(fp, &money);
+						_getch();
 						system("cls");
 					}
 					break;
 				case 4:
 					background();
 					gotoxy(60, 37);
-					printf("소지하고 있는 돈: %d", money); // 포커
+					printf("소지하고 있는 돈: %d", money); // 경마
 					gotoxy(60, 38);
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
@@ -231,7 +235,7 @@ int main(void) {
 						money -= insertmoney;
 						money += horse(insertmoney);
 						update_money(fp, &money);
-						system("pause");
+						_getch();
 						system("cls");
 					}
 					break;
@@ -321,7 +325,6 @@ int main(void) {
 								printf("현재 스킬 Lv.MAX\n");
 								printf("이미 최대 레벨에 도달해서 구매할 수 없습니다!\n");
 								PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
-								system("pause");
 								system("cls");
 								break;
 							}

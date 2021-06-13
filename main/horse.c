@@ -20,7 +20,8 @@ int horse(int insertmoney)
     do {
         printhorsefield();
         //printf("아무키나 누르면 경주를 시작합니다.");
-        printf("자신이 선택할 말의 번호를 입력하시오(1~5): ");
+        gotoxy(55, 38);
+        printf("배팅할 말의 번호를 입력하시오(1~5): ");
         fflush(stdin);
         scanf_s("%s", &select_horse,2);
         PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
@@ -33,7 +34,7 @@ int horse(int insertmoney)
 		case '5':
 			break;
         default:
-            gotoxy(0, 17);
+            gotoxy(63, 39);
             printf("1~5 까지만 입력해주세요!\n");
             fflush(stdin);
             system("pause");
@@ -70,15 +71,17 @@ int horse(int insertmoney)
         horse[number] += race; 
         Sleep(50);
 
-        if (horse[number] >= 80) //결승점 도착하면 등수표시
+        if (horse[number] >= 70) //결승점 도착하면 등수표시
         {
-            horse[number] = 80;
+            horse[number] = 70;
             if (!rank[number]) 
             {
                 r++; //등수를 위한 변수
+
                 rank[number] = r; //결승점에 도착한 해당 말의 등수을 저장
+
                 //도착지점표시 및 등수 표기
-                gotoxy(10, 5 + number * 2);
+                gotoxy(10, 13 + number * 2);
                 for (i = 0; i < horse[number]; i++) {
                     printf(" ");
                 }
@@ -89,7 +92,7 @@ int horse(int insertmoney)
 
         else //결승점을 도착하기 이전이면
         {
-            gotoxy(10, 5 + number * 2);
+            gotoxy(10, 13 + number * 2);
             for (i = 0; i < horse[number]; i++) {
                 printf(" ");
             }
@@ -102,26 +105,40 @@ int horse(int insertmoney)
             }
         }
     }
-    gotoxy(20, 14);
-    printf("\n\n게임종료!\n"); //경기 종료를 표시한다.
+    gotoxy(65, 39);
+    printf("게임종료!"); //경기 종료를 표시한다.
     
     if (rank[chose_horse-1] == 1) {
-        printf("당신의 경주마가 우승했습니다!\n%d원을 벌었다!\n", insertmoney*5);
+        gotoxy(55, 37);
+        printf("당신의 경주마가 우승했습니다!");
+        gotoxy(65, 38);
+        printf("%d원을 벌었다!", insertmoney * 5);
         PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
         return insertmoney * 5;
     } 
     else {
-        printf("당신의 경주마가 우승하지 못했습니다...\n돈을 잃었다...\n");
+        gotoxy(55, 37);
+        printf("당신의 경주마가 우승하지 못했습니다...");
+        gotoxy(65, 38);
+        printf("돈을 잃었다...");
         PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
         return 0;
     }
 }
 void printhorsefield() {
     system("cls");
-    gotoxy(44, 1); printf("영진 경마장\n\n");
-    printf("START                                                                                      END  등수\n");
-    printf("====================================================================================================\n");
-    for (int i = 1; i <= 5; i++)
-        printf("%d\tㅣ\n\n", i);
-    printf("====================================================================================================\n");
+    background();
+
+    gotoxy(7, 9); 
+    printf("영진 경마장");
+
+    gotoxy(7, 26);
+    printf("START                                                                    END      등수");
+    
+    gotoxy(7, 10);
+    printf("======================================================================================");
+    
+
+    gotoxy(7, 25);
+    printf("======================================================================================");
 }
