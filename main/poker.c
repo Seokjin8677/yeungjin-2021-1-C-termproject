@@ -186,7 +186,9 @@ int pokersingle(int money,int handtype) {
 		return money * 500;
 	default:
 		gotoxy(65, 38);
-		printf("High Card\nµ·À» ÀÒ¾ú´Ù...\n");
+		printf("High Card");
+		gotoxy(65, 39);
+		printf("µ·À» ÀÒ¾ú´Ù...");
 		return 0;
 	}
 }

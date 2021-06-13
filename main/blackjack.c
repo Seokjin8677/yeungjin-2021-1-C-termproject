@@ -107,9 +107,12 @@ int blackjack(int insertmoney,int* money) {
 				*/
 
 				//Start
+				background();
+				gotoxy(54, 38);
 				printf(" 카드를 두장씩 가집니다(아무키나 입력).\n");
 				_getch();
 				system("cls");
+				background();
 				for (int i = 0; i < 2; i++) {
 					//딜러와 플레이어 모두 카드2장씩을 받는다.
 					card_table(dealerCard, dealer_index, playerCard, player_index,money, insertmoney);
@@ -446,8 +449,8 @@ int blackjack(int insertmoney,int* money) {
 }
 void card_table(int* dealerCard, int dealer_index, int* playerCard, int player_index, int* money, int batMoney) { //딜러카드 배열 과 플레이어 카드배열 출력(현재 게임정보)
 
-
-	printf("           보유자금 : %d  현재 배팅금액 :%d", *money, batMoney);
+	gotoxy(54, 38);
+	printf("보유자금 : %d  현재 배팅금액 :%d", *money, batMoney);
 	blackjackDealerPrint(dealerCard, dealer_index);
 	//printf("\n\n\n");
 	//printDealerCardArray(playerCard, player_index);

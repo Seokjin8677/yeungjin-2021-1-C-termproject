@@ -138,20 +138,19 @@ int main(void) {
 				{
 				case 0:
 					background();
-					gotoxy(10,20);
+					gotoxy(60,37);
 					printf("소지하고 있는 돈: %d", money); // 포커
-					gotoxy(10, 21);
+					gotoxy(60, 38);
 					printf("판돈을 입력하세요(최대 10만원)");
-					gotoxy(10, 22);
+					gotoxy(90, 39);
+					printf("원");
+					gotoxy(68, 39);
 					scanf_s("%s", stringmoney,sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney,&insertmoney,100000)) {
 						background();
 						system("cls");
-						background();
 						money -= insertmoney;
-						background();
 						money += pokersingle(insertmoney, poker());
-						background();
 						update_money(fp, &money);
 						_getch();
 						system("cls");
@@ -159,13 +158,17 @@ int main(void) {
 					break;
 				case 1:
 					background();
-					gotoxy(10, 20);
-					printf("소지하고 있는 돈: %d\n", money); // 블랙잭
-					gotoxy(10, 21);
-					printf("판돈을 입력하세요(최대 10만원): ");
+					gotoxy(60, 37);
+					printf("소지하고 있는 돈: %d", money); // 포커
+					gotoxy(60, 38);
+					printf("판돈을 입력하세요(최대 10만원)");
+					gotoxy(90, 39);
+					printf("원");
+					gotoxy(68, 39);
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
+						background();
 						money -= insertmoney;
 						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 						money += blackjack(insertmoney,&money);
@@ -175,10 +178,13 @@ int main(void) {
 					break;
 				case 2:
 					background();
-					gotoxy(10, 20);
-					printf("소지하고 있는 돈: %d\n", money);// 슬릇머신
-					gotoxy(10, 21);
-					printf("판돈을 입력하세요(최대 10만원): ");
+					gotoxy(60, 37);
+					printf("소지하고 있는 돈: %d", money); // 포커
+					gotoxy(60, 38);
+					printf("판돈을 입력하세요(최대 10만원)");
+					gotoxy(90, 39);
+					printf("원");
+					gotoxy(68, 39);
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
@@ -193,10 +199,13 @@ int main(void) {
 					break;
 				case 3: // 룰렛
 					background();
-					gotoxy(10, 20);
-					printf("소지하고 있는 돈: %d\n",money);
-					gotoxy(10, 21);
-					printf("판돈을 입력하세요(최대 10만원): ");
+					gotoxy(60, 37);
+					printf("소지하고 있는 돈: %d", money); // 포커
+					gotoxy(60, 38);
+					printf("판돈을 입력하세요(최대 10만원)");
+					gotoxy(90, 39);
+					printf("원");
+					gotoxy(68, 39);
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
@@ -209,10 +218,13 @@ int main(void) {
 					break;
 				case 4:
 					background();
-					gotoxy(10, 20);
-					printf("소지하고 있는 돈: %d\n", money); // 경마
-					gotoxy(10, 21);
-					printf("판돈을 입력하세요(최대 10만원): ");
+					gotoxy(60, 37);
+					printf("소지하고 있는 돈: %d", money); // 포커
+					gotoxy(60, 38);
+					printf("판돈을 입력하세요(최대 10만원)");
+					gotoxy(90, 39);
+					printf("원");
+					gotoxy(68, 39);
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
