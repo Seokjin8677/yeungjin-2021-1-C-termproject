@@ -30,7 +30,6 @@ int main(void) {
 	
 
 	init();
-	background();
 	start_game();
 	
 
@@ -156,8 +155,8 @@ int pullDownMenu(int max_menu, char menulist[][MAX_MENU_CHAR])
 			else
 				textcolor(15);
 			if (max_menu % 2 == 1) {
-				
-				*printf("%d.%s", i + 1, menulist[i]); 	//첫번째 메뉴 사진 넣을것
+				gotoxy(20 * i + 1, 3);
+				printf("%d.%s", i + 1, menulist[i]); 	//첫번째 메뉴 사진 넣을것
 			}
 			else {
 				if (i < max_menu / 2) {
