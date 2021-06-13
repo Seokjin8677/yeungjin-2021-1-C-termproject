@@ -8,8 +8,8 @@ extern void gotoxy(int, int);
 void printhorsefield();
 int horse(int insertmoney)
 {
-    int horse_num = 5, rank[10] = { 0 }, i; //경주 참여 말 수 5, 순위저장
-    int horse[10] = { 0 }, race, number = 0, r = 0; 
+    int horse_num = 5, rank[5] = { 0 }, i; //경주 참여 말 수 5, 순위저장
+    int horse[5] = { 0 }, race, number = 0, r = 0; 
     int chose_horse; //사용자가 선택할 말
     char select_horse[2];
 
@@ -124,7 +124,7 @@ void printhorsefield() {
     gotoxy(44, 1); printf("영진 경마장\n\n");
     printf("start                                                                                      end  등수\n");
     printf("====================================================================================================\n");
-    for (int i = 0; i < 5; i++)
+    for (int i = 1; i <= 5; i++)
         printf("%d\tㅣ\n\n", i);
     printf("====================================================================================================\n");
 }
