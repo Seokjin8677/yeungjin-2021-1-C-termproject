@@ -42,6 +42,7 @@ MCI_PLAY_PARMS mciPlay;
 int dwID;
 int moneyCheck(int*, char*, int*, int);
 int moneyCheck_borrow(int*,char*, int*, int*, int*);
+extern int slot(int);
 extern int horse(int);
 extern int lotto();
 extern void textcolor(int);
@@ -168,8 +169,18 @@ int main(void) {
 					}
 					break;
 				case 2:
-					printf("슬릇머신\n");
-					system("pause");
+					printf("소지하고 있는 돈: %d\n", money); // 슬릇머신
+					printf("판돈을 입력하세요(최대 10만원): ");
+					scanf_s("%s", stringmoney, sizeof(stringmoney));
+					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
+						system("cls");
+						money -= insertmoney;
+						money += slot(insertmoney);
+						update_money(fp, &money);
+						//system("pause");
+						system("cls");
+					}
+					break;
 					system("cls");
 					break;
 				case 3: // 룰렛

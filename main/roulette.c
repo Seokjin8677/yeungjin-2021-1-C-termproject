@@ -52,7 +52,7 @@ int roulette(int insertmoney) {
 	}
 	
 	system("cls");
-	//PlaySound(TEXT("sound\\scanning.wav"), NULL, SND_ASYNC);
+	PlaySound(TEXT("sound\\shot.wav"), NULL, SND_ASYNC);
 	gotoxy(3, 1); printf("旨收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收旬");
 	gotoxy(3, 2); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
 	gotoxy(3, 3); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");

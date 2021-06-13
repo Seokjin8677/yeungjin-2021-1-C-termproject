@@ -154,6 +154,7 @@
     <ClCompile Include="roulette.c" />
     <ClCompile Include="sha256.c" />
     <ClCompile Include="blackjack.c" />
+    <ClCompile Include="slot.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KISA_SHA256.h" />
