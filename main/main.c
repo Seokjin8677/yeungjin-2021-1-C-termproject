@@ -358,7 +358,8 @@ int main(void) {
 						case 7: //이전
 							break;
 						}
-						
+						system("pause");
+						system("cls");
 					} while (menu != 7);
 					sel = 8; // 메인 메뉴로 갈시 메뉴 선택되게
 					break;
