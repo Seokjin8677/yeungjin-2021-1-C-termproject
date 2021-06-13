@@ -41,7 +41,11 @@ void blackjack_explain() {
 	printf("\t* Stay : 카드를 더이상 받지않고 딜러의 턴으로 넘깁니다.\n* Hit : 카드한장을 더 받습니다.\n* Surrender : 자신의 패배를 인정하고 배팅금의 절반을 받습니다.\n* DoubleDown : 추가배팅을 하는대신 카드를 한장 더받고 딜러의 턴으론 넘깁니다.\n");
 }
 void slot_explain() {
-
+	printf("\n\t***게임진행 방식***\n");
+	printf("\t* 배팅금액을 정한후 게임이 시작됩니다.\n");
+	printf("\t* 문양이 세개 동일할 경우 배팅금액의 5배를 얻습니다.\n");
+	printf("\t* 문양이 두개 동일할 경우 배팅금액의 1.5배를 얻습니다\n");
+	printf("\t* 문양이 맞지 않다면 판돈을 잃게 됩니다\n");
 }
 void roulette_explain() {
 	printf("\n\t세가지 룰 중 하나를 선택합니다.\n");
