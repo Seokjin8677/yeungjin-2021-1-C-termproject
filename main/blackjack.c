@@ -43,7 +43,7 @@ int blackjack(int insertmoney,int* money) {
 	char* blackjackChoiceList[] = { "Stay", "Hit", "Surrender", "DoubleDown" };
 	char* blackMenuList[] = { "게임시작","도움말","뒤로가기" };
 	char* blackFinMenuList[] = { "계속하기","뒤로가기" };
-
+	int temp_money = 0;
 	//Card_deck 52장
 	int menu = 0;
 	int card_deck[52]; //카드를 담을 배열
@@ -223,20 +223,21 @@ int blackjack(int insertmoney,int* money) {
 					//한장 드로우 후 반복문 종료
 						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 
-						int temp_money;
+						
 						gotoxy(0, 21);
-						printf(" 추가 배팅금액을 정해주세요(최소 1000원) / 잔고 : %d\n", *money); //추가 배팅머니 입력받기
-						scanf_s("%d", &temp_money);
-
-						if (temp_money < 1000 || *money - insertmoney < 0) { //추가 배팅머니은 최소 1000원
-							continue;
-						}
-						else {
-							insertmoney += temp_money; //기존 배팅머니에 추가입력된 배팅머니를 더해준다.
-							*money -= temp_money; //게임머니에서 배팅머니를 빼준다.
-							system("cls");
-						}
-
+						char stringmoney[10] = {0};
+						do
+						{
+							printf(" 추가 배팅금액을 정해주세요 / 잔고 : %d\n", *money); //추가 배팅머니 입력받기
+							scanf_s("%s", &stringmoney,sizeof(stringmoney));
+							if (moneyCheck(&money, stringmoney, &temp_money, 100000)) {
+								insertmoney += temp_money; //기존 배팅머니에 추가입력된 배팅머니를 더해준다.
+								*money -= temp_money; //게임머니에서 배팅머니를 빼준다.
+								break;
+							}
+						} while (1);
+						system("cls");
+						
 						get_playingCard(card_deck, playerCard, player_index); //Hit시 카드한장을 더 배열에 추기한다.
 						player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.
 
