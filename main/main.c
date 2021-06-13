@@ -36,15 +36,18 @@ int main(void) {
 	
 	
 	do {
+		background();
 		menu = pullDownMenu(MAIN_MENU, mainmenulist);
 		switch (menu)
 		{
 		case 0:
 			do {
+				background();
 				menu = pullDownMenu(SINGLE_MENU, singlemenulist);
 				switch (menu)
 				{
 				case 0:
+					background();
 					printf("판돈을 입력하세요: ");
 					scanf_s("%d", &insertmoney);
 					system("cls");
@@ -94,6 +97,7 @@ int main(void) {
 			sel = 0; // 멀티플레이 메뉴 접속 시 1번 메뉴부터 선택되게
 			do
 			{
+				background();
 				menu = pullDownMenu(MULTI_MENU, multimenulist);
 				switch (menu)
 				{

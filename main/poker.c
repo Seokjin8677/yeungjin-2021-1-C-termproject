@@ -2,9 +2,6 @@
 
 
 
-
-
-
 extern void gotoxy(int, int);
 void textcolor(int color_number)
 {

@@ -33,7 +33,7 @@
     <ClCompile Include="img.c">
       <Filter>소스 파일\img</Filter>
     </ClCompile>
-    <ClCompile Include="배경.c">
+    <ClCompile Include="background.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -145,7 +145,7 @@
     <ClCompile Include="poker.c" />
     <ClCompile Include="poker_multi.c" />
     <ClCompile Include="img.c" />
-    <ClCompile Include="배경.c" />
+    <ClCompile Include="background.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="modm.h" />
