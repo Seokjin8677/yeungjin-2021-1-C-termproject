@@ -612,7 +612,7 @@ int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 }
 void login_menu(char* id, char* password) {
 	int num = 0;
-	unsigned char plain[32];
+	unsigned char plain[32] = {0};
 	unsigned char encrypt[32];
 	memset(plain, 0x00, sizeof(plain));
 	memset(encrypt, 0x00, sizeof(encrypt));
@@ -638,7 +638,9 @@ void login_menu(char* id, char* password) {
 			if ((id[num] == '\b' && num == 0) || num >= ID_SIZE - 1)
 				continue;
 			if ((id[num]) == '\t')
-				break;
+				continue;
+			if (plain[num] == 32) // 스페이스바
+				continue;
 			else
 				_putch(id[num]);
 			num++;
@@ -648,23 +650,31 @@ void login_menu(char* id, char* password) {
 	gotoxy(5, 8); printf("_"); gotoxy(5, 8);
 	num = 0;
 	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
-	while ((plain[num] = _getch()) != '\r')
+	do
 	{
-		if (plain[num] == '\b' && num != 0) {
-			printf("\b \b");
-			plain[num] = '\0';
-			num--;
+		while ((plain[num] = _getch()) != '\r')
+		{
+			if (plain[num] == '\b' && num != 0) {
+				printf("\b \b");
+				plain[num] = '\0';
+				num--;
+			}
+			else {
+				if ((plain[num] == '\b' && num == 0) || num >= ID_SIZE - 1)
+					continue;
+				if ((plain[num]) == '\t')
+					continue;
+				if (plain[num] == 32) // 스페이스바
+					continue;
+				else
+					_putch('*');
+				num++;
+			}
 		}
-		else {
-			if ((plain[num] == '\b' && num == 0) || num >= ID_SIZE - 1)
-				continue;
-			if ((plain[num]) == '\t')
-				continue;
-			else
-				_putch('*');
-			num++;
-		}
-	}
+	} while (plain[0] == '\r');
+	
+	
+	
 	plain[num] = '\0';
 	mySHA(plain, encrypt);
 	for (int i = 0; i < 32; i++)
