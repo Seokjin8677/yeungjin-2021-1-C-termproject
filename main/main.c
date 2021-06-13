@@ -185,10 +185,15 @@ int main(void) {
 					}
 					break;
 				case 4:
-					printf("경마\n");
-					system("pause");
+					printf("판돈을 입력하세요: ");
+					scanf_s("%d", &insertmoney);
+					system("cls");
+					money -= insertmoney;
+					money += horse(insertmoney);
+					_getch();
 					system("cls");
 					break;
+					
 				case 5:
 					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
 					do
