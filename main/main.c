@@ -1,29 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <Windows.h>
-#include <conio.h>
-#include <mmsystem.h>
-#include <time.h>
-#include <Digitalv.h>
-#pragma comment(lib, "winmm.lib")
+#include "modm.h"
 
 
-#define ID_SIZE 32
-#define PASS_SIZE 65
-#define MAIN_MENU 3
-#define SINGLE_MENU 10
-#define MULTI_MENU 3
-#define MULTI_SEL_MENU 3
-#define SHOP_MENU 3
-#define BANK_MENU 4
-#define KEY_UP  0x48
-#define KEY_DOWN 0x50
-#define KEY_LEFT  0x4B
-#define KEY_RIGHT 0x4D
-#define KEY_RETURN 0x0D
-#define MAX_MENU_CHAR 20
-#define EXPLAIN_MENU 8
-#define MONEY_SIZE 11
+
+
 
 typedef struct user {
 	char id[ID_SIZE];		// ¾ÆÀÌµð
