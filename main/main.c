@@ -40,8 +40,8 @@ MCI_OPEN_PARMS mciOpen;
 MCI_PLAY_PARMS mciPlay;
 
 int dwID;
-int moneyCheck(int*, int, int);
-int moneyCheck_borrow(int*, int, int*, int*);
+int moneyCheck(int*, char*, int*, int);
+int moneyCheck_borrow(int*,char*, int*, int*, int*);
 extern void textcolor(int);
 extern int poker();
 extern int pokersingle(int, int);
@@ -89,6 +89,7 @@ int main(void) {
 	char* yesornomenulist[2] = {"예","아니오"};
 	unsigned char plain[32] = { 0 };
 	unsigned char encrypt[32] = { 0 };
+	char stringmoney[10] = { 0 };
 	CursorView(); // 커서 숨기기
 	FILE* fp = NULL;
 	int loginStatus = 0;
@@ -140,8 +141,8 @@ int main(void) {
 				case 0:
 					printf("소지하고 있는 돈: %d\n", money); // 포커
 					printf("판돈을 입력하세요(최대 10만원): ");
-					scanf_s("%d", &insertmoney);
-					if (moneyCheck(&money,insertmoney,100000)) {
+					scanf_s("%s", stringmoney,sizeof(stringmoney));
+					if (moneyCheck(&money, stringmoney,&insertmoney,100000)) {
 						system("cls");
 						money -= insertmoney;
 						money += pokersingle(insertmoney, poker());
@@ -153,8 +154,8 @@ int main(void) {
 				case 1:
 					printf("소지하고 있는 돈: %d\n", money); // 블랙잭
 					printf("판돈을 입력하세요(최대 10만원): ");
-					scanf_s("%d", &insertmoney);
-					if (moneyCheck(&money, insertmoney, 100000)) {
+					scanf_s("%s", stringmoney, sizeof(stringmoney));
+					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
 						money -= insertmoney;
 						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
@@ -171,8 +172,8 @@ int main(void) {
 				case 3: // 룰렛
 					printf("소지하고 있는 돈: %d\n",money);
 					printf("판돈을 입력하세요(최대 10만원): ");
-					scanf_s("%d", &insertmoney);
-					if (moneyCheck(&money, insertmoney, 100000)) {
+					scanf_s("%s", stringmoney, sizeof(stringmoney));
+					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
 						money -= insertmoney;
 						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
@@ -211,8 +212,8 @@ int main(void) {
 								break;
 							}
 							printf("상환할 대출금을 입력하세요: ");
-							scanf_s("%d", &insertmoney);
-							if (moneyCheck_borrow(&money, insertmoney, &borrowmoney, &gugeolUpgrade)) {
+							scanf_s("%s", stringmoney, sizeof(stringmoney));
+							if (moneyCheck_borrow(&money,stringmoney ,&insertmoney, &borrowmoney, &gugeolUpgrade)) {
 								system("cls");
 								PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 								money -= insertmoney;
@@ -262,8 +263,8 @@ int main(void) {
 							printf("소지하고 있는 돈: %d\n", money);
 							printf("구매 하시겠습니까?(10,000원)\n");
 							if (pullDownMenu_yesorno(yesornomenulist, 3, 5) == 0) {
-								if (moneyCheck(&money, 10000,100000)) {
-									money -= 10000;
+								if (moneyCheck(&money, "10000", &insertmoney,100000)) {
+									money -= insertmoney;
 									update_money(fp, &money);
 									gugeolUpgrade++;
 									update_gugeolUpgrade(fp, &gugeolUpgrade);
@@ -387,8 +388,8 @@ int main(void) {
 						case 0:
 							printf("소지하고 있는 돈: %d\n", money);
 							printf("판돈을 입력하세요: ");
-							scanf_s("%d", &insertmoney);
-							if (moneyCheck(&money, insertmoney,0)) {
+							scanf_s("%s", stringmoney, sizeof(stringmoney));
+							if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 								system("cls");
 								money -= insertmoney;
 								printf("사용자의 접속을 기다리는 중...\n이전으로 가려면 q를 입력하세요.\n");
@@ -517,8 +518,19 @@ void gotoxy(int x, int y)
 	Pos.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos); //프로토타입의 값대로 위치이동
 }
-int moneyCheck_borrow(int* money, int insertmoney,int* borrowmoney,int* gugeolUpgrade) {
+int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borrowmoney,int* gugeolUpgrade) {
 	rewind(stdin);
+	for (int i = 0; stringmoney[i] != '\0'; i++)
+	{
+		if (!isdigit(stringmoney[i])) {
+			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+			printf("숫자만 넣어주세요!\n");
+			system("pause");
+			system("cls");
+			return 0;
+		}
+	}
+	*insertmoney = atoi(stringmoney);
 	if (insertmoney > *borrowmoney) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("빚보다 많이 갚을 수 없습니다!\n");
@@ -542,10 +554,21 @@ int moneyCheck_borrow(int* money, int insertmoney,int* borrowmoney,int* gugeolUp
 	}
 	return 1;
 }
-int moneyCheck(int *money, int insertmoney, int maxmoney) {
+int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 	rewind(stdin);
+	for (int i = 0; stringmoney[i] != '\0'; i++)
+	{
+		if (!isdigit(stringmoney[i])) {
+			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+			printf("숫자만 넣어주세요!\n");
+			system("pause");
+			system("cls");
+			return 0;
+		}
+	}
+	*insertmoney = atoi(stringmoney);
 	if (maxmoney != 0) { // 0으로 설정시 무제한
-		if (insertmoney > maxmoney) {
+		if (*insertmoney > maxmoney) {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("%d원 이하만 가능합니다!\n", maxmoney);
 			system("pause");
@@ -553,14 +576,14 @@ int moneyCheck(int *money, int insertmoney, int maxmoney) {
 			return 0;
 		}
 	}
-	if (insertmoney > *money) {
+	if (*insertmoney > *money) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("가지고 있는 돈이 적습니다!\n");
 		system("pause");
 		system("cls");
 		return 0;
 	}
-	if (insertmoney <= 0) {
+	if (*insertmoney <= 0) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		printf("1원 이상 넣어주세요!\n");
 		system("pause");
@@ -627,7 +650,7 @@ void login_menu(char* id, char* password) {
 	plain[num] = '\0';
 	mySHA(plain, encrypt);
 	for (int i = 0; i < 32; i++)
-		sprintf(password + 2 * i, "%02x", encrypt[i]);
+		sprintf(password + 2 * i, "%02x", *(encrypt+i));
 	gotoxy(0, 11);
 }
 void update_money(FILE* fp, int* money)
@@ -727,7 +750,7 @@ USER get_record(FILE* fp)
 	} while (1);
 	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 	data.savedGugeolUpgrade[9] = '1'; // 1
-	data.savedUserMoney[1] = '1'; // 1000
+	data.savedUserMoney[5] = '1'; // 1000
 	data.savedborrowmoney[2] = '1'; // 10000000
 	return data;
 }

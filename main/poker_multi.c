@@ -8,7 +8,7 @@
 
 extern int poker();
 extern void pokermulti(int);
-extern int moneyCheck(int*, int, int);
+extern int moneyCheck(int*, char*,int*, int);
 int server_flag = 0;
 void ErrorHandling(char* message);
 void serverExit(int hServSock)
@@ -250,7 +250,7 @@ void poker_client(int *money) {
 		system("cls");
 		return;
 	}
-	if(moneyCheck(money, insertmoney,0) == 0) {
+	if(moneyCheck(money, moneys,&insertmoney,0) == 0) {
 		char joinMessage[] = "exit";
 		send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
 		closesocket(hSocket);

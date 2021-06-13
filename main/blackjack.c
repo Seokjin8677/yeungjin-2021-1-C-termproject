@@ -151,7 +151,10 @@ int blackjack(int insertmoney,int* money) {
 					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 					gotoxy(0, 21);
 					printf("\n black Jack\n");
-					_getch();
+					system("pause");
+					system("cls");
+					return 0;
+					/*_getch();
 					temp = choiceBlackjack(2, blackFinMenuList); // 메뉴의선택값 반환
 					if (temp == 0) {
 						//계속하기
@@ -162,7 +165,7 @@ int blackjack(int insertmoney,int* money) {
 					else if (temp == 1) {
 						//메뉴로가기
 						break;
-					}
+					}*/
 				}
 				else if (card_sum(playerCard, player_index) == 21) { //플레이어 21일때
 					hideFlag = 0;
@@ -347,7 +350,6 @@ int blackjack(int insertmoney,int* money) {
 				if (flag == 1) { //Bust 확인
 					gotoxy(0, 21);
 					printf(" Bust (Dealer)\n");
-					printf(" Surrender\n");
 					system("pause");
 					system("cls");
 					return insertmoney * 2;
