@@ -145,12 +145,15 @@ int main(void) {
 					gotoxy(10, 22);
 					scanf_s("%s", stringmoney,sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney,&insertmoney,100000)) {
+						background();
 						system("cls");
 						background();
 						money -= insertmoney;
+						background();
 						money += pokersingle(insertmoney, poker());
+						background();
 						update_money(fp, &money);
-						system("pause");
+						_getch();
 						system("cls");
 					}
 					break;
