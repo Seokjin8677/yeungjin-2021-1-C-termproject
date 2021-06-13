@@ -49,6 +49,7 @@ int horse(int insertmoney)
     } while (select_horse[0] <'1' || select_horse[0]>'5');
     chose_horse = select_horse[0] - 48;
     printhorsefield();
+    PlaySound(TEXT("sound\\shot.wav"), NULL, SND_ASYNC);
     /*gotoxy(0, 16); printf("                                                       ");
     gotoxy(0, 16);
     //system("pause");
@@ -122,7 +123,7 @@ int horse(int insertmoney)
 void printhorsefield() {
     system("cls");
     gotoxy(44, 1); printf("영진 경마장\n\n");
-    printf("start                                                                                      end  등수\n");
+    printf("START                                                                                      END  등수\n");
     printf("====================================================================================================\n");
     for (int i = 1; i <= 5; i++)
         printf("%d\tㅣ\n\n", i);

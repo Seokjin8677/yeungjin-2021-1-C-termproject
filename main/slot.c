@@ -236,10 +236,16 @@ int return_money(int r[][3], int money)
     {
         printf(" µ·À» ¾ò¾ú´Ù!!");
         PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
-        return money * 2;
+        return money * 10;
     }
-    printf(" µ·À» ÀÒ¾ú´Ù..");
-    PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
-    return 0;
-
+    else if (r[1][0] == r[1][1] || r[1][1] == r[1][2] || r[1][0] == r[1][2]) {
+        printf(" µ·À» ¾ò¾ú´Ù!!");
+        PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
+        return money * 3;
+    }
+    else {
+        printf(" µ·À» ÀÒ¾ú´Ù..");
+        PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+        return 0;
+    }
 }
