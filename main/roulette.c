@@ -34,6 +34,7 @@ int roulette(int insertmoney) {
 			scanf_s("%d", &user_roulette);
 			if (user_roulette < 0 || user_roulette > 36) {
 				printf("0에서 36까지만 입력하세요!\n");
+				PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 				system("pause");
 				system("cls");
 				sel = 3;
