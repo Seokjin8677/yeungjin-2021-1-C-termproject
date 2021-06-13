@@ -359,9 +359,7 @@ void game_control(char reel[][3], int reel_num[][3], int money)
         num[i] = reel_num[1][i]; //가운데만 보기때문에
 
     }
-    for (i = 0; i < 3; i++) {
-        printf("%d ", reel_num[1][i]);
-    }
+    
     //num[i] = reel_num[0][i];
     thank = return_money(reel_num, money);
     printf("\t 상금: %d", thank);
@@ -379,7 +377,7 @@ void game_control(char reel[][3], int reel_num[][3], int money)
 int return_money(int r[][3], int money)
 
 {
-    if (r[1][0] == r[1][1] || r[1][1] == r[1][2] || r[1][0] == r[1][2]) //문양이 세개 동일할경우(★, ♠, ◆)
+    if (r[1][0] == r[1][1] && r[1][1] == r[1][2] && r[1][0] == r[1][2]) //문양이 세개 동일할경우(★, ♠, ◆)
     {
         printf("\t돈을 얻었다");  return money*2;
     }
