@@ -26,6 +26,7 @@ int roulette(int insertmoney) {
 			scanf_s("%d", &user_roulette);
 			if (user_roulette < 0 || user_roulette > 36) {
 				printf("0에서 36까지만 입력하세요!\n");
+				PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 				system("pause");
 				system("cls");
 				sel = 3;
@@ -83,7 +84,7 @@ int roulette(int insertmoney) {
 		}
 	}
 	if (result % 37 == 0) {
-		gotoxy(6, 4); printf("  ");
+		gotoxy(6, 6); printf("o");
 	}
 	else {
 		gotoxy(((result - 1) - result / 37) % 12 * 5 + 11, (result - 1 - result / 37) / 12 % 3 * 3 + 3); printf("o");
