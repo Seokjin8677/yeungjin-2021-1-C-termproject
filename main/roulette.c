@@ -91,7 +91,7 @@ int roulette(int insertmoney) {
 		}
 	}
 	if (result % 37 == 0) {
-		gotoxy(6, 4); printf("  ");
+		gotoxy(6, 6); printf("o");
 	}
 	else {
 		gotoxy(((result - 1) - result / 37) % 12 * 5 + 11, (result - 1 - result / 37) / 12 % 3 * 3 + 3); printf("o");
