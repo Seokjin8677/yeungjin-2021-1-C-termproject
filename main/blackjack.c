@@ -470,11 +470,11 @@ void card_table(int* dealerCard, int dealer_index, int* playerCard, int player_i
 
 	gotoxy(54, 38);
 	printf("보유자금 : %d  현재 배팅금액 :%d", *money, batMoney);
-	gotoxy(10, 20);
+	gotoxy(10, 12);
 	blackjackDealerPrint(dealerCard, dealer_index);
 	//printf("\n\n\n");
 	//printDealerCardArray(playerCard, player_index);
-	gotoxy(30, 20);
+	gotoxy(30, 70);
 	blackjackPlayerPrint(playerCard, player_index);
 	
 	
@@ -549,7 +549,7 @@ int choiceBlackjack(int max_menu, char** menulist)
 			else
 				textcolor(15);
 			
-			gotoxy(15 * (i - max_menu / 2) + 45,22);
+			gotoxy(13 * (i - max_menu / 2) + 45,29);
 			printf("%s", menulist[i]);
 		
 		}
