@@ -50,7 +50,7 @@ int main(void) {
 	char *loginmenulist[MAIN_MENU] = {"로그인","계정생성","종료"};
 	char *mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
 	char *singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","은행","구걸하기","상점","설명","이전" };
-	char* shopmenulist[SHOP_MENU] = { "구걸 업그레이드","로또","이전"};
+	char* shopmenulist[SHOP_MENU] = { "구걸 UP","로또","이전"};
 	char *multimenulist[MULTI_MENU] = { "포커","블랙잭","이전" };
 	char *multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
 	char* bankmenulist[BANK_MENU] = {"잔액조회","대출금 확인","대출상환","이전"};
@@ -75,7 +75,7 @@ int main(void) {
 	}
 	
 	do {
-		menu = pullDownMenu(MAIN_MENU, loginmenulist,MENU_X, MENU_Y);
+		menu = pullDownMenu(MAIN_MENU, loginmenulist,MENU_X-2, MENU_Y);
 		switch (menu)
 		{
 		case 0:
@@ -106,17 +106,20 @@ int main(void) {
 	} while (loginStatus != 1);
 	do {
 		background();
-		menu = pullDownMenu(MAIN_MENU, mainmenulist, MENU_X, MENU_Y);
+		menu = pullDownMenu(MAIN_MENU, mainmenulist, MENU_X-3, MENU_Y);
 		switch (menu)
 		{
 		case 0:
 			do {
 				background();
-				menu = pullDownMenu(SINGLE_MENU, singlemenulist, MENU_X, MENU_Y);
+				menu = pullDownMenu(SINGLE_MENU, singlemenulist, MENU_X-17, MENU_Y);
 				switch (menu)
 				{
 				case 0:
-					printf("소지하고 있는 돈: %d\n", money); // 포커
+					background();
+					gotoxy(10,20);
+					printf("소지하고 있는 돈: %d", money); // 포커
+					gotoxy(10, 21);
 					printf("판돈을 입력하세요(최대 10만원): ");
 					scanf_s("%s", stringmoney,sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney,&insertmoney,100000)) {
@@ -187,6 +190,7 @@ int main(void) {
 					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
 					do
 					{
+						background();
 						menu = pullDownMenu(BANK_MENU, bankmenulist, MENU_X, MENU_Y);
 						switch (menu)
 						{
@@ -248,6 +252,7 @@ int main(void) {
 					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
 					do
 					{
+						background();
 						menu = pullDownMenu(SHOP_MENU, shopmenulist, MENU_X, MENU_Y);
 						switch (menu)
 						{
@@ -317,7 +322,8 @@ int main(void) {
 					sel = 0; // 상점 메뉴 접속 시 1번 메뉴부터 선택되게
 					do
 					{
-						menu = pullDownMenu(EXPLAIN_MENU, explainmenulist, 1, 3);
+						background();
+						menu = pullDownMenu(EXPLAIN_MENU, explainmenulist, MENU_X-11, MENU_Y);
 						switch (menu)
 						{
 						case 0: // 스토리
@@ -358,7 +364,6 @@ int main(void) {
 						case 7: //이전
 							break;
 						}
-						system("pause");
 						system("cls");
 					} while (menu != 7);
 					sel = 8; // 메인 메뉴로 갈시 메뉴 선택되게

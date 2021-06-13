@@ -81,7 +81,7 @@
 #define MONEY_SIZE 11
 #define DECK 52
 #define ROULETTE_MENU 3
-#define MENU_X	9
+#define MENU_X	33
 #define MENU_Y	27
 #endif
 
