@@ -27,7 +27,7 @@ int horse(int insertmoney)
         printf("자신이 선택할 말의 번호를 입력하시오(1~5): ");
         fflush(stdin);
         scanf_s("%s", &select_horse,2);
-        PlaySound(TEXT("sound\\botton.wav"), NULL, SND_ASYNC);
+        PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
         switch (select_horse[0])
 		{
 		case '1':
