@@ -188,7 +188,7 @@ void poker_client(int *money) {
 	int serverScore, clientScore;
 	
 	printf("접속할 서버에 아이피를 입력하세요(취소하려면 -1 입력): ");
-	scanf("%s", ipadd);
+	scanf_s("%s", ipadd,sizeof(ipadd));
 	rewind(stdin);
 	if (ipadd[0] == '-' && ipadd[1] == '1') {
 		system("cls");

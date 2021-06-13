@@ -373,6 +373,7 @@ int main(void) {
 			sel = 0; // 메인 메뉴로 갈시 싱글플레이 메뉴 선택되게
 			break;
 		case 1:
+			sel = 0;
 			do
 			{
 				menu = pullDownMenu(MULTI_MENU, multimenulist,1,3);
