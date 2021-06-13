@@ -42,6 +42,9 @@
     <ClCompile Include="slot.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="explain.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KISA_SHA256.h">

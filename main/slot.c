@@ -15,7 +15,7 @@ int return_money(int r[][3], int betting);
 
 
 int thank;
-int slot(money)
+int slot(int money)
 {
 
     char reel[6][3] = { "¡Ú", "¢¼", "¡ß", "¢¾", "¢À", "¡Û" };
