@@ -181,7 +181,7 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 			gotoxy(3 + i * 15, j); printf("┃       ┃ "); // 카드 모양 출력
 		}
 		gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ "); // 카드 모양 출력
-		if(temp == 2 || temp == 3)
+		if(temp == 1 || temp == 2)
 			textcolor(12);
 		else
 			textcolor(15);

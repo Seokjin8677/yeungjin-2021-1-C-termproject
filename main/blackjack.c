@@ -845,9 +845,11 @@ void blackjackDealerPrint(int* arr, int size) { // 포커 패 출력
 				gotoxy(7 + i * 15, 6); printf("♣");
 				break;
 			case 1:
+				textcolor(12);
 				gotoxy(7 + i * 15, 6); printf("♥");
 				break;
 			case 2:
+				textcolor(12);
 				gotoxy(7 + i * 15, 6); printf("◆");
 				break;
 			case 3:
@@ -917,10 +919,12 @@ void blackjackPlayerPrint(int* arr, int size) { // 포커 패 출력
 			printf("♣");
 			break;
 		case 1:
+			textcolor(12);
 			gotoxy(7 + i * 15, 16);
 			printf("♥");
 			break;
 		case 2:
+			textcolor(12);
 			gotoxy(7 + i * 15, 16);
 			printf("◆");
 			break;
