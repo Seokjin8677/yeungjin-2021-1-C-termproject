@@ -356,30 +356,43 @@ int main(void) {
 						{
 						case 0: // 스토리
 							story_explain();
+							system("pause");
+							system("cls");
 							break;
 						case 1: // 포커
 							poker_explain();
+							system("pause");
+							system("cls");
 							break;
 						case 2: // 블랙잭
 							blackjack_explain();
+							system("pause");
+							system("cls");
 							break;
 						case 3: // 슬릇머신
 							slot_explain();
+							system("pause");
+							system("cls");
 							break;
 						case 4: // 룰렛
 							roulette_explain();
+							system("pause");
+							system("cls");
 							break;
 						case 5: // 경마
 							horse_explain();
+							system("pause");
+							system("cls");
 							break;
 						case 6: // 상점
 							shop_explain();
+							system("pause");
+							system("cls");
 							break;
 						case 7: //이전
 							break;
 						}
-						system("pause");
-						system("cls");
+						
 					} while (menu != 7);
 					sel = 8; // 메인 메뉴로 갈시 메뉴 선택되게
 					break;
