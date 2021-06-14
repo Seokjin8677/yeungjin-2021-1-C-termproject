@@ -251,14 +251,14 @@ int main(void) {
 						{
 						case 0:
 							background();
-							gotoxy(10, 20);
+							gotoxy(43, 20);
 							printf("소지금: %d\n", money);
 							system("pause");
 							system("cls");
 							break;
 						case 1:
 							background();
-							gotoxy(10, 20);
+							gotoxy(43, 20);
 							printf("남은 대출금: %d\n",borrowmoney);
 							system("pause");
 							system("cls");
@@ -266,15 +266,16 @@ int main(void) {
 						case 2:
 							background();
 							if (borrowmoney <= 0) {
-								gotoxy(10, 20);
+								gotoxy(40, 20);
 								printf("이미 대출금을 모두 갚았습니다!\n");
 								system("pause");
 								system("cls");
 								break;
 							}
 							background();
-							gotoxy(10, 20);
+							gotoxy(38, 20);
 							printf("상환할 대출금을 입력하세요:\n");
+							gotoxy(35, 21);
 							scanf_s("%s", stringmoney, sizeof(stringmoney));
 							if (moneyCheck_borrow(&money,stringmoney ,&insertmoney, &borrowmoney, &gugeolUpgrade)) {
 								system("cls");
@@ -681,7 +682,7 @@ void login_menu(char* id, char* password) {
 	unsigned char encrypt[32];
 	memset(plain, 0x00, sizeof(plain));
 	memset(encrypt, 0x00, sizeof(encrypt));
-	gotoxy(33, 20); printf("LOGIN");
+	gotoxy(33, 20); printf("ID");
 	gotoxy(32, 21); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 	gotoxy(32, 22); printf("┃");
 	gotoxy(65, 22); printf("┃");

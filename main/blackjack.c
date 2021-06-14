@@ -823,7 +823,8 @@ void blackjackDealerPrint(int* arr, int size) { // 포커 패 출력
 	
 	int temp = 0;
 	int suite = 0; //문양
-	printf("\n 딜러카드 : ");
+	gotoxy(20, 10);
+	printf(" 딜러카드 : ");
 	gotoxy(0, 0);
 	for (int i = 0; i < size; i++)
 	{
@@ -907,7 +908,8 @@ void blackjackPlayerPrint(int* arr, int size) { // 포커 패 출력
 	gotoxy(0, 0);
 	int temp = 0;
 	int suite = 0; //문양
-	printf("\n\n\n\n\n\n\n\n\n\n\n 플레이어카드 : ");
+	gotoxy(18, 20);
+	printf(" 플레이어카드 : ");
 	for (int i = 0; i < size; i++)
 	{
 		temp = (arr[i] % 13) + 1; //13으로 나눈값의 나머지
