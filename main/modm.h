@@ -67,7 +67,7 @@
 #define PASS_SIZE 65
 #define MAIN_MENU 3
 #define SINGLE_MENU 10
-#define MULTI_MENU 3
+#define MULTI_MENU 2
 #define MULTI_SEL_MENU 3
 #define SHOP_MENU 3
 #define BANK_MENU 4
@@ -82,7 +82,7 @@
 #define DECK 52
 #define ROULETTE_MENU 3
 #define MENU_X	33
-#define MENU_Y	27
+#define MENU_Y	17
 #endif
 
 /*

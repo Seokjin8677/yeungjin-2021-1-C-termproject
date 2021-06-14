@@ -52,7 +52,7 @@ int main(void) {
 	char* mainmenulist[MAIN_MENU] = { "싱글플레이","멀티플레이","종료" };
 	char* singlemenulist[SINGLE_MENU] = { "포커","블랙잭","슬릇머신","룰렛","경마","은행","구걸하기","상점","설명","이전" };
 	char* shopmenulist[SHOP_MENU] = { "구걸 UP","로또","이전" };
-	char* multimenulist[MULTI_MENU] = { "포커","블랙잭","이전" };
+	char* multimenulist[MULTI_MENU] = { "포커","이전" };
 	char* multimenu_pokerlist[MULTI_SEL_MENU] = { "게임 생성","게임 참가","이전" };
 	char* bankmenulist[BANK_MENU] = { "잔액조회","대출금 확인","대출상환","이전" };
 	char* explainmenulist[EXPLAIN_MENU] = { "스토리","포커","블랙잭","슬릇머신","룰렛","경마","상점","이전" };
@@ -174,7 +174,7 @@ int main(void) {
 						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 						money += blackjack(insertmoney,&money);
 						update_money(fp, &money);
-						_getch();
+						//_getch();
 						system("cls");
 					}
 					break;
@@ -217,7 +217,7 @@ int main(void) {
 						PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 						money += roulette(insertmoney);
 						update_money(fp, &money);
-						_getch();
+						//_getch();
 						system("cls");
 					}
 					break;
@@ -246,7 +246,7 @@ int main(void) {
 					do
 					{
 						background();
-						menu = pullDownMenu(BANK_MENU, bankmenulist, MENU_X, MENU_Y);
+						menu = pullDownMenu(BANK_MENU, bankmenulist, MENU_X-3, MENU_Y);
 						switch (menu)
 						{
 						case 0:
@@ -462,7 +462,7 @@ int main(void) {
 			do
 			{
 				background();
-				menu = pullDownMenu(MULTI_MENU, multimenulist, MENU_X - 3, MENU_Y);
+				menu = pullDownMenu(MULTI_MENU, multimenulist, MENU_X, MENU_Y);
 				switch (menu)
 				{
 				case 0:
@@ -498,14 +498,9 @@ int main(void) {
 					sel = 0;
 					break;
 				case 1:
-					printf("블랙잭 멀티\n");
-					_getch();
-					system("cls");
-					break;
-				case 2:
 					break;
 				}
-			} while (menu != 2);
+			} while (menu != 1);
 			menu = 0;
 			sel = 1; // 메인 메뉴로 갈시 멀티플레이 메뉴 선택되게
 			break;
@@ -682,17 +677,17 @@ void login_menu(char* id, char* password) {
 	unsigned char encrypt[32];
 	memset(plain, 0x00, sizeof(plain));
 	memset(encrypt, 0x00, sizeof(encrypt));
-	gotoxy(33, 20); printf("ID");
-	gotoxy(32, 21); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-	gotoxy(32, 22); printf("┃");
-	gotoxy(65, 22); printf("┃");
-	gotoxy(32, 23); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-	gotoxy(33, 25); printf("PASSWORD");
-	gotoxy(32, 26); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-	gotoxy(32, 27); printf("┃");
-	gotoxy(65, 27); printf("┃");
-	gotoxy(32, 28); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
-	gotoxy(34, 22); printf("_"); gotoxy(34, 22);
+	gotoxy(33, 20-7); printf("ID");
+	gotoxy(32, 21 - 7); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	gotoxy(32, 22 - 7); printf("┃");
+	gotoxy(65, 22 - 7); printf("┃");
+	gotoxy(32, 23 - 7); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	gotoxy(33, 25 - 7); printf("PASSWORD");
+	gotoxy(32, 26 - 7); printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	gotoxy(32, 27 - 7); printf("┃");
+	gotoxy(65, 27 - 7); printf("┃");
+	gotoxy(32, 28 - 7); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	gotoxy(34, 22 - 7); printf("_"); gotoxy(34, 22- 7);
 	while ((id[num] = _getch()) != '\r')
 	{
 		if (id[num] == '\b' && num != 0) {
@@ -713,7 +708,7 @@ void login_menu(char* id, char* password) {
 		}
 	}
 	id[num] = '\0';
-	gotoxy(34, 27); printf("_"); gotoxy(34, 27);
+	gotoxy(34, 27 - 7); printf("_"); gotoxy(34, 27 - 7);
 	num = 0;
 	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 	do
@@ -843,8 +838,8 @@ USER get_record(FILE* fp)
 	} while (1);
 	PlaySound(TEXT("sound\\button.wav"), NULL, SND_ASYNC);
 	data.savedGugeolUpgrade[9] = '1'; // 1
-	data.savedUserMoney[5] = '1'; // 1000
-	data.savedborrowmoney[2] = '1'; // 10000000
+	data.savedUserMoney[2] = '1'; // 1000
+	data.savedborrowmoney[3] = '1'; // 10000000
 	return data;
 }
 int id_check(FILE* fp, char* id) {

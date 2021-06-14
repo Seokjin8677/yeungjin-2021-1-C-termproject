@@ -45,52 +45,53 @@ int roulette(int insertmoney) {
 	}
 	
 	system("cls");
+	background();
 	PlaySound(TEXT("sound\\shot.wav"), NULL, SND_ASYNC);
-	gotoxy(3, 1); printf("旨收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收旬");
-	gotoxy(3, 2); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
-	gotoxy(3, 3); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
-	gotoxy(3, 4); printf("早    曳收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朽");
-	gotoxy(3, 5); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
-	gotoxy(3, 6); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
-	gotoxy(3, 7); printf("早    曳收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朽");
-	gotoxy(3, 8); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
-	gotoxy(3, 9); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
-	gotoxy(3, 10); printf("曲收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收旭");
+	gotoxy(3+12, 1+11); printf("旨收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收有收收收收旬");
+	gotoxy(3 + 12, 2 + 11); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
+	gotoxy(3 + 12, 3 + 11); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
+	gotoxy(3 + 12, 4 + 11); printf("早    曳收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朽");
+	gotoxy(3 + 12, 5 + 11); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
+	gotoxy(3 + 12, 6 + 11); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
+	gotoxy(3 + 12, 7 + 11); printf("早    曳收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朱收收收收朽");
+	gotoxy(3 + 12, 8 + 11); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
+	gotoxy(3 + 12, 9 + 11); printf("早    早    早    早    早    早    早    早    早    早    早    早    早    早");
+	gotoxy(3 + 12, 10 + 11); printf("曲收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收朴收收收收旭");
 	//srand(time(NULL));
 	int myvalue = rand() % 37;
 	int result = 0;
 	textcolor(10);
-	gotoxy(6, 2); printf("0");
+	gotoxy(6+12, 2+11); printf("0");
 	for (int i = 1; i < 37; i++)
 	{
 		if (i % 2 == 0)
 			textcolor(12);
 		else
 			textcolor(15);
-		gotoxy(((i - 1) - i / 37) % 12 * 5 + 10, (i - 1 - i / 37) / 12 % 3 * 3 + 2); printf("%2d", i);
+		gotoxy(12+((i - 1) - i / 37) % 12 * 5 + 10,11+ (i - 1 - i / 37) / 12 % 3 * 3 + 2); printf("%2d", i);
 	}
 	textcolor(15);
 	for (result = myvalue; result < 50+rand()%50 + myvalue; result++)
 	{
 		if (result % 37 == 0) {
-			gotoxy(6, 6); printf("o");
+			gotoxy(12+6, 11+6); printf("o");
 			Sleep(50);
-			gotoxy(6, 6); printf("  ");
+			gotoxy(12+6, 11+6); printf("  ");
 		}
 		else {
-			gotoxy(((result - 1) - result / 37) % 12 * 5 + 11, (result - 1 - result / 37) / 12 % 3 * 3 + 3); printf("o");
+			gotoxy(12+((result - 1) - result / 37) % 12 * 5 + 11,11+ (result - 1 - result / 37) / 12 % 3 * 3 + 3); printf("o");
 			Sleep(50);
-			gotoxy(((result - 1) - result / 37) % 12 * 5 + 11, (result - 1 - result / 37) / 12 % 3 * 3 + 3); printf("  ");
+			gotoxy(12+((result - 1) - result / 37) % 12 * 5 + 11,11+ (result - 1 - result / 37) / 12 % 3 * 3 + 3); printf("  ");
 		}
 	}
 	if (result % 37 == 0) {
-		gotoxy(6, 6); printf("o");
+		gotoxy(12+6, 11+6); printf("o");
 	}
 	else {
-		gotoxy(((result - 1) - result / 37) % 12 * 5 + 11, (result - 1 - result / 37) / 12 % 3 * 3 + 3); printf("o");
+		gotoxy(12+((result - 1) - result / 37) % 12 * 5 + 11,11+ (result - 1 - result / 37) / 12 % 3 * 3 + 3); printf("o");
 	}
 	result %=37;
-	gotoxy(1, 12);
+	gotoxy(12+5, 11+12);
 	switch (menu)
 	{
 	case 0:
@@ -123,7 +124,7 @@ int roulette(int insertmoney) {
 		}
 		break;
 	}
-
+	gotoxy(12 + 5, 12 + 12);
 	if(returnmoney==0){
 		printf("絲擊 檠歷棻..\n");
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
@@ -133,7 +134,7 @@ int roulette(int insertmoney) {
 		PlaySound(TEXT("sound\\coin.wav"), NULL, SND_ASYNC);
 	}
 		
-
+	gotoxy(12 + 5, 12 + 13);
 	system("pause");
 	system("cls");
 	sel = 3;

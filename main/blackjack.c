@@ -203,7 +203,7 @@ int blackjack(int insertmoney,int* money) {
 					if (temp == 0 || temp == -1) {//1또는 잘못입력시 
 						background();
 						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
-						gotoxy(0, 21);
+						gotoxy(8, 25);
 						printf(" Stay\n");
 						_getch();
 						system("cls");
@@ -214,7 +214,7 @@ int blackjack(int insertmoney,int* money) {
 					else if (temp == 2) {
 						background();
 						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
-						gotoxy(0, 21);
+						gotoxy(8, 25);
 						printf(" Surrender\n");
 						_getch();
 						system("cls");
@@ -228,7 +228,7 @@ int blackjack(int insertmoney,int* money) {
 						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
 
 						
-						gotoxy(0, 21);
+						gotoxy(8, 25);
 						char stringmoney[10] = {0};
 						do
 						{
@@ -248,7 +248,7 @@ int blackjack(int insertmoney,int* money) {
 						player_index += 1;  //카드지급 후 다음 카드를 받기위해 인덱스를 1증가 시킨다.
 
 						card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
-						gotoxy(0, 21);
+						gotoxy(8, 25);
 						printf(" DoubleDown\n");
 						_getch();
 						system("cls");
@@ -292,7 +292,7 @@ int blackjack(int insertmoney,int* money) {
 
 				if (flag == 1) { //Bust 확인
 					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
-					gotoxy(0, 21);
+					gotoxy(8, 25);
 					printf(" Bust (player)\n");
 					PlaySound(TEXT("sound\\lose.wav"), NULL, SND_ASYNC);
 					system("pause");
@@ -314,7 +314,7 @@ int blackjack(int insertmoney,int* money) {
 				}
 				else if (flag == 2) {//Surrender 확인
 					card_table(dealerCard, dealer_index, playerCard, player_index, money, insertmoney);
-					gotoxy(0, 21);
+					gotoxy(8, 25);
 					printf(" Surrender\n");
 					PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 					system("pause");
@@ -362,7 +362,7 @@ int blackjack(int insertmoney,int* money) {
 
 
 				if (flag == 1) { //Bust 확인
-					gotoxy(0, 21);
+					gotoxy(8, 25);
 					printf(" Bust (Dealer)\n");
 					printf(" 플레이어 승\n");
 					PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
@@ -384,24 +384,27 @@ int blackjack(int insertmoney,int* money) {
 					}*/
 				}
 
-				gotoxy(0, 21);
+				gotoxy(8, 25);
 				printf(" 딜러합 : %d\n", card_sum(dealerCard, dealer_index));
+				gotoxy(8, 26);
 				printf(" 플레이어합 : %d\n", card_sum(playerCard, player_index));
 
 				if (card_sum(dealerCard, dealer_index) == card_sum(playerCard, player_index)) { //비길시
 					//*money += insertmoney; //배팅금액 
-					gotoxy(0, 23);
+					gotoxy(8, 27);
 					printf(" Push(동점)\n");
 					PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+					gotoxy(8, 28);
 					system("pause");
 					system("cls");
 					background();
 					return insertmoney;
 				}
 				else if (card_sum(playerCard, player_index) < card_sum(dealerCard, dealer_index)) { //딜러가 높을시
-					gotoxy(0, 23);
+					gotoxy(8, 27);
 					printf(" 딜러 승\n");
 					PlaySound(TEXT("sound\\lose.wav"), NULL, SND_ASYNC);
+					gotoxy(8, 28);
 					system("pause");
 					system("cls");
 					background();
@@ -409,9 +412,10 @@ int blackjack(int insertmoney,int* money) {
 				}
 				else {
 					//*money += insertmoney * 2;
-					gotoxy(0, 23);
+					gotoxy(8, 27);
 					printf(" 플레이어 승\n");
 					PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
+					gotoxy(8, 28);
 					system("pause");
 					system("cls");
 					background();
@@ -823,7 +827,7 @@ void blackjackDealerPrint(int* arr, int size) { // 포커 패 출력
 	
 	int temp = 0;
 	int suite = 0; //문양
-	gotoxy(20, 10);
+	gotoxy(20 - 11, 5);
 	printf(" 딜러카드 : ");
 	gotoxy(0, 0);
 	for (int i = 0; i < size; i++)
@@ -833,68 +837,68 @@ void blackjackDealerPrint(int* arr, int size) { // 포커 패 출력
 
 		PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
 
-		gotoxy(3+32 + i * 15, 2+ 7);
+		gotoxy(3+32 - 11 + i * 15, 2+ 2);
 		printf("┏━━━━━━━┓"); // 카드 모양 출력
 
 		for (int j = 2; j < 9; j++)
 		{
-			gotoxy(3 + 32 + i * 15, j+1 + 7);
+			gotoxy(3 + 32 - 11 + i * 15, j+1 + 2);
 			printf("┃       ┃ "); // 카드 모양 출력
 		}
 
-		gotoxy(3+ 32 + i * 15, 10 + 7);
+		gotoxy(3+ 32 - 11 + i * 15, 10 + 2);
 		printf("┗━━━━━━━┛ "); // 카드 모양 출력
 		if (i == 0 && hideFlag == 1)
 		{
-			gotoxy(7 + 32 + i * 15, 6 + 7);
+			gotoxy(7 + 32 - 11 + i * 15, 6 + 2);
 			printf("?");
-			gotoxy(5 + 32 + i * 15, 3 + 7);
+			gotoxy(5 + 32 - 11 + i * 15, 3 + 2);
 			printf("?");
-			gotoxy(10 + 32 + i * 15, 9 + 7);
+			gotoxy(10 + 32 - 11 + i * 15, 9 + 2);
 			printf("?");
 		}
 		else {
 			switch (suite) // 카드 문양 출력
 			{
 			case 0:
-				gotoxy(7 + 32 + i * 15, 6 + 7); printf("♣");
+				gotoxy(7 - 11 + 32 + i * 15, 6 + 2); printf("♣");
 				break;
 			case 1:
 				textcolor(12);
-				gotoxy(7 + 32 + i * 15, 6 + 7); printf("♥");
+				gotoxy(7 - 11 + 32 + i * 15, 6 + 2); printf("♥");
 				break;
 			case 2:
 				textcolor(12);
-				gotoxy(7 + 32 + i * 15, 6 + 7); printf("◆");
+				gotoxy(7 - 11 + 32 + i * 15, 6 + 2); printf("◆");
 				break;
 			case 3:
-				gotoxy(7 + 32 + i * 15, 6 + 7) ; printf("♠");
+				gotoxy(7 - 11 + 32 + i * 15, 6 + 2) ; printf("♠");
 				break;
 			default:
-				gotoxy(7 + 32 + i * 15, 6 + 7); printf("에러");
+				gotoxy(7 - 11 + 32 + i * 15, 6 + 2); printf("에러");
 				break;
 			}
 			switch (temp) // 카드 숫자 출력
 			{
 			case 11:
-				gotoxy(5 + 32 + i * 15, 3 + 7); printf("J");
-				gotoxy(10 + 32 + i * 15, 9 + 7); printf("J");
+				gotoxy(5 - 11 + 32 + i * 15, 3 + 2); printf("J");
+				gotoxy(10 - 11 + 32 + i * 15, 9 + 2); printf("J");
 				break;
 			case 12:
-				gotoxy(5 + 32 + i * 15, 3 + 7); printf("Q");
-				gotoxy(10 + 32 + i * 15, 9 + 7); printf("Q");
+				gotoxy(5 - 11 + 32 + i * 15, 3 + 2); printf("Q");
+				gotoxy(10 - 11 + 32 + i * 15, 9 + 2); printf("Q");
 				break;
 			case 13:
-				gotoxy(5 + 32 + i * 15, 3 + 7); printf("K");
-				gotoxy(10 + 32 + i * 15, 9 + 7); printf("K");
+				gotoxy(5 - 11 + 32 + i * 15, 3 + 2); printf("K");
+				gotoxy(10 - 11 + 32 + i * 15, 9 + 2); printf("K");
 				break;
 			case 1:
-				gotoxy(5 + 32 + i * 15, 3 + 7); printf("A");
-				gotoxy(10 + 32 + i * 15, 9 + 7); printf("A");
+				gotoxy(5 - 11 + 32 + i * 15, 3 + 2); printf("A");
+				gotoxy(10 - 11 + 32 + i * 15, 9 + 2); printf("A");
 				break;
 			default:
-				gotoxy(5 + 32 + i * 15, 3 + 7); printf("%d", temp);
-				gotoxy(9 + 32 + i * 15, 9 + 7); printf("%2d", temp);
+				gotoxy(5 - 11 + 32 + i * 15, 3 + 2); printf("%d", temp);
+				gotoxy(9 - 11 + 32 + i * 15, 9 + 2); printf("%2d", temp);
 				break;
 			}
 			textcolor(15);
@@ -908,7 +912,7 @@ void blackjackPlayerPrint(int* arr, int size) { // 포커 패 출력
 	gotoxy(0, 0);
 	int temp = 0;
 	int suite = 0; //문양
-	gotoxy(18, 20);
+	gotoxy(18 - 11, 15);
 	printf(" 플레이어카드 : ");
 	for (int i = 0; i < size; i++)
 	{
@@ -917,63 +921,63 @@ void blackjackPlayerPrint(int* arr, int size) { // 포커 패 출력
 
 	    PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
 
-		gotoxy(3 + 32 + i * 15, 1 + 11 + 7);
+		gotoxy(3 - 11 + 32 + i * 15, 1 + 11 + 2);
 		printf("┏━━━━━━━┓"); // 카드 모양 출력
 
 		for (int j = 2; j < 9; j++)
 		{
-			gotoxy(3 + 32 + i * 15, j + 11 + 7);
+			gotoxy(3 - 11 + 32 + i * 15, j + 11 + 2);
 			printf("┃       ┃ "); // 카드 모양 출력
 		}
 
-		gotoxy(3 + 32 + i * 15, 20 + 7);
+		gotoxy(3 - 11 + 32 + i * 15, 20 + 2);
 		printf("┗━━━━━━━┛ "); // 카드 모양 출력
 		switch (suite) // 카드 문양 출력
 		{
 		case 0:
-			gotoxy(7 + 32 + i * 15, 16 + 7);
+			gotoxy(7 - 11 + 32 + i * 15, 16 + 2);
 			printf("♣");
 			break;
 		case 1:
 			textcolor(12);
-			gotoxy(7 + 32 + i * 15, 16 + 7);
+			gotoxy(7 - 11 + 32 + i * 15, 16 + 2);
 			printf("♥");
 			break;
 		case 2:
 			textcolor(12);
-			gotoxy(7 + 32 + i * 15, 16 + 7);
+			gotoxy(7 - 11 + 32 + i * 15, 16 + 2);
 			printf("◆");
 			break;
 		case 3:
-			gotoxy(7 + 32 + i * 15, 16 + 7);
+			gotoxy(7 - 11 + 32 + i * 15, 16 + 2);
 			printf("♠");
 			break;
 		default:
-			gotoxy(7 + 32 + i * 15, 16 + 7);
+			gotoxy(7 - 11 + 32 + i * 15, 16 + 2);
 			printf("에러");
 			break;
 		}
 		switch (temp) // 카드 숫자 출력
 		{
 		case 11:
-			gotoxy(5 + 32 + i * 15, 13 + 7); printf("J");
-			gotoxy(10 + 32 + i * 15, 19 + 7); printf("J");
+			gotoxy(5 - 11 + 32 + i * 15, 13 + 2); printf("J");
+			gotoxy(10 - 11 + 32 + i * 15, 19 + 2); printf("J");
 			break;
 		case 12:
-			gotoxy(5 + 32 + i * 15, 13 + 7); printf("Q");
-			gotoxy(10 + 32 + i * 15, 19 + 7); printf("Q");
+			gotoxy(5 - 11 + 32 + i * 15, 13 + 2); printf("Q");
+			gotoxy(10 - 11 + 32 + i * 15, 19 + 2); printf("Q");
 			break;
 		case 13:
-			gotoxy(5 + 32 + i * 15, 13 + 7); printf("K");
-			gotoxy(10 + 32 + i * 15, 19 + 7); printf("K");
+			gotoxy(5 - 11 + 32 + i * 15, 13 + 2); printf("K");
+			gotoxy(10 - 11 + 32 + i * 15, 19 + 2); printf("K");
 			break;
 		case 1:
-			gotoxy(5 + 32 + i * 15, 13 + 7); printf("A");
-			gotoxy(10 + 32 + i * 15, 19 + 7); printf("A");
+			gotoxy(5 - 11 + 32 + i * 15, 13 + 2); printf("A");
+			gotoxy(10 - 11 + 32 + i * 15, 19 + 2); printf("A");
 			break;
 		default:
-			gotoxy(5 + 32 + i * 15, 13 + 7); printf("%d", temp);
-			gotoxy(9 + 32 + i * 15, 19 + 7); printf("%2d", temp);
+			gotoxy(5 - 11 + 32 + i * 15, 13 + 2); printf("%d", temp);
+			gotoxy(9 - 11 + 32 + i * 15, 19 + 2); printf("%2d", temp);
 			break;
 		}
 		textcolor(15);
