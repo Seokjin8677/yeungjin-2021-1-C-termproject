@@ -6,7 +6,7 @@ void reel_series(int r[][3]);
 void display_reel(char rc[][3], int r[][3]);
 void game_control(char reel[][3], int reel_num[][3], int money);
 int return_money(int r[][3], int betting);
-
+extern int gotoxy(int, int);
 
 
 int thank;

@@ -26,8 +26,6 @@ int moneyCheck_borrow(int*,char*, int*, int*, int*);
 void timeprocess(char *);
 void gotoxy(int, int);
 void quit_message();
-
-
 int pullDownMenu(int,char**,int x, int y); // 메모리 절약을 위한 래그드 배열 사용
 int pullDownMenu_yesorno(char** menulist, int x, int y);
 int id_check(FILE*, char*);
@@ -44,6 +42,28 @@ void ending();
 int money = 0;
 int gugeolUpgrade = 1;
 int borrowmoney = 0;
+extern void gotoxy(int, int);
+extern void textcolor(int);
+extern void init();
+extern void background();
+extern int pokersingle(int, int);
+extern int poker();
+extern int blackjack(int, int*);
+extern int slot(int);
+extern int roulette(int);
+extern int horse(int);
+extern int lotto();
+extern void story_explain();
+extern void poker_explain();
+extern void blackjack_explain();
+extern void slot_explain();
+extern void roulette_explain();
+extern void horse_explain();
+extern void shop_explain();
+extern int poker_server(int);
+extern void poker_client(int*);
+extern void mySHA(unsigned char*, unsigned char*);
+
 
 int main(void) {
 	int menu;
@@ -86,7 +106,7 @@ int main(void) {
 
 	FILE* fp = NULL;
 	int loginStatus = 0;
-	srand(time(NULL));
+	srand((unsigned)time(NULL));
 	// 이진 파일을 추가 모드로 오픈한다. 
 	if (fopen_s(&fp,"user.dat", "a+")) {
 		//printf(stderr, "입력을 위한 파일을 열 수 없습니다");
@@ -744,7 +764,7 @@ void login_menu(char* id, char* password) {
 void update_money(FILE* fp, int* money)
 {
 	char tempmoney[MONEY_SIZE] = { 0 };
-	fopen_s(fp, "user.dat", "r+");
+	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd - MONEY_SIZE, SEEK_SET);
 	sprintf_s(tempmoney, MONEY_SIZE,"%d",*money);
 	fwrite(tempmoney, MONEY_SIZE, 1, fp);
@@ -753,7 +773,7 @@ void update_money(FILE* fp, int* money)
 void update_gugeolUpgrade(FILE* fp, int* gugeolUpgrade)
 {
 	char tempupgrade[MONEY_SIZE] = { 0 };
-	fopen_s(fp, "user.dat", "r+");
+	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd - MONEY_SIZE*2, SEEK_SET);
 	sprintf_s(tempupgrade, MONEY_SIZE,"%d", *gugeolUpgrade);
 	fwrite(tempupgrade, MONEY_SIZE, 1, fp);
@@ -762,7 +782,7 @@ void update_gugeolUpgrade(FILE* fp, int* gugeolUpgrade)
 void update_borrowmoney(FILE* fp, int* borrowmoney)
 {
 	char tempborrowmoney[MONEY_SIZE] = { 0 };
-	fopen_s(fp, "user.dat", "r+");
+	fopen_s(&fp, "user.dat", "r+");
 	fseek(fp, startadd - MONEY_SIZE * 3, SEEK_SET);
 	sprintf_s(tempborrowmoney, MONEY_SIZE, "%d", *borrowmoney);
 	fwrite(tempborrowmoney, MONEY_SIZE, 1, fp);
@@ -844,6 +864,10 @@ USER get_record(FILE* fp)
 }
 int id_check(FILE* fp, char* id) {
 	USER data;
+	fseek(fp, 0, SEEK_END);
+	if (ftell(fp) <= 0) {
+		return 0;
+	}
 	fseek(fp, 0, SEEK_SET);	// 파일의 처음으로 간다
 	while (!feof(fp)) {		// 파일의 끝까지 반복한다
 		fread(&data, sizeof(data), 1, fp);

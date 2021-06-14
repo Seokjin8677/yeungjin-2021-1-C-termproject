@@ -1,6 +1,6 @@
 #include "modm.h"
 
-
+extern void textcolor(int);
 void story_explain() {
 	textcolor(12);
 	printf("\n\n\t* 배경설명\n\n");

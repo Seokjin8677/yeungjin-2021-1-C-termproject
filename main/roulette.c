@@ -6,7 +6,8 @@ extern int pullDownMenu_yesorno(char**, int, int);
 char* roulettelist[ROULETTE_MENU] = { "¼ýÀÚ ÇÏ³ª","È¦/Â¦","1~18/19~36"};
 char* oddevenmenulist[2] = { "È¦","Â¦" };
 char* lowerbiggermenulist[2] = { "1~18","19~36" };
-extern void textcolor(int color_number);
+extern void textcolor(int);
+extern void background();
 extern int sel;
 int roulette(int insertmoney) {
 	int user_roulette;

@@ -9,6 +9,8 @@ struct pokerStruct // 패 확인을 위한 패 구조체
 	int rank;
 	int suit;
 };
+extern void gotoxy(int, int);
+extern void background();
 void cardPrint(struct pokerStruct* card);
 void bubbleSort(struct pokerStruct* card);
 int checkCard(struct pokerStruct* card);

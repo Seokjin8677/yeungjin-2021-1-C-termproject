@@ -15,6 +15,11 @@ void blackjackPlayerPrint(int* , int );
 int choiceBlackjack(int , char** );
 int pullDownMenuBlackjack(int, char**);
 int card_sum(int*, int);
+extern void gotoxy(int, int);
+extern void textcolor(int);
+extern void background();
+extern int moneyCheck(int*, char*, int*, int);
+
 int hideFlag = 0;
 
 int playingCard[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,	// CLOVER

@@ -1,6 +1,7 @@
 #include "modm.h"
 
-
+extern void gotoxy(int, int);
+extern void background();
 void printhorsefield();
 int horse(int insertmoney)
 {

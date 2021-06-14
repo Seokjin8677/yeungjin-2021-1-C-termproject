@@ -1,5 +1,5 @@
 #include "modm.h"
-
+extern void gotoxy(int,int);
 void background()
 {
 
