@@ -165,7 +165,7 @@ int main(void) {
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
 					printf("원");
-					gotoxy(68, 39);
+					gotoxy(78, 39);
 					scanf_s("%s", stringmoney,sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney,&insertmoney,100000)) {
 						background();
@@ -185,7 +185,7 @@ int main(void) {
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
 					printf("원");
-					gotoxy(68, 39);
+					gotoxy(78, 39);
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
@@ -206,7 +206,7 @@ int main(void) {
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
 					printf("원");
-					gotoxy(68, 39);
+					gotoxy(78, 39);
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
@@ -229,7 +229,7 @@ int main(void) {
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
 					printf("원");
-					gotoxy(68, 39);
+					gotoxy(78, 39);
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
@@ -249,7 +249,7 @@ int main(void) {
 					printf("판돈을 입력하세요(최대 10만원)");
 					gotoxy(90, 39);
 					printf("원");
-					gotoxy(68, 39);
+					gotoxy(78, 39);
 					scanf_s("%s", stringmoney, sizeof(stringmoney));
 					if (moneyCheck(&money, stringmoney, &insertmoney, 100000)) {
 						system("cls");
@@ -273,14 +273,14 @@ int main(void) {
 							background();
 							gotoxy(43, 20);
 							printf("소지금: %d\n", money);
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 1:
 							background();
 							gotoxy(43, 20);
 							printf("남은 대출금: %d\n",borrowmoney);
-							system("pause");
+							_getch();
 							system("cls");
 							break;
 						case 2:
@@ -288,7 +288,7 @@ int main(void) {
 							if (borrowmoney <= 0) {
 								gotoxy(40, 20);
 								printf("이미 대출금을 모두 갚았습니다!\n");
-								system("pause");
+								_getch();
 								system("cls");
 								break;
 							}
@@ -344,9 +344,12 @@ int main(void) {
 						{
 						case 0:
 							background();
+							gotoxy(30, 17);
 							printf("구걸시 얻는 돈이 증가합니다.(Max Level 10)\n");
 							if (gugeolUpgrade >= 10) {
+								gotoxy(30, 17);
 								printf("현재 스킬 Lv.MAX\n");
+								gotoxy(25, 18);
 								printf("이미 최대 레벨에 도달해서 구매할 수 없습니다!\n");
 								PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 								_getch();
@@ -354,15 +357,20 @@ int main(void) {
 								break;
 							}
 							background();
+							gotoxy(30, 17);
 							printf("현재 스킬 Lv.%d\n",gugeolUpgrade);
+							gotoxy(30, 18);
 							printf("소지하고 있는 돈: %d\n", money);
+							gotoxy(30, 19);
 							printf("구매 하시겠습니까?(10,000원)\n");
-							if (pullDownMenu_yesorno(yesornomenulist, 3, 5) == 0) {
+							if (pullDownMenu_yesorno(yesornomenulist, 30, 20) == 0) {
 								if (moneyCheck(&money, "10000", &insertmoney,100000)) {
 									money -= insertmoney;
 									update_money(fp, &money);
 									gugeolUpgrade++;
 									update_gugeolUpgrade(fp, &gugeolUpgrade);
+									background();
+									gotoxy(30, 18);
 									printf("구매완료!\n");
 									_getch();
 								}
@@ -374,11 +382,15 @@ int main(void) {
 							break;
 						case 1:
 							background();
+							gotoxy(30, 17);
 							printf("로또를 구매합니다.\n");
+							gotoxy(30, 18);
 							printf("소지하고 있는 돈: %d\n", money);
+							gotoxy(30, 19);
 							printf("구매 하시겠습니까?(1,000원)\n");
-							if (pullDownMenu_yesorno(yesornomenulist, 3, 5) == 0) {
+							if (pullDownMenu_yesorno(yesornomenulist, 30, 20) == 0) {
 								if (money < 1000) {
+									gotoxy(30, 18);
 									printf("돈이 모자랍니다!");
 									PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 									_getch();
@@ -386,6 +398,8 @@ int main(void) {
 									break;
 								}
 								if (money  <= 1000+ gugeolUpgrade * 1000) {
+									background();
+									gotoxy(30, 18);
 									printf("%d원 보다 많아야 구매가 가능합니다!\n", 1000 + gugeolUpgrade * 1000);
 									PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 									_getch();
@@ -623,6 +637,7 @@ int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borro
 	{
 		if (!isdigit(stringmoney[i])) {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+			gotoxy(40, 15);
 			printf("숫자만 넣어주세요!\n");
 			_getch();
 			system("cls");
@@ -632,6 +647,7 @@ int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borro
 	*insertmoney = atoi(stringmoney);
 	if (*insertmoney > *borrowmoney) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		gotoxy(40, 15);
 		printf("빚보다 많이 갚을 수 없습니다!\n");
 		_getch();
 		system("cls");
@@ -639,6 +655,7 @@ int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borro
 	}
 	if (*insertmoney > *money) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		gotoxy(40, 15);
 		printf("가지고 있는 돈이 적습니다!\n");
 		_getch();
 		system("cls");
@@ -646,6 +663,7 @@ int moneyCheck_borrow(int* money, char* stringmoney, int *insertmoney,int* borro
 	}
 	if (*insertmoney <= 1000+*gugeolUpgrade*1000) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		gotoxy(40, 15);
 		printf("%d원 보다는 많아야 합니다!\n", 1000 + *gugeolUpgrade * 1000);
 		_getch();
 		system("cls");
@@ -659,6 +677,8 @@ int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 	{
 		if (!isdigit(stringmoney[i])) {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+			background();
+			gotoxy(40, 15);
 			printf("숫자만 넣어주세요!\n");
 			_getch();
 			system("cls");
@@ -669,6 +689,8 @@ int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 	if (maxmoney != 0) { // 0으로 설정시 무제한
 		if (*insertmoney > maxmoney) {
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+			background();
+			gotoxy(40, 15);
 			printf("%d원 이하만 가능합니다!\n", maxmoney);
 			_getch();
 			system("cls");
@@ -677,6 +699,8 @@ int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 	}
 	if (*insertmoney > *money) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		background();
+		gotoxy(40, 15);
 		printf("가지고 있는 돈이 적습니다!\n");
 		_getch();
 		system("cls");
@@ -684,6 +708,8 @@ int moneyCheck(int *money,char*stringmoney, int* insertmoney, int maxmoney) {
 	}
 	if (*insertmoney <= 0) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		background();
+		gotoxy(40, 15);
 		printf("1원 이상 넣어주세요!\n");
 		_getch();
 		system("cls");
@@ -816,6 +842,7 @@ void add_record(FILE* fp)
 	data = get_record(fp);	// 사용자로부터 데이터를 받아서 구조체에 저장
 	if (id_check(fp, data.id)) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+		background();
 		printf("중복된 아이디 입니다!\n");
 		_getch();
 		return;
@@ -848,6 +875,7 @@ USER get_record(FILE* fp)
 		login_menu(data.id,data.password);
 		printf("\n");
 		if (data.id[0] == '\0' || data.password[0] == '\0') {
+			background();
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 			printf("공백을 입력할 수 없습니다.\n");
 			_getch();
@@ -878,6 +906,8 @@ int id_check(FILE* fp, char* id) {
 	return 0;
 }
 void quit_message() {
+	background();
+	gotoxy(40, 18);
 	printf("종료중입니다.");
 	for (int i = 0; i < 3; i++)
 	{
@@ -888,6 +918,7 @@ void quit_message() {
 void timeprocess(char * str) {
 	for (int i = 0; i < 5; i++)
 	{
+		background();
 		printf("%s",str);
 		Sleep(250);
 		printf(".");
@@ -915,6 +946,7 @@ void ending() {
 	for (int i = 1; i < 92; i++)
 	{
 		system("cls");
+		background();
 		if (i <= 35) {
 			gotoxy(14, 37 - i); printf("♠Yeungjin Casino♠");
 		}
