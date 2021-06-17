@@ -123,7 +123,7 @@ int main(void) {
 			system("cls");
 			background();
 			if (login_record(fp,&money,&gugeolUpgrade,&borrowmoney)) {
-				system("pause");
+				_getch();
 				system("cls");
 				break;
 			}
@@ -833,6 +833,7 @@ int login_record(FILE* fp, int* money, int* gugeolUpgrade,int *borrowmoney)
 		}
 	}
 	PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+	gotoxy(27, 25);
 	printf("해당되는 계정이 없거나 비밀번호가 맞지 않습니다.\n");
 	return 1;
 }
@@ -843,6 +844,7 @@ void add_record(FILE* fp)
 	if (id_check(fp, data.id)) {
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		background();
+		gotoxy(27, 25);
 		printf("중복된 아이디 입니다!\n");
 		_getch();
 		return;
@@ -877,6 +879,7 @@ USER get_record(FILE* fp)
 		if (data.id[0] == '\0' || data.password[0] == '\0') {
 			background();
 			PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
+			gotoxy(27, 25);
 			printf("공백을 입력할 수 없습니다.\n");
 			_getch();
 			system("cls");
@@ -946,9 +949,9 @@ void ending() {
 	for (int i = 1; i < 92; i++)
 	{
 		system("cls");
-		background();
-		if (i <= 35) {
-			gotoxy(14, 37 - i); printf("♠Yeungjin Casino♠");
+		
+		if (i <= 27) {
+			gotoxy(14, 31 - i); printf("♠Yeungjin Casino♠");
 		}
 		if (i <= 47) {
 			textcolor(12);

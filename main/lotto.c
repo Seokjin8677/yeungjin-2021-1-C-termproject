@@ -85,7 +85,7 @@ int lotto() {
 	printf("%2d ", userlotto[6]);
 	Sleep(500);
 	textcolor(15);
-	gotoxy(1 + 30, 16);
+	gotoxy(1 + 35, 16);
 	switch (corretlotto)
 	{
 	case 0:
@@ -97,27 +97,32 @@ int lotto() {
 		return 0;
 	case 3:
 		printf("5등 당첨!\n");
+		gotoxy(12 + 25, 16 + 12);
 		printf("      5,000원을 얻었다!!!\n");
 		PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
 		return 5000;
 	case 4:
 		printf("4등 당첨!\n");
+		gotoxy(12 + 25, 16 + 12);
 		printf("     50,000원을 얻었다!!!\n");
 		PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
 		return 50000;
 	case 5:
 		printf("3등 당첨!\n");
+		gotoxy(12 + 25, 16 + 12);
 		printf("    1,000,000원을 얻었다!!!\n");
 		PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
 		return 1000000;
 	case 6:
 		if (bonus == 0) {
 			printf("1등 당첨!\n");
+			gotoxy(12 + 25, 16 + 12);
 			printf("   1,000,000,000원을 얻었다!!!\n");
 			PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
 			return 1000000000;
 		}
 		printf("2등 당첨!\n");
+		gotoxy(12 + 25, 16 + 12);
 		printf("    50,000,000원을 얻었다!!!\n");
 		PlaySound(TEXT("sound\\win.wav"), NULL, SND_ASYNC);
 		return 50000000;
