@@ -15,6 +15,7 @@ int lotto() {
 	year = tmCurTime.tm_year + 1900;
 	month = tmCurTime.tm_mon + 1;
 	day = tmCurTime.tm_mday;
+
 	for (int i = 0; i < 6; ) {
 		*(comlotto + i) = rand() % 45 + 1;
 		int j;
@@ -61,21 +62,20 @@ int lotto() {
 	{
 		Sleep(500);
 		PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
-
 		for (int j = 0; j < 6; j++)
 		{
-			if (*(userlotto + i) == *(comlotto + j)) {
-
+			if (comlotto[i] == userlotto[j]) {
 				textcolor(12);
 				corretlotto++;
 				break;
 			}
 		}
-		if (*(userlotto + 6) == *(comlotto + i)) {
+		if (comlotto[i] == userlotto[6]) {
+			textcolor(12);
 			corretlotto++;
 			bonus = 1;
 		}
-		printf("%2d ", userlotto[i]);
+		printf("%d ", comlotto[i]);
 		textcolor(15);
 	}
 	Sleep(500);
