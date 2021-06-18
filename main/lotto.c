@@ -11,7 +11,7 @@ int lotto() {
 	struct tm tmCurTime;
 	int year, month, day;
 	time(&ltime);
-	localtime_s(&tmCurTime,&ltime);
+	localtime_s(&tmCurTime, &ltime);
 	year = tmCurTime.tm_year + 1900;
 	month = tmCurTime.tm_mon + 1;
 	day = tmCurTime.tm_mday;
@@ -37,9 +37,8 @@ int lotto() {
 	}
 	background();
 	textcolor(15);
-	gotoxy(2+ 30, 1+12); printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓");
-	for (int i = 0; i < 10; i++)
-	{
+	gotoxy(2+30, 1+12); printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓");
+	for (int i = 0; i < 10; i++) {
 		gotoxy(2 + 30, 2 + i + 12); printf("┃                       ┃");
 	}
 	gotoxy(2 + 30, 12 + 12); printf("┗━━━━━━━━━━━━━━━━━━━━━━━┛");
@@ -47,17 +46,15 @@ int lotto() {
 	gotoxy(4 + 30, 5 + 12); printf("발행일:%d/%02d/%02d", year, month, day);
 	gotoxy(4 + 30, 6 + 12); printf("일렬번호: %d", 10000 + rand() % 50000);
 	gotoxy(4 + 30, 7 + 12); printf("----------------------");
-
-
 	gotoxy(4 + 30, 9 + 12); printf("----------------------");
 	gotoxy(4 + 30, 11 + 12); printf("금액            \\1,000");
+	gotoxy(5 + 30, 8 + 12);
+
+	for (int i = 0; i < 7; i++)
+		printf("%2d ", userlotto[i]);
+
 	gotoxy(1 + 30, 14 + 12);
 	printf("당첨번호: ");
-	for (int i = 0; i < 6; i++)
-	{
-		printf("%d ", comlotto[i]);
-	}
-	gotoxy(5 + 30, 8+12);
 	for (int i = 0; i < 6; i++)
 	{
 		Sleep(500);
@@ -79,19 +76,13 @@ int lotto() {
 		textcolor(15);
 	}
 	Sleep(500);
-	PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
-	if (bonus == 1)
-		textcolor(12);
-	printf("%2d ", userlotto[6]);
-	Sleep(500);
-	textcolor(15);
-	gotoxy(1 + 35, 16);
+	gotoxy(10 + 30, 16 + 12);
 	switch (corretlotto)
 	{
 	case 0:
 	case 1:
 	case 2:
-		gotoxy(12+30, 16 + 12);
+		gotoxy(12 + 30, 16 + 12);
 		printf("꽝\n");
 		PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 		return 0;

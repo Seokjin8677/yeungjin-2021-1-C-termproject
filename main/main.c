@@ -271,14 +271,14 @@ int main(void) {
 						{
 						case 0:
 							background();
-							gotoxy(43, 20);
+							gotoxy(39, 17);
 							printf("소지금: %d\n", money);
 							_getch();
 							system("cls");
 							break;
 						case 1:
 							background();
-							gotoxy(43, 20);
+							gotoxy(39, 17);
 							printf("남은 대출금: %d\n",borrowmoney);
 							_getch();
 							system("cls");
@@ -286,16 +286,16 @@ int main(void) {
 						case 2:
 							background();
 							if (borrowmoney <= 0) {
-								gotoxy(40, 20);
+								gotoxy(36, 17);
 								printf("이미 대출금을 모두 갚았습니다!\n");
 								_getch();
 								system("cls");
 								break;
 							}
 							background();
-							gotoxy(38, 20);
+							gotoxy(25, 17);
 							printf("상환할 대출금을 입력하세요:\n");
-							gotoxy(35, 21);
+							gotoxy(56, 17);
 							scanf_s("%s", stringmoney, sizeof(stringmoney));
 							if (moneyCheck_borrow(&money,stringmoney ,&insertmoney, &borrowmoney, &gugeolUpgrade)) {
 								system("cls");
@@ -326,7 +326,7 @@ int main(void) {
 						PlaySound(TEXT("sound\\coin.wav"), NULL, SND_ASYNC);
 					}
 					else {
-						gotoxy(49, 20);
+						gotoxy(32, 18);
 						printf("1000원 미만일때만 구걸이 가능합니다!\n");
 						PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
 					}
@@ -946,75 +946,35 @@ void ending() {
 	mciSendCommand(dwID, MCI_PLAY, MCI_DGV_PLAY_REPEAT, // play & repeat
 		(DWORD)(LPVOID)&m_mciPlayParms);
 	system("cls");
-	for (int i = 1; i < 92; i++)
-	{
-		system("cls");
-		
-		if (i <= 27) {
-			gotoxy(14, 31 - i); printf("♠Yeungjin Casino♠");
-		}
-		if (i <= 47) {
-			textcolor(12);
-			gotoxy(17, 47 - i); printf("PM, 포커, 룰렛");
-			textcolor(15);
-		}
-		if (i <= 49) {
-			gotoxy(20, 49 - i); printf("전 석 진");
-		}
-		if (i <= 54) {
-			textcolor(12);
-			gotoxy(21, 54 - i); printf("블랙잭");
-			textcolor(15);
-		}
-		if (i <= 56) {
-			gotoxy(20, 56 - i); printf("김 재 현");
-		}
-		if (i <= 61) {
-			textcolor(12);
-			gotoxy(22, 61 - i); printf("경마");
-			textcolor(15);
-		}
-		if (i <= 63) {
-			gotoxy(20, 63 - i); printf("권 오 윤");
-		}
-		if (i <= 68) {
-			textcolor(12);
-			gotoxy(20, 68 - i); printf("슬릇머신");
-			textcolor(15);
-		}
-		if (i <= 70) {
-			gotoxy(20, 70 - i); printf("전 태 웅");
-		}
-		if (i <= 75) {
-			textcolor(12);
-			gotoxy(21, 75 - i); printf("디자인");
-			textcolor(15);
-		}
-		if (i <= 77) {
-			gotoxy(20, 77 - i); printf("최 진 영");
-		}
+	gotoxy(14, 31); printf("♠Yeungjin Casino♠");
+	textcolor(12);
+	gotoxy(17, 47); printf("PM, 포커, 룰렛");
+	textcolor(15);
 
-		if (i <= 82) {
-			textcolor(12);
-			gotoxy(20, 82 - i); printf("제작기간");
-			textcolor(15);
-		}
-		if (i <= 84) {
-			gotoxy(20, 84 - i); printf("2021/05/06~2021/06/13");
-		}
-
-		if (i <= 87) {
-			textcolor(12);
-			gotoxy(13, 87 - i); printf("♠Thanks For Playing!♠");
-			textcolor(15);
-		}
-		
-		gotoxy(0, 0);
-		Sleep(400);
-
-
-	}
-	
+	gotoxy(20, 49 ); printf("전 석 진");
+	textcolor(12);
+	gotoxy(21, 54); printf("블랙잭");
+	textcolor(15);
+	gotoxy(20, 56); printf("김 재 현");
+	textcolor(12);
+	gotoxy(22, 61); printf("경마");
+	textcolor(15);
+	gotoxy(20, 63); printf("권 오 윤");
+	textcolor(12);
+	gotoxy(20, 68); printf("슬릇머신");
+	textcolor(15);
+	gotoxy(20, 70); printf("전 태 웅");
+	textcolor(12);
+	gotoxy(21, 75); printf("디자인");
+	textcolor(15);
+	gotoxy(20, 77); printf("최 진 영");
+	textcolor(12);
+	gotoxy(20, 82); printf("제작기간");
+	textcolor(15);
+	gotoxy(20, 84); printf("2021/05/06~2021/06/13");
+	textcolor(12);
+	gotoxy(13, 87); printf("♠Thanks For Playing!♠");
+	textcolor(15);
 	_getch();
 	mciSendCommandW(dwID, MCI_CLOSE, 0, NULL);
 	system("cls");

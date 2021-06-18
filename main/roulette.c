@@ -16,19 +16,21 @@ int roulette(int insertmoney) {
 	int returnmoney= 0;
 	int oddeven = 0;
 	sel = 0;
-	
-	printf("룰을 선택하세요.");
-	menu = pullDownMenu(ROULETTE_MENU, roulettelist, 1, 2);
+	background();
+	gotoxy(41, 17); printf("룰을 선택하세요.");
+	menu = pullDownMenu(ROULETTE_MENU, roulettelist, 30, 19);
 	switch (menu)
 	{
 	case 0:
 		do {
-			printf("원하는 숫자를 입력하세요(0~36): ");
+			background();
+			gotoxy(56,38); printf("원하는 숫자를 입력하세요(0~36): ");
 			scanf_s("%d", &user_roulette);
 			if (user_roulette < 0 || user_roulette > 36) {
-				printf("0에서 36까지만 입력하세요!\n");
+				gotoxy(56, 39); printf("0에서 36까지만 입력하세요!\n");
 				PlaySound(TEXT("sound\\draw.wav"), NULL, SND_ASYNC);
-				system("pause");
+				_getch();
+				//system("pause");
 				system("cls");
 				sel = 3;
 				return returnmoney = insertmoney;
@@ -36,12 +38,14 @@ int roulette(int insertmoney) {
 		} while (user_roulette < 0 || user_roulette > 36);
 		break;
 	case 1:
-		printf("둘 중 하나를 선택하세요.");
-		oddeven = pullDownMenu_yesorno(oddevenmenulist, 1, 2);
+		background();
+		gotoxy(36, 17); printf("둘 중 하나를 선택하세요.");
+		oddeven = pullDownMenu_yesorno(oddevenmenulist, 36, 19);
 		break;
 	case 2:
-		printf("둘 중 하나를 선택하세요.");
-		oddeven = pullDownMenu_yesorno(lowerbiggermenulist, 1, 2);
+		background();
+		gotoxy(36, 17); printf("둘 중 하나를 선택하세요.");
+		oddeven = pullDownMenu_yesorno(lowerbiggermenulist, 36, 19);
 		break;
 	}
 	

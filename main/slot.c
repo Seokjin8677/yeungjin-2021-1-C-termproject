@@ -33,7 +33,7 @@ int slot(int money)
     reel_series(reel_num);      //기호순서 reel_num에다 순서를정함
     game_control(reel, reel_num, money);
     gotoxy(2, 16);
-    _getch();
+   // _getch();
     return thank;
 }
 

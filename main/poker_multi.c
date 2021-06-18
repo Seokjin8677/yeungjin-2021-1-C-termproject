@@ -8,7 +8,7 @@
 
 extern int poker();
 extern void pokermulti(int);
-extern int moneyCheck(int*, char*,int*, int);
+extern int moneyCheck(int*, char*, int*, int);
 int server_flag = 0;
 void ErrorHandling(char* message);
 void serverExit(int hServSock)
