@@ -84,8 +84,7 @@ int main(void) {
 
 
 	init(); // 콘솔창 세팅
-
-	background();
+	//background();
 
 
 
@@ -946,34 +945,48 @@ void ending() {
 	mciSendCommand(dwID, MCI_PLAY, MCI_DGV_PLAY_REPEAT, // play & repeat
 		(DWORD)(LPVOID)&m_mciPlayParms);
 	system("cls");
-	gotoxy(14, 31); printf("♠Yeungjin Casino♠");
+	background();
+	Sleep(1000);
+	gotoxy(40, 4); printf("♠Yeungjin Casino♠");
 	textcolor(12);
-	gotoxy(17, 47); printf("PM, 포커, 룰렛");
+	Sleep(1000);
+	gotoxy(43, 6); printf("PM, 포커, 룰렛");
 	textcolor(15);
-
-	gotoxy(20, 49 ); printf("전 석 진");
+	Sleep(1000);
+	gotoxy(46, 8); printf("전 석 진");
 	textcolor(12);
-	gotoxy(21, 54); printf("블랙잭");
+	Sleep(1000);
+	gotoxy(47, 10); printf("블랙잭");
 	textcolor(15);
-	gotoxy(20, 56); printf("김 재 현");
+	Sleep(1000);
+	gotoxy(46, 12); printf("김 재 현");
 	textcolor(12);
-	gotoxy(22, 61); printf("경마");
+	Sleep(1000);
+	gotoxy(48, 14); printf("경마");
 	textcolor(15);
-	gotoxy(20, 63); printf("권 오 윤");
+	Sleep(1000);
+	gotoxy(46, 16); printf("권 오 윤");
 	textcolor(12);
-	gotoxy(20, 68); printf("슬릇머신");
+	Sleep(1000);
+	gotoxy(46, 18); printf("슬릇머신");
 	textcolor(15);
-	gotoxy(20, 70); printf("전 태 웅");
+	Sleep(1000);
+	gotoxy(46, 20); printf("전 태 웅");
 	textcolor(12);
-	gotoxy(21, 75); printf("디자인");
+	Sleep(1000);
+	gotoxy(47, 22); printf("디자인");
 	textcolor(15);
-	gotoxy(20, 77); printf("최 진 영");
+	Sleep(1000);
+	gotoxy(46, 24); printf("최 진 영");
 	textcolor(12);
-	gotoxy(20, 82); printf("제작기간");
+	Sleep(1000);
+	gotoxy(46, 26); printf("제작기간");
 	textcolor(15);
-	gotoxy(20, 84); printf("2021/05/06~2021/06/13");
+	Sleep(1000);
+	gotoxy(40, 28); printf("2021/05/06~2021/06/13");
 	textcolor(12);
-	gotoxy(13, 87); printf("♠Thanks For Playing!♠");
+	Sleep(1000);
+	gotoxy(39, 30); printf("♠Thanks For Playing!♠");
 	textcolor(15);
 	_getch();
 	mciSendCommandW(dwID, MCI_CLOSE, 0, NULL);
