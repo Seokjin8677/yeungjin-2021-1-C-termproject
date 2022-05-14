@@ -1,12 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <Windows.h>
-#include <time.h>
-#define KEY_LEFT  0x4B
-#define KEY_RIGHT 0x4D
-#define KEY_RETURN 0x0D
+#include "modm.h"
 
-extern void gotoxy(int, int);
 void textcolor(int color_number)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color_number);
@@ -16,6 +9,8 @@ struct pokerStruct // 패 확인을 위한 패 구조체
 	int rank;
 	int suit;
 };
+extern void gotoxy(int, int);
+extern void background();
 void cardPrint(struct pokerStruct* card);
 void bubbleSort(struct pokerStruct* card);
 int checkCard(struct pokerStruct* card);
@@ -44,9 +39,9 @@ int poker() {
 		card[i].rank = tempcard % 13;
 		card[i].suit = tempcard / 13;
 	}
-	gotoxy(80, 3); printf("<-,->: 화살표 이동"); // 오른쪽 상단에 설명 출력
-	gotoxy(80, 4); printf("Space: 카드선택");
-	gotoxy(80, 5); printf("Enter: 선택확정");
+	gotoxy(65, 37); printf("<-,->: 화살표 이동"); // 오른쪽 상단에 설명 출력
+	gotoxy(65, 38); printf("  Space: 카드선택");
+	gotoxy(65, 39); printf("  Enter: 선택확정");
 	cardPrint(card);
 
 	/*do // 바꿀 카드 선택
@@ -138,66 +133,99 @@ int pokersingle(int money,int handtype) {
 	switch (handtype)
 	{
 	case 2:
-		printf("One Pair\n절반만 회수했다...\n");
+		gotoxy(65, 38);
+		printf("One Pair");
+		gotoxy(65, 39);
+		printf("절반만 회수했다...");
 		return money * 0.5;
 	case 3:
-		printf("Two Pair\n%d원을 벌었다!\n", money * 3);
+		gotoxy(65, 38);
+		printf("Two Pair");
+		gotoxy(65, 39);
+		printf("%d원을 벌었다!",money * 3);
 		return money * 3;
 	case 4:
-		printf("Three Of A Kind\n%d원을 벌었다!\n", money * 5);
+		gotoxy(65, 38);
+		printf("Three Of A Kind");
+		gotoxy(65, 39);
+		printf("%d원을 벌었다!", money * 5);
 		return money * 5;
 	case 5:
-		printf("Straight\n%d원을 벌었다!\n", money * 10);
+		gotoxy(65, 38);
+		printf("Straight");
+		gotoxy(65, 39);
+		printf("%d원을 벌었다!", money * 10);
 		return money * 10;
 	case 6:
-		printf("Flush\n%d원을 벌었다!\n", money * 15);
+		gotoxy(65, 38);
+		printf("Flush");
+		gotoxy(65, 39);
+		printf("%d원을 벌었다!", money * 15);
 		return money * 15;
 	case 7:
-		printf("Full House\n%d원을 벌었다!\n", money * 30);
+		gotoxy(65, 38);
+		printf("Full House");
+		gotoxy(65, 39);
+		printf("%d원을 벌었다!", money * 30);
 		return money * 30;
 	case 8:
-		printf("Four Of A kind\n%d원을 벌었다!\n", money * 50);
+		gotoxy(65, 38);
+		printf("Four Of A Kind");
+		gotoxy(65, 39);
+		printf("%d원을 벌었다!", money * 50);
 		return money * 50;
 	case 9:
-		printf("Straight Flush\n%d원을 벌었다!\n", money * 100);
+		gotoxy(65, 38);
+		printf("Straight Flush");
+		gotoxy(65, 39);
+		printf("%d원을 벌었다!", money * 100);
 		return money * 100;
 	case 10:
-		printf("Royal Straight Flush\n%d원을 벌었다!\n", money * 500);
+		gotoxy(65, 38);
+		printf("Royal Straight Flush");
+		gotoxy(65, 39);
+		printf("%d원을 벌었다!", money * 500);
 		return money * 500;
 	default:
-		printf("High Card\n돈을 잃었다...\n");
+		gotoxy(65, 38);
+		printf("High Card");
+		gotoxy(65, 39);
+		printf("돈을 잃었다...");
 		return 0;
 	}
 }
 
 void cardPrint(struct pokerStruct* card) { // 포커 패 출력
+	background();
 	for (int i = 0; i < 5; i++)
 	{
+		Sleep(500);
 		PlaySound(TEXT("sound\\paper.wav"), NULL, SND_ASYNC);
 		int temp = card[i].suit;
-		gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ "); // 카드 모양 출력
+		gotoxy(10+5 + i * 15, 1+9); printf("┏━━━━━━━┓ "); // 카드 모양 출력
 		for (int j = 2; j < 9; j++)
 		{
-			gotoxy(3 + i * 15, j); printf("┃       ┃ "); // 카드 모양 출력
+			gotoxy(10 + 5 + i * 15, j+9); printf("┃       ┃ "); // 카드 모양 출력
 		}
-		gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ "); // 카드 모양 출력
-		if(temp == 2 || temp == 3)
+		gotoxy(10 + 5 + i * 15, 9+9); printf("┗━━━━━━━┛ "); // 카드 모양 출력
+		if(temp == 1 || temp == 2)
 			textcolor(12);
 		else
 			textcolor(15);
+		gotoxy(14 + 5 + i * 15, 5 + 9);
 		switch (card[i].suit) // 카드 문양 출력
 		{
 		case 0:
-			gotoxy(7 + i * 15, 5); printf("♣");
+			printf("♣");
 			break;
 		case 1:
-			gotoxy(7 + i * 15, 5); printf("♥");
+			printf("♥");
 			break;
 		case 2:
-			gotoxy(7 + i * 15, 5); printf("◆");
+			printf("◆");
 			break;
 		case 3:
-			gotoxy(7 + i * 15, 5); printf("♠");
+			printf("♠");
 			break;
 		default:
 			break;
@@ -205,29 +233,30 @@ void cardPrint(struct pokerStruct* card) { // 포커 패 출력
 		switch (card[i].rank) // 카드 숫자 출력
 		{
 		case 9:
-			gotoxy(5 + i * 15, 2); printf("J");
-			gotoxy(10 + i * 15, 8); printf("J");
+			gotoxy(12 + 5 + i * 15, 2 + 9); printf("J");
+			gotoxy(17 + 5 + i * 15, 8 + 9); printf("J");
 			break;
 		case 10:
-			gotoxy(5 + i * 15, 2); printf("Q");
-			gotoxy(10 + i * 15, 8); printf("Q");
+			gotoxy(12 + 5 + i * 15, 2 + 9); printf("Q");
+			gotoxy(17 + 5 + i * 15, 8 + 9); printf("Q");
 			break;
 		case 11:
-			gotoxy(5 + i * 15, 2); printf("K");
-			gotoxy(10 + i * 15, 8); printf("K");
+			gotoxy(12 + 5 + i * 15, 2 + 9); printf("K");
+			gotoxy(17 + 5 + i * 15, 8 + 9); printf("K");
 			break;
 		case 12:
-			gotoxy(5 + i * 15, 2); printf("A");
-			gotoxy(10 + i * 15, 8); printf("A");
+			gotoxy(12 + 5 + i * 15, 2 + 9); printf("A");
+			gotoxy(17 + 5 + i * 15, 8 + 9); printf("A");
 			break;
 		default:
-			gotoxy(5 + i * 15, 2); printf("%d", card[i].rank % 13 + 2);
-			gotoxy(9 + i * 15, 8); printf("%2d", card[i].rank % 13 + 2);
+			gotoxy(12 + 5 + i * 15, 2 + 9); printf("%d", card[i].rank % 13 + 2);
+			gotoxy(16 + 5 + i * 15, 8 + 9); printf("%2d", card[i].rank % 13 + 2);
 			break;
 		}
-		Sleep(500);
+		
 		textcolor(15);
 	}
+	Sleep(500);
 	printf("\n\n");
 }
 
@@ -332,13 +361,13 @@ void card_print2(int i, int sel) { // 카드를 선택하면 빨간색, 이미 선택된 카드는
 		textcolor(12);
 	else
 		textcolor(15);
-	gotoxy(3 + i * 15, 1); printf("┏━━━━━━━┓ ");
+	gotoxy(10 + 5 + i * 15, 1 + 9); printf("┏━━━━━━━┓ ");
 	for (int j = 2; j < 9; j++)
 	{
-		gotoxy(3 + i * 15, j); printf("┃");
-		gotoxy(11 + i * 15, j); printf("┃");
+		gotoxy(10 + 5 + i * 15, j + 9); printf("┃");
+		gotoxy(18 + 5 + i * 15, j + 9); printf("┃");
 	}
-	gotoxy(3 + i * 15, 9); printf("┗━━━━━━━┛ ");
+	gotoxy(10 + 5 + i * 15, 9 + 9); printf("┗━━━━━━━┛ ");
 
 	textcolor(15);
 }
@@ -348,7 +377,7 @@ void pullDownMenu_poker(int* selcard2) // 카드를 키보드로 선택하게 하는 함수
 	int sel = 0;
 	int temp = 0;
 
-	gotoxy(7 + sel * 15, 11); printf("♠"); // 선택 메뉴 출력 및 초기화
+	gotoxy(14 + 5 + sel * 15, 11 + 9); printf("♠"); // 선택 메뉴 출력 및 초기화
 	while (1) {
 		ch = _getch();
 		if (ch == KEY_LEFT) {
@@ -403,11 +432,10 @@ void pullDownMenu_poker(int* selcard2) // 카드를 키보드로 선택하게 하는 함수
 		}
 		else if (ch == KEY_RETURN) // 엔터 누르면 끝
 			break;
-		gotoxy(7 + temp * 15, 11); printf("  "); // 이전 화살표 지우기
-		gotoxy(7 + sel * 15, 11); printf("♠");
+		gotoxy(14 + 5 + temp * 15, 11 + 9); printf("  "); // 이전 화살표 지우기
+		gotoxy(14 + 5 + sel * 15, 11 + 9); printf("♠");
 		temp = sel; // 이전 화살표를 위한 temp 설정
 		Sleep(1); // 최적화를 위한 Sleep(1)
 	}
 	system("cls");
-	return 0;
 }

@@ -8,7 +8,7 @@
 
 extern int poker();
 extern void pokermulti(int);
-extern int moneyCheck(int*, int, int);
+extern int moneyCheck(int*, char*, int*, int);
 int server_flag = 0;
 void ErrorHandling(char* message);
 void serverExit(int hServSock)
@@ -188,7 +188,7 @@ void poker_client(int *money) {
 	int serverScore, clientScore;
 	
 	printf("접속할 서버에 아이피를 입력하세요(취소하려면 -1 입력): ");
-	scanf("%s", ipadd);
+	scanf_s("%s", ipadd,sizeof(ipadd));
 	rewind(stdin);
 	if (ipadd[0] == '-' && ipadd[1] == '1') {
 		system("cls");
@@ -233,6 +233,7 @@ void poker_client(int *money) {
 	insertmoney = atoi(moneys);
 
 	system("cls");
+	printf("소지하고 있는 돈: %d\n", *money);
 	printf("게임의 판돈은 %d원 입니다.\n진행하려면 아무키나 누르거나, 게임을 나가려면 q를 입력하세요.\n", insertmoney); // 판돈을 보고 게임에 참가할지 결정
 
 	ch = _getch();
@@ -249,7 +250,7 @@ void poker_client(int *money) {
 		system("cls");
 		return;
 	}
-	if(moneyCheck(money, insertmoney,0) == 0) {
+	if(moneyCheck(money, moneys,&insertmoney,0) == 0) {
 		char joinMessage[] = "exit";
 		send(hSocket, joinMessage, (int)strlen(joinMessage), 0);
 		closesocket(hSocket);
